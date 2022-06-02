@@ -1,0 +1,16 @@
+package de.dhbw.satp.main;
+
+import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
+import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
+import de.dhbw.satp.main.JumpAndRunMain;
+
+// Please note that on macOS your application needs to be started with the -XstartOnFirstThread JVM argument
+public class DesktopLauncher {
+	public static void main (String[] arg) {
+		Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
+		config.setForegroundFPS(Statics.FPS);
+		config.setTitle("Test JumpAndRunSATP");
+		config.setWindowedMode(Statics.WINDOW_WIDTH, Statics.WINDOW_HEIGHT);
+		new Lwjgl3Application(new JumpAndRunMain(), config);
+	}
+}
