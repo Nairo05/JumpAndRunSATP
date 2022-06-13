@@ -5,13 +5,7 @@ import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Manifold;
 
-import org.jetbrains.annotations.NotNull;
-
-import java.util.Random;
-
 import de.dhbw.satp.gameobjects.AsyncContextWarning;
-import de.dhbw.satp.gameobjects.TestEntity;
-import de.dhbw.satp.gameobjects.ToSpawnObjectDefinition;
 import de.dhbw.satp.screens.PlayScreen;
 
 public class MyContactListener implements ContactListener {
@@ -28,6 +22,7 @@ public class MyContactListener implements ContactListener {
     public void beginContact(Contact contact) {
         if (contact.getFixtureA().getFilterData().categoryBits + contact.getFixtureB().getFilterData().categoryBits == BitFilterDef.PLAYER_ON_GROUND) {
             playerOnGround ++;
+            playScreen.getPlayer().jumped();
         }
     }
 

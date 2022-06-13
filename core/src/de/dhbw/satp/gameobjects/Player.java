@@ -29,7 +29,7 @@ public class Player implements GameObject, Disposable {
 
         BodyDef playerDef = new BodyDef();
         playerDef.type = BodyDef.BodyType.DynamicBody;
-        playerDef.position.set(130f / PPM, 50f / PPM);
+        playerDef.position.set(330f / PPM, 50f / PPM);
         playerBody = world.createBody(playerDef);
 
         FixtureDef fixtureDef = new FixtureDef();
@@ -104,4 +104,12 @@ public class Player implements GameObject, Disposable {
     public Body getPlayerBody() {
         return playerBody;
     }
+
+    public void jumped(){
+        if (playerBody.getLinearVelocity().y < -2f) {
+            playerBody.setLinearVelocity(playerBody.getLinearVelocity().x, 0);
+            System.out.println("Velocity x+ fix");
+        }
+    }
+
 }

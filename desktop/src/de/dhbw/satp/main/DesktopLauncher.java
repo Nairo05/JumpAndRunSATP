@@ -8,8 +8,8 @@ import de.dhbw.satp.main.JumpAndRunMain;
 public class DesktopLauncher {
 	public static void main (String[] arg) {
 		Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
-		config.setForegroundFPS(Statics.FPS);
 		config.setTitle("Test JumpAndRunSATP");
+		config.setForegroundFPS(Statics.FOREGROUND_FPS);
 		config.setWindowedMode(Statics.WINDOW_WIDTH, Statics.WINDOW_HEIGHT);
 		new Lwjgl3Application(new JumpAndRunMain(), config);
 	}

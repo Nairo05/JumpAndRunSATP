@@ -31,13 +31,13 @@ public class MapCreator implements Disposable {
         tmxMapLoader = new TmxMapLoader();
         map = tmxMapLoader.load("1-1.tmx");
 
-        for (RectangleMapObject mapObject : map.getLayers().get(2).getObjects().getByType(RectangleMapObject.class)) {
+        for (RectangleMapObject mapObject : map.getLayers().get(3).getObjects().getByType(RectangleMapObject.class)) {
             Rectangle rect = mapObject.getRectangle();
 
             new Ground(world, rect.x, rect.y, rect.width, rect.height);
         }
 
-        for (PolygonMapObject mapObject : map.getLayers().get(2).getObjects().getByType(PolygonMapObject.class)) {
+        for (PolygonMapObject mapObject : map.getLayers().get(3).getObjects().getByType(PolygonMapObject.class)) {
             PolygonShape polygon = new PolygonShape();
 
             float[] vertices = mapObject.getPolygon().getTransformedVertices();

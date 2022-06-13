@@ -7,6 +7,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
@@ -46,6 +47,8 @@ public class PlayScreen implements Screen {
 
     private final OrthogonalTiledMapRenderer orthogonalTiledMapRenderer;
 
+    private final ParticleEffect particleEffect;
+
     public PlayScreen(JumpAndRunMain jumpAndRunMain) {
         this.jumpAndRunMain = jumpAndRunMain;
 
@@ -55,7 +58,7 @@ public class PlayScreen implements Screen {
 
         camera = new OrthographicCamera();
         viewport = new ExtendViewport(Statics.VIRTUAL_WIDTH / PPM, Statics.VIRTUAL_HEIGHT / PPM, camera);
-        camera.position.set(1f / PPM, 1f,0f);
+        camera.position.set(2.1f, 1.06f,0f);
         camera.update();
 
         myContactListener = new MyContactListener(this);
@@ -67,6 +70,12 @@ public class PlayScreen implements Screen {
         debugOnScreenDisplay = new DebugOnScreenDisplay(jumpAndRunMain.spriteBatch);
 
         orthogonalTiledMapRenderer = new OrthogonalTiledMapRenderer(mapCreator.getMap(), 1f / PPM);
+
+        particleEffect = new ParticleEffect();
+        particleEffect.load(Gdx.files.internal("whitefly.p") ,Gdx.files.internal(""));
+        particleEffect.getEmitters().first().setPosition(2f,1f);
+        particleEffect.scaleEffect(0.005f);
+        particleEffect.start();
     }
 
     @Override
@@ -91,11 +100,15 @@ public class PlayScreen implements Screen {
 
         debugOnScreenDisplay.setPlayerInfo("PLAYER |" +
                 "   POSITION : X " + player.getX() + "\n" +
-                "                                       Y " + player.getY());
+                "                                       Y " + player.getY() + "\n" +
+                "                                       VEL Y " + player.getPlayerBody().getLinearVelocity().y);
     }
 
     private void updateCamera(float dt) {
-        camera.position.x = player.getX();
+        //TODO: Camera vom Spieler lösen und Kamera Fahrt Smoother machen - Camera Y align
+        if (player.getX() > 2.1f) {
+            camera.position.x = player.getX();
+        }
         camera.update();
     }
 
@@ -109,19 +122,22 @@ public class PlayScreen implements Screen {
         updateCamera(dt);
         updatePlayer(dt);
         handleDebug(dt);
+
+        particleEffect.update(dt);
     }
 
     @Override
     public void render(float delta) {
+        Gdx.gl20.glClearColor(0f, 0f, 0f, 1f);
+        Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
         //---------------------------------------------------------------------------------------------------------------- Phase 1 update Phase
         update(delta);
 
         //---------------------------------------------------------------------------------------------------------------- Phase 2 Physik
-        world.step(delta, 6, 2);
+        world.step(Gdx.graphics.getDeltaTime(), 6, 2);
 
         //---------------------------------------------------------------------------------------------------------------- Phase 3 Grafiken
-        Gdx.gl20.glClearColor(0f, 0f, 0f, 1f);
-        Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         orthogonalTiledMapRenderer.setView(camera);
         orthogonalTiledMapRenderer.render();
@@ -133,6 +149,10 @@ public class PlayScreen implements Screen {
         //render
         player.render();
         entityManager.render();
+        particleEffect.draw(jumpAndRunMain.spriteBatch);
+        if (particleEffect.isComplete()) {
+            particleEffect.reset();
+        }
 
         //end
         jumpAndRunMain.spriteBatch.end();
@@ -171,5 +191,8 @@ public class PlayScreen implements Screen {
 
     public World getWorld() {
         return world;
+    }
+    public Player getPlayer() {
+        return player;
     }
 }

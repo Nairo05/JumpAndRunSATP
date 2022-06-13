@@ -6,8 +6,6 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.Queue;
 
-import java.util.ArrayList;
-
 public class EntityManager implements Disposable {
 
     private final int MAX_ENTITIES_IN_WORLD = 32;
