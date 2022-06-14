@@ -37,6 +37,8 @@ public class ParticleManager {
         }
     }
 
+    //hi
+
     public void update(float dt) {
         for (ParticleEffect particleEffect : particles) {
             particleEffect.update(dt);
