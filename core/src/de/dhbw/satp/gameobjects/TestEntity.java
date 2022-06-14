@@ -1,5 +1,6 @@
 package de.dhbw.satp.gameobjects;
 
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
@@ -57,7 +58,7 @@ public class TestEntity extends DynamicEntity {
     }
 
     @Override
-    public void render() {
+    public void render(SpriteBatch spriteBatch) {
         if (!isDestroyed()) {
             //Code
         }

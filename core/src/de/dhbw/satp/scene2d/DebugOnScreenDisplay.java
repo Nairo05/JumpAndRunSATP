@@ -19,9 +19,10 @@ public class DebugOnScreenDisplay {
     private boolean debug;
     private final Box2DDebugRenderer debugRenderer;
 
+    private final StageText2D particelMangerInfo;
     private final StageText2D entityManagerInfo;
     private final StageText2D frameInfo;
-    private StageText2D playerInfo;
+    private final StageText2D playerInfo;
 
     public Stage stage;
 
@@ -29,16 +30,18 @@ public class DebugOnScreenDisplay {
     public DebugOnScreenDisplay(SpriteBatch spriteBatch) {
         this.debug = false;
 
-        entityManagerInfo = new StageText2D(10f, 500f);
-        frameInfo = new StageText2D(10f, 480f);
-        playerInfo = new StageText2D(10f, 460f);
+        frameInfo = new StageText2D(10f, 520f);
+        particelMangerInfo = new StageText2D(10f, 480f);
+        entityManagerInfo = new StageText2D(10f, 460f);
+        playerInfo = new StageText2D(10f, 420f);
 
         Viewport viewport = new ExtendViewport(Statics.WINDOW_WIDTH, Statics.WINDOW_HEIGHT, new OrthographicCamera());
         stage = new Stage(viewport, spriteBatch);
 
-        stage.addActor(entityManagerInfo);
         stage.addActor(frameInfo);
         stage.addActor(playerInfo);
+        stage.addActor(entityManagerInfo);
+        stage.addActor(particelMangerInfo);
 
         debugRenderer = new Box2DDebugRenderer();
     }
@@ -47,6 +50,9 @@ public class DebugOnScreenDisplay {
     public void update(float dt) {
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.F3)) {
+            debug = !debug;
+        }
+        if (Gdx.input.isTouched() && Gdx.input.getY() < 100) {
             debug = !debug;
         }
 
@@ -62,7 +68,9 @@ public class DebugOnScreenDisplay {
     }
 
     public void renderWithoutBatch(World world, Matrix4 matrix4) {
-        debugRenderer.render(world, matrix4);
+        if (debug) {
+            debugRenderer.render(world, matrix4);
+        }
     }
 
     public void setEntityInfo(String entityInfo) {
@@ -74,5 +82,7 @@ public class DebugOnScreenDisplay {
     public void setPlayerInfo(String playerInfo) {
         this.playerInfo.setText(playerInfo);
     }
-
+    public void setParticelMangerInfo(String particelInfo) {
+        this.particelMangerInfo.setText(particelInfo);
+    }
 }

@@ -1,6 +1,7 @@
 package de.dhbw.satp.gameobjects;
 
 
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
@@ -52,10 +53,10 @@ public class EntityManager implements Disposable {
         updateDynamicEntities(dt);
     }
 
-    public void render() {
+    public void render(SpriteBatch spriteBatch) {
         for(DynamicEntity entity : dynamicEntityArrayList) {
             //TODO: Prüfen, ob eingefroren
-            entity.render();
+            entity.render(spriteBatch);
         }
     }
 

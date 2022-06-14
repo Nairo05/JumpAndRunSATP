@@ -20,6 +20,7 @@ import java.util.Random;
 
 import de.dhbw.satp.gameobjects.DynamicEntity;
 import de.dhbw.satp.gameobjects.EntityManager;
+import de.dhbw.satp.gameobjects.ParticleManager;
 import de.dhbw.satp.gameobjects.Player;
 import de.dhbw.satp.gameobjects.TestEntity;
 import de.dhbw.satp.gameobjects.ToSpawnObjectDefinition;
@@ -33,6 +34,7 @@ import de.dhbw.satp.world.MyContactListener;
 public class PlayScreen implements Screen {
 
     private final JumpAndRunMain jumpAndRunMain;
+    private int camState = 0;
 
     private final World world;
     public MyContactListener myContactListener;
@@ -42,12 +44,11 @@ public class PlayScreen implements Screen {
 
     private final Player player;
     private final EntityManager entityManager;
+    private final ParticleManager particleManager;
 
     private final DebugOnScreenDisplay debugOnScreenDisplay;
 
     private final OrthogonalTiledMapRenderer orthogonalTiledMapRenderer;
-
-    private final ParticleEffect particleEffect;
 
     public PlayScreen(JumpAndRunMain jumpAndRunMain) {
         this.jumpAndRunMain = jumpAndRunMain;
@@ -55,6 +56,7 @@ public class PlayScreen implements Screen {
         world = new World(new Vector2(0f,-9.81f), true);
 
         entityManager = new EntityManager(world);
+        particleManager = new ParticleManager();
 
         camera = new OrthographicCamera();
         viewport = new ExtendViewport(Statics.VIRTUAL_WIDTH / PPM, Statics.VIRTUAL_HEIGHT / PPM, camera);
@@ -64,18 +66,12 @@ public class PlayScreen implements Screen {
         myContactListener = new MyContactListener(this);
         world.setContactListener(myContactListener);
 
-        player = new Player(this);
-        MapCreator mapCreator = new MapCreator(world);
+        MapCreator mapCreator = new MapCreator(this);
+        player = new Player(this, mapCreator.getPlayerRectangle().x, mapCreator.getPlayerRectangle().y);
 
         debugOnScreenDisplay = new DebugOnScreenDisplay(jumpAndRunMain.spriteBatch);
 
         orthogonalTiledMapRenderer = new OrthogonalTiledMapRenderer(mapCreator.getMap(), 1f / PPM);
-
-        particleEffect = new ParticleEffect();
-        particleEffect.load(Gdx.files.internal("whitefly.p") ,Gdx.files.internal(""));
-        particleEffect.getEmitters().first().setPosition(2f,1f);
-        particleEffect.scaleEffect(0.005f);
-        particleEffect.start();
     }
 
     @Override
@@ -96,17 +92,39 @@ public class PlayScreen implements Screen {
 
         debugOnScreenDisplay.setEntityInfo("ENTITY MANAGER |" +
                 "   QUEUE : " + entityManager.getQueuedSize() + "/" + entityManager.getMAX_QUEUED_ENTITIES() +
-                "   SPAWNED : " + entityManager.getSpawnedSize() + "/" + entityManager.getMAX_ENTITIES_IN_WORLD());
+                "   SPAWNED : " + entityManager.getSpawnedSize() + "/" + entityManager.getMAX_ENTITIES_IN_WORLD() +
+                "   ACTIVE: ??");
 
         debugOnScreenDisplay.setPlayerInfo("PLAYER |" +
                 "   POSITION : X " + player.getX() + "\n" +
                 "                                       Y " + player.getY() + "\n" +
+                "                                       VEL X " + player.getPlayerBody().getLinearVelocity().x + "\n" +
                 "                                       VEL Y " + player.getPlayerBody().getLinearVelocity().y);
+
+        debugOnScreenDisplay.setParticelMangerInfo("PARTIC MANAGER |" +
+                "   QUEUE: " + "0/0" +
+                "   EMITTER : " + particleManager.getParticleSize() + "/" + particleManager.getMAX_PARTICLE_IN_WORLD() +
+                "   ACTIVE: " + particleManager.getActive());
     }
 
     private void updateCamera(float dt) {
         //TODO: Camera vom Spieler lösen und Kamera Fahrt Smoother machen - Camera Y align
-        if (player.getX() > 2.1f) {
+        if (player.getY() > 1.5f && myContactListener.isPlayerOnGround()) {
+            camState = 1;
+        } else if (player.getY() < 1.25 && myContactListener.isPlayerOnGround()) {
+            camState = 2;
+        }
+        if (camState == 1) {
+            if (camera.position.y < 2.1f) {
+                camera.position.y += dt * 1.2f;
+            }
+        }
+        if (camState == 2) {
+            if (camera.position.y > 1.06f) {
+                camera.position.y -= dt * 1.4;
+            }
+        }
+        if (player.getX() > 2.1f && player.getX() < 29.9f) {
             camera.position.x = player.getX();
         }
         camera.update();
@@ -119,16 +137,16 @@ public class PlayScreen implements Screen {
 
     private void update(float dt) {
         entityManager.update(dt);
+        particleManager.update(dt);
+
         updateCamera(dt);
         updatePlayer(dt);
         handleDebug(dt);
-
-        particleEffect.update(dt);
     }
 
     @Override
     public void render(float delta) {
-        Gdx.gl20.glClearColor(0f, 0f, 0f, 1f);
+        Gdx.gl20.glClearColor(0f, 0f, 0.1f, 1f);
         Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         //---------------------------------------------------------------------------------------------------------------- Phase 1 update Phase
@@ -146,13 +164,10 @@ public class PlayScreen implements Screen {
         jumpAndRunMain.spriteBatch.setProjectionMatrix(camera.combined);
         jumpAndRunMain.spriteBatch.begin();
 
-        //render
-        player.render();
-        entityManager.render();
-        particleEffect.draw(jumpAndRunMain.spriteBatch);
-        if (particleEffect.isComplete()) {
-            particleEffect.reset();
-        }
+        //render | Batch Renderer
+        player.render(jumpAndRunMain.spriteBatch);
+        entityManager.render(jumpAndRunMain.spriteBatch);
+        particleManager.render(jumpAndRunMain.spriteBatch);
 
         //end
         jumpAndRunMain.spriteBatch.end();
@@ -194,5 +209,13 @@ public class PlayScreen implements Screen {
     }
     public Player getPlayer() {
         return player;
+    }
+
+    public ParticleManager getParticleManager() {
+        return particleManager;
+    }
+
+    public EntityManager getEntityManager() {
+        return entityManager;
     }
 }

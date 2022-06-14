@@ -4,6 +4,8 @@ import static de.dhbw.satp.main.Statics.PPM;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -18,18 +20,22 @@ import de.dhbw.satp.world.BitFilterDef;
 
 public class Player implements GameObject, Disposable {
 
+    private Texture texture;
+
     private final Body playerBody;
     private final PlayScreen playScreen;
 
     private float jumpTime = 17f / PPM;
 
-    public Player(PlayScreen playScreen) {
+    public Player(PlayScreen playScreen, float xInWorldUnit, float yInWorldUnit) {
         this.playScreen = playScreen;
         World world = playScreen.getWorld();
 
+        texture = new Texture("sprite/bullet.png");
+
         BodyDef playerDef = new BodyDef();
         playerDef.type = BodyDef.BodyType.DynamicBody;
-        playerDef.position.set(330f / PPM, 50f / PPM);
+        playerDef.position.set(xInWorldUnit, yInWorldUnit);
         playerBody = world.createBody(playerDef);
 
         FixtureDef fixtureDef = new FixtureDef();
@@ -59,7 +65,8 @@ public class Player implements GameObject, Disposable {
         if (playScreen.myContactListener.isPlayerOnGround()) {
             jumpTime = 17f / PPM;
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.D) || Gdx.input.isKeyPressed(Input.Keys.RIGHT) || Gdx.input.isTouched()) {
+        //--------------------------------------------- Mouse and Keyboard ----------------------------------------------------------------
+        if (Gdx.input.isKeyPressed(Input.Keys.D) || Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
             if (playerBody.getLinearVelocity().x < 1.5f) {
                 playerBody.applyLinearImpulse(new Vector2(10f * dt, 0), playerBody.getWorldCenter(), true);
             }
@@ -82,11 +89,39 @@ public class Player implements GameObject, Disposable {
                 System.out.println("- velocity");
             }
         }
+
+        // ------------------------------------------------- Android ---------------------------------------------------------------------
+        for (int i = 0 ; i < 3; i++){
+
+            if (Gdx.input.isTouched(i)){
+
+                if (Gdx.input.getX(i) > 0 && Gdx.input.getX(i) < 300) {
+                    if (playerBody.getLinearVelocity().x < 1.5f) {
+                        playerBody.applyLinearImpulse(new Vector2(10f * dt, 0), playerBody.getWorldCenter(), true);
+                    }
+                } else if (Gdx.input.getX(i) > 300) {
+                    //TODO: inital Impulse + variable
+                    if (jumpTime == 17f / PPM) {
+                        System.out.println("initial Impuls");
+                        playerBody.applyLinearImpulse(new Vector2(0f, 38f * dt), playerBody.getWorldCenter(), true);
+                    }
+                    if (jumpTime > 0) {
+                        jumpTime -= dt;
+                        playerBody.applyLinearImpulse(new Vector2(0f, 18f * dt), playerBody.getWorldCenter(), true);
+                    } else {
+                        System.out.println("- velocity");
+                    }
+                }
+            }
+        }
+
+
+
     }
 
     @Override
-    public void render() {
-
+    public void render(SpriteBatch spriteBatch) {
+        spriteBatch.draw(texture, playerBody.getPosition().x,playerBody.getPosition().y, 0.16f,0.16f);
     }
 
     @Override
@@ -101,15 +136,14 @@ public class Player implements GameObject, Disposable {
         return playerBody.getPosition().y;
     }
 
-    public Body getPlayerBody() {
-        return playerBody;
-    }
-
     public void jumped(){
-        if (playerBody.getLinearVelocity().y < -2f) {
+        if (playerBody.getLinearVelocity().y < 0) {
             playerBody.setLinearVelocity(playerBody.getLinearVelocity().x, 0);
             System.out.println("Velocity x+ fix");
         }
     }
 
+    public Body getPlayerBody() {
+        return playerBody;
+    }
 }
