@@ -4,10 +4,9 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.utils.Disposable;
 
 import de.dhbw.satp.main.Statics;
-import de.dhbw.satp.world.BitFilterDef;
+import de.dhbw.satp.staticworld.BitFilterDef;
 
 public class TestEntity extends DynamicEntity {
 

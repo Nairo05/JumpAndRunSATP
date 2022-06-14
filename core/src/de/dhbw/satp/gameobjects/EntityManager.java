@@ -9,8 +9,8 @@ import com.badlogic.gdx.utils.Queue;
 
 public class EntityManager implements Disposable {
 
-    private final int MAX_ENTITIES_IN_WORLD = 32;
-    private final int MAX_QUEUED_ENTITIES = 16;
+    private final int MAX_ENTITIES_IN_WORLD = 16;
+    private final int MAX_QUEUED_ENTITIES = 32;
 
     private final World world;
 

@@ -1,4 +1,4 @@
-package de.dhbw.satp.world;
+package de.dhbw.satp.staticworld;
 
 public class BitFilterDef {
 

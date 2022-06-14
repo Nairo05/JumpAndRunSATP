@@ -1,8 +1,6 @@
-package de.dhbw.satp.world;
+package de.dhbw.satp.staticworld;
 
 import com.badlogic.gdx.physics.box2d.World;
-
-import de.dhbw.satp.screens.PlayScreen;
 
 public class Ground extends StaticObject{
 

@@ -6,6 +6,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -16,7 +18,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Disposable;
 
 import de.dhbw.satp.screens.PlayScreen;
-import de.dhbw.satp.world.BitFilterDef;
+import de.dhbw.satp.staticworld.BitFilterDef;
 
 public class Player implements GameObject, Disposable {
 
@@ -25,13 +27,20 @@ public class Player implements GameObject, Disposable {
     private final Body playerBody;
     private final PlayScreen playScreen;
 
+    private TextureRegion[][] textureRegions;
+    int framecount = 0;
+    int frame = 0;
+
     private float jumpTime = 17f / PPM;
+    private short lives = 3;
+    private short invincibilityFrames = 120;
 
     public Player(PlayScreen playScreen, float xInWorldUnit, float yInWorldUnit) {
         this.playScreen = playScreen;
         World world = playScreen.getWorld();
 
-        texture = new Texture("sprite/bullet.png");
+        texture = new Texture("playersprite/skull1.png");
+        textureRegions = TextureRegion.split(texture, 13, 20);
 
         BodyDef playerDef = new BodyDef();
         playerDef.type = BodyDef.BodyType.DynamicBody;
@@ -62,6 +71,31 @@ public class Player implements GameObject, Disposable {
 
     @Override
     public void update(float dt) {
+        //TODO reusrive algorithm
+        if (playerBody.getPosition().y < 0) {
+            loseLife();
+            playerBody.setTransform(1, 1, 0);
+        }
+
+        if (lives <= 0) {
+            playScreen.endGame();
+        }
+
+        framecount++;
+        if ((framecount % 6) == 0) {
+            frame++;
+            if (frame > 3) {
+                frame = 0;
+            }
+        }
+
+        if (invincibilityFrames < 120 && invincibilityFrames > 0) {
+            invincibilityFrames--;
+        } else if (invincibilityFrames <= 0) {
+            invincibilityFrames = 120;
+        }
+
+
         if (playScreen.myContactListener.isPlayerOnGround()) {
             jumpTime = 17f / PPM;
         }
@@ -100,7 +134,6 @@ public class Player implements GameObject, Disposable {
                         playerBody.applyLinearImpulse(new Vector2(10f * dt, 0), playerBody.getWorldCenter(), true);
                     }
                 } else if (Gdx.input.getX(i) > 300) {
-                    //TODO: inital Impulse + variable
                     if (jumpTime == 17f / PPM) {
                         System.out.println("initial Impuls");
                         playerBody.applyLinearImpulse(new Vector2(0f, 38f * dt), playerBody.getWorldCenter(), true);
@@ -121,12 +154,28 @@ public class Player implements GameObject, Disposable {
 
     @Override
     public void render(SpriteBatch spriteBatch) {
-        spriteBatch.draw(texture, playerBody.getPosition().x,playerBody.getPosition().y, 0.16f,0.16f);
+        if (playerBody.getLinearVelocity().x < -0.1f) {
+            if (!textureRegions[0][frame].isFlipX()) {
+                textureRegions[0][frame].flip(true, false);
+            }
+        }
+        if (playerBody.getLinearVelocity().x > 0.1f) {
+            if (textureRegions[0][frame].isFlipX()) {
+                textureRegions[0][frame].flip(true, false);
+            }
+        }
+
+        if (Math.abs(playerBody.getLinearVelocity().x) >= 0.001f) {
+            spriteBatch.draw(textureRegions[0][frame], playerBody.getPosition().x - 0.07f ,playerBody.getPosition().y - 0.07f, 0.13f,0.20f);
+        } else {
+            spriteBatch.draw(textureRegions[0][0], playerBody.getPosition().x - 0.07f ,playerBody.getPosition().y - 0.07f, 0.13f,0.20f);
+        }
     }
+
 
     @Override
     public void dispose() {
-
+        texture.dispose();
     }
 
     public float getX() {
@@ -145,5 +194,20 @@ public class Player implements GameObject, Disposable {
 
     public Body getPlayerBody() {
         return playerBody;
+    }
+
+    public void loseLife() {
+        if (invincibilityFrames == 120) {
+            lives--;
+            invincibilityFrames--;
+        }
+    }
+
+    public short getLives() {
+        return lives;
+    }
+
+    public boolean isInvincible() {
+        return invincibilityFrames < 120;
     }
 }

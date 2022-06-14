@@ -1,4 +1,4 @@
-package de.dhbw.satp.gameobjects;
+package de.dhbw.satp.staticworld;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

@@ -1,4 +1,4 @@
-package de.dhbw.satp.gameobjects;
+package de.dhbw.satp.particle;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;

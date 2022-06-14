@@ -1,26 +1,19 @@
-package de.dhbw.satp.world;
+package de.dhbw.satp.staticworld;
 
 import static de.dhbw.satp.main.Statics.PPM;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.maps.Map;
-import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.PolygonMapObject;
-import com.badlogic.gdx.maps.objects.PolylineMapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 
-import de.dhbw.satp.main.Statics;
 import de.dhbw.satp.screens.PlayScreen;
 
 public class MapCreator implements Disposable {

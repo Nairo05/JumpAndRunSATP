@@ -1,11 +1,10 @@
-package de.dhbw.satp.world;
+package de.dhbw.satp.staticworld;
 
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Manifold;
 
-import de.dhbw.satp.gameobjects.AsyncContextWarning;
 import de.dhbw.satp.screens.PlayScreen;
 
 public class MyContactListener implements ContactListener {
@@ -23,6 +22,9 @@ public class MyContactListener implements ContactListener {
         if (contact.getFixtureA().getFilterData().categoryBits + contact.getFixtureB().getFilterData().categoryBits == BitFilterDef.PLAYER_ON_GROUND) {
             playerOnGround ++;
             playScreen.getPlayer().jumped();
+        }
+        if (contact.getFixtureA().getFilterData().categoryBits + contact.getFixtureB().getFilterData().categoryBits == BitFilterDef.PLAYER_CO_ENEMY) {
+            playScreen.getPlayer().loseLife();
         }
     }
 

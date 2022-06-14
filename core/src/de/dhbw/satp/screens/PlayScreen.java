@@ -7,34 +7,30 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.utils.Queue;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
-import java.util.ArrayList;
-import java.util.Random;
-
-import de.dhbw.satp.gameobjects.DynamicEntity;
 import de.dhbw.satp.gameobjects.EntityManager;
-import de.dhbw.satp.gameobjects.ParticleManager;
+import de.dhbw.satp.particle.ParticleManager;
 import de.dhbw.satp.gameobjects.Player;
 import de.dhbw.satp.gameobjects.TestEntity;
 import de.dhbw.satp.gameobjects.ToSpawnObjectDefinition;
 import de.dhbw.satp.scene2d.DebugOnScreenDisplay;
 import de.dhbw.satp.main.JumpAndRunMain;
 import de.dhbw.satp.main.Statics;
-import de.dhbw.satp.world.MapCreator;
-import de.dhbw.satp.world.MyContactListener;
+import de.dhbw.satp.staticworld.MapCreator;
+import de.dhbw.satp.staticworld.MyContactListener;
 
 
 public class PlayScreen implements Screen {
 
     private final JumpAndRunMain jumpAndRunMain;
     private int camState = 0;
+
+    private boolean toEnd = false;
 
     private final World world;
     public MyContactListener myContactListener;
@@ -99,7 +95,8 @@ public class PlayScreen implements Screen {
                 "   POSITION : X " + player.getX() + "\n" +
                 "                                       Y " + player.getY() + "\n" +
                 "                                       VEL X " + player.getPlayerBody().getLinearVelocity().x + "\n" +
-                "                                       VEL Y " + player.getPlayerBody().getLinearVelocity().y);
+                "                                       VEL Y " + player.getPlayerBody().getLinearVelocity().y + "\n" +
+                "                                       STATE " + player.getLives() + " IsInvincible: " + player.isInvincible());
 
         debugOnScreenDisplay.setParticelMangerInfo("PARTIC MANAGER |" +
                 "   QUEUE: " + "0/0" +
@@ -146,6 +143,11 @@ public class PlayScreen implements Screen {
 
     @Override
     public void render(float delta) {
+        if (toEnd) {
+            jumpAndRunMain.screenManager.nextScreen();
+            return;
+        }
+
         Gdx.gl20.glClearColor(0f, 0f, 0.1f, 1f);
         Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
@@ -211,11 +213,14 @@ public class PlayScreen implements Screen {
         return player;
     }
 
+    public EntityManager getEntityManager() {
+        return entityManager;
+    }
     public ParticleManager getParticleManager() {
         return particleManager;
     }
 
-    public EntityManager getEntityManager() {
-        return entityManager;
+    public void endGame() {
+        toEnd = true;
     }
 }
