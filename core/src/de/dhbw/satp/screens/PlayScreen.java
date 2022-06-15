@@ -70,7 +70,7 @@ public class PlayScreen implements Screen {
 
         debugOnScreenDisplay = new DebugOnScreenDisplay(jumpAndRunMain.spriteBatch);
 
-        parallaxRenderer = new ParallaxRenderer();
+        parallaxRenderer = new ParallaxRenderer(true);
         orthogonalTiledMapRenderer = new OrthogonalTiledMapRenderer(mapCreator.getMap(), 1f / PPM);
     }
 
