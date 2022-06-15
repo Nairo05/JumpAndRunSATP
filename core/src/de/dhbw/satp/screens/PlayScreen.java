@@ -23,6 +23,7 @@ import de.dhbw.satp.gameobjects.ToSpawnObjectDefinition;
 import de.dhbw.satp.scene2d.DebugOnScreenDisplay;
 import de.dhbw.satp.main.JumpAndRunMain;
 import de.dhbw.satp.main.Statics;
+import de.dhbw.satp.scene2d.Hud;
 import de.dhbw.satp.staticworld.MapCreator;
 import de.dhbw.satp.staticworld.MyContactListener;
 
@@ -46,6 +47,7 @@ public class PlayScreen implements Screen {
     private final ParticleManager particleManager;
 
     private final DebugOnScreenDisplay debugOnScreenDisplay;
+    private final Hud hud;
 
     private final ParallaxRenderer parallaxRenderer;
     private final OrthogonalTiledMapRenderer orthogonalTiledMapRenderer;
@@ -71,6 +73,7 @@ public class PlayScreen implements Screen {
         player = new Player(this, mapCreator.getPlayerRectangle().x, mapCreator.getPlayerRectangle().y);
 
         debugOnScreenDisplay = new DebugOnScreenDisplay(jumpAndRunMain.spriteBatch);
+        hud = new Hud(this, jumpAndRunMain.spriteBatch);
 
         ParallaxConfiguration parallaxConfiguration = new ParallaxConfiguration();
         parallaxConfiguration.load("tmx/1-1.parallax");
@@ -164,6 +167,7 @@ public class PlayScreen implements Screen {
         updateCamera(dt);
         updatePlayer(dt);
         handleDebug(dt);
+        hud.update(dt);
 
         parallaxRenderer.update(dt, camera);
     }
@@ -214,6 +218,8 @@ public class PlayScreen implements Screen {
         //
         debugOnScreenDisplay.renderWithoutBatch(world, camera.combined);
         debugOnScreenDisplay.renderStage();
+
+        hud.renderStage();
     }
 
     @Override
