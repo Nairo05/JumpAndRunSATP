@@ -7,69 +7,51 @@ import com.badlogic.gdx.utils.Array;
 
 public class ParallaxConfiguration {
 
-    private Array<ParallaxBackgroundLayer> layers = new Array<>();
+    private final Array<ParallaxBackgroundLayer> layers;
 
     public ParallaxConfiguration() {
-
+        layers = new Array<>();
     }
 
     public void load(String s) {
         try {
-            FileHandle handle = Gdx.files.local("filename.txt");
+            FileHandle handle = Gdx.files.local(s);
             String text = handle.readString();
 
-            //in CSV
-            //TODO in 1 repalceAll call
-            text = text.replaceAll("\r", "");
-            text = text.replaceAll("\n", "");
+            text = text.replaceAll("\r\n",",");
             text = text.replaceAll(" ","");
-            text = text.replaceAll("Source=","");
-            text = text.replaceAll("yOffset=","");
-            text = text.replaceAll("RowCount=","");
-            text = text.replaceAll("Parallax=","");
 
             //Split
             String[] wordsArray = text.split(",");
 
-            //Parse
-            //ParallaxBackgroundLayer parallaxBackgroundLayer = new ParallaxBackgroundLayer();
-            Texture texture;
+            for (int i = 0; i < wordsArray.length; i+=4) {
+                String textureString = wordsArray[i].replaceAll("Source=","");
+                String yOffset = wordsArray[i+1].replaceAll("yOffset=","");
+                String rowCount = wordsArray[i+2].replaceAll("RowCount=","");
+                String parallax = wordsArray[i+3].replaceAll("Parallax=","");
 
-            for(int i = 0; i < wordsArray.length; i ++) {
+                Texture texture = new Texture(textureString);
+                ParallaxBackgroundLayer parallaxBackgroundLayer = new ParallaxBackgroundLayer(texture);
 
-                System.out.println(wordsArray[i]);
+                try {
+                    parallaxBackgroundLayer.setyOffset(Float.parseFloat(yOffset));
+                    parallaxBackgroundLayer.setRowCount(Integer.parseInt(rowCount));
+                    parallaxBackgroundLayer.setParallaxFactor(Float.parseFloat(parallax));
 
-                if ((i % 4) == 0) {
-                    texture = new Texture(wordsArray[i]);
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
 
-                    //parallaxBackgroundLayer.setBg(texture);
+                    //Use Defaults
+                    parallaxBackgroundLayer.setyOffset(0);
+                    parallaxBackgroundLayer.setRowCount(3);
+                    parallaxBackgroundLayer.setParallaxFactor(26f);
 
-                    System.out.println("parses Texture");
-                    texture.dispose();
+                } finally {
+                    layers.add(parallaxBackgroundLayer);
                 }
-                if ((i % 4) == 1) {
-                    //parallaxBackgroundLayer.setyOffset(Float.parseFloat(wordsArray[i]));
-
-                    System.out.println("parsed Offset");
-                }
-                if ((i % 4) == 2) {
-                    //parallaxBackgroundLayer.setDisplayCountInLine(Float.parseFloat(wordsArray[i]));
-
-                    System.out.println("parsed Count");
-                }
-                if ((i % 4) == 3) {
-                    //parallaxBackgroundLayer.setParallaxFactor(Float.parseFloat(wordsArray[i]));
-                    //parallaxBackgroundLayer.finish();
-
-                    //layers.add(parallaxBackgroundLayer);
-
-                    System.out.println("parsed Factor ++");
-                }
-
             }
 
         } catch (Exception e) {
-            System.out.println("Could not load Configuration, using defaults");
             e.printStackTrace();
         }
     }
@@ -79,12 +61,8 @@ public class ParallaxConfiguration {
         return layers.size;
     }
 
-    public Array<ParallaxBackgroundLayer> getPLayers() {
+    public Array<ParallaxBackgroundLayer> getPBgLayers() {
         return layers;
-    }
-
-    public float getBG_ROW_COUNT() {
-        return 3;
     }
 
 }

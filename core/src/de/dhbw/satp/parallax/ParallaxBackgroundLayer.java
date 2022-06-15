@@ -10,11 +10,13 @@ import de.dhbw.satp.main.Statics;
 public class ParallaxBackgroundLayer implements Disposable {
 
     private final float VIEWPORT_STRETCH_FACTOR = 1f;
+    private float parallaxFactor = 26f;
 
-    private Texture bg;
+    private final Texture bg;
     private float yOffset;
+    private float rowCount = 3;
 
-    private Array<Vector2> positions;
+    private final Array<Vector2> positions;
 
     private final float backgroundWith;
     private final float backgroundHeigth;
@@ -26,10 +28,6 @@ public class ParallaxBackgroundLayer implements Disposable {
 
         backgroundWith = bg.getWidth() / (Statics.PPM * VIEWPORT_STRETCH_FACTOR);
         backgroundHeigth = bg.getHeight() / (Statics.PPM * VIEWPORT_STRETCH_FACTOR);
-    }
-
-    public void addBackGround(Vector2 vector2) {
-        positions.add(vector2);
     }
 
     public void addBackGround(float x) {
@@ -61,6 +59,22 @@ public class ParallaxBackgroundLayer implements Disposable {
 
     public float getyOffset() {
         return yOffset;
+    }
+
+    public void setRowCount(int rowCount) {
+        this.rowCount = rowCount;
+    }
+
+    public float getParallaxFactor() {
+        return parallaxFactor;
+    }
+
+    public void setParallaxFactor(float parallaxFactor) {
+        this.parallaxFactor = parallaxFactor;
+    }
+
+    public float getRowCount() {
+        return rowCount;
     }
 
     public void setyOffset(float yOffset) {

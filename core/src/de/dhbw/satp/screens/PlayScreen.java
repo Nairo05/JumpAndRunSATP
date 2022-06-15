@@ -14,6 +14,7 @@ import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import de.dhbw.satp.gameobjects.EntityManager;
+import de.dhbw.satp.parallax.ParallaxConfiguration;
 import de.dhbw.satp.parallax.ParallaxRenderer;
 import de.dhbw.satp.particle.ParticleManager;
 import de.dhbw.satp.gameobjects.Player;
@@ -71,7 +72,10 @@ public class PlayScreen implements Screen {
 
         debugOnScreenDisplay = new DebugOnScreenDisplay(jumpAndRunMain.spriteBatch);
 
-        parallaxRenderer = new ParallaxRenderer(true);
+        ParallaxConfiguration parallaxConfiguration = new ParallaxConfiguration();
+        parallaxConfiguration.load("tmx/1-1.parallax");
+        parallaxRenderer = new ParallaxRenderer(parallaxConfiguration);
+
         orthogonalTiledMapRenderer = new OrthogonalTiledMapRenderer(mapCreator.getMap(), 1f / PPM);
     }
 
