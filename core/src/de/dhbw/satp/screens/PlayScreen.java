@@ -14,6 +14,7 @@ import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import de.dhbw.satp.gameobjects.EntityManager;
+import de.dhbw.satp.parallax.ParallaxRenderer;
 import de.dhbw.satp.particle.ParticleManager;
 import de.dhbw.satp.gameobjects.Player;
 import de.dhbw.satp.gameobjects.TestEntity;
@@ -44,6 +45,7 @@ public class PlayScreen implements Screen {
 
     private final DebugOnScreenDisplay debugOnScreenDisplay;
 
+    private final ParallaxRenderer parallaxRenderer;
     private final OrthogonalTiledMapRenderer orthogonalTiledMapRenderer;
 
     public PlayScreen(JumpAndRunMain jumpAndRunMain) {
@@ -57,6 +59,7 @@ public class PlayScreen implements Screen {
         camera = new OrthographicCamera();
         viewport = new ExtendViewport(Statics.VIRTUAL_WIDTH / PPM, Statics.VIRTUAL_HEIGHT / PPM, camera);
         camera.position.set(2.1f, 1.06f,0f);
+        camera.zoom = 1f;
         camera.update();
 
         myContactListener = new MyContactListener(this);
@@ -67,6 +70,7 @@ public class PlayScreen implements Screen {
 
         debugOnScreenDisplay = new DebugOnScreenDisplay(jumpAndRunMain.spriteBatch);
 
+        parallaxRenderer = new ParallaxRenderer();
         orthogonalTiledMapRenderer = new OrthogonalTiledMapRenderer(mapCreator.getMap(), 1f / PPM);
     }
 
@@ -77,6 +81,14 @@ public class PlayScreen implements Screen {
 
     private void handleDebug(float dt) {
         debugOnScreenDisplay.update(dt);
+
+        if (Gdx.input.isKeyJustPressed(Input.Keys.F5)) {
+            if (camera.zoom == 1f) {
+                camera.zoom = 4f;
+            } else {
+                camera.zoom = 1f;
+            }
+        }
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.O)) {
             entityManager.spawnDynamicEntity(new ToSpawnObjectDefinition<>(TestEntity.class, 80f,100f));
@@ -139,6 +151,8 @@ public class PlayScreen implements Screen {
         updateCamera(dt);
         updatePlayer(dt);
         handleDebug(dt);
+
+        parallaxRenderer.update(dt, camera);
     }
 
     @Override
@@ -148,7 +162,7 @@ public class PlayScreen implements Screen {
             return;
         }
 
-        Gdx.gl20.glClearColor(0f, 0f, 0.1f, 1f);
+        Gdx.gl20.glClearColor(0.180f, 0.353f, 0.537f, 1f);
         Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         //---------------------------------------------------------------------------------------------------------------- Phase 1 update Phase
@@ -159,10 +173,20 @@ public class PlayScreen implements Screen {
 
         //---------------------------------------------------------------------------------------------------------------- Phase 3 Grafiken
 
+        //begin (1/2)
+        jumpAndRunMain.spriteBatch.setProjectionMatrix(camera.combined);
+        jumpAndRunMain.spriteBatch.begin();
+
+        //render | Batch Renderer
+        parallaxRenderer.render(jumpAndRunMain.spriteBatch);
+
+        //end (1/2)
+        jumpAndRunMain.spriteBatch.end();
+
         orthogonalTiledMapRenderer.setView(camera);
         orthogonalTiledMapRenderer.render();
 
-        //begin
+        //begin (2/2)
         jumpAndRunMain.spriteBatch.setProjectionMatrix(camera.combined);
         jumpAndRunMain.spriteBatch.begin();
 
@@ -203,6 +227,7 @@ public class PlayScreen implements Screen {
     public void dispose() {
         world.dispose();
         player.dispose();
+        parallaxRenderer.dispose();
         entityManager.dispose();
     }
 

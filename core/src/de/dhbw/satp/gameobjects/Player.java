@@ -63,6 +63,13 @@ public class Player implements GameObject, Disposable {
         fixtureDef.filter.categoryBits = BitFilterDef.PLAYER_BIT;
         playerBody.createFixture(fixtureDef);
 
+        EdgeShape foot2 = new EdgeShape();
+        foot2.set(new Vector2(-2f / PPM, -10f / PPM), new Vector2(2f / PPM, -10f / PPM));
+        fixtureDef.shape = foot2;
+        fixtureDef.isSensor = true;
+        fixtureDef.filter.categoryBits = BitFilterDef.PLAYER_REVERSE_VEL_BIT;
+        playerBody.createFixture(fixtureDef);
+
         bodyCircleShape.dispose();
 
         playerBody.setLinearDamping(2f);
@@ -113,14 +120,13 @@ public class Player implements GameObject, Disposable {
         if (Gdx.input.isKeyPressed(Input.Keys.W) || Gdx.input.isKeyPressed(Input.Keys.UP) || Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
             //TODO: inital Impulse + variable
             if (jumpTime == 17f / PPM) {
-                System.out.println("initial Impuls");
                 playerBody.applyLinearImpulse(new Vector2(0f, 38f * dt), playerBody.getWorldCenter(), true);
             }
             if (jumpTime > 0) {
                     jumpTime -= dt;
                     playerBody.applyLinearImpulse(new Vector2(0f, 18f * dt), playerBody.getWorldCenter(), true);
             } else {
-                System.out.println("- velocity");
+
             }
         }
 
@@ -135,14 +141,13 @@ public class Player implements GameObject, Disposable {
                     }
                 } else if (Gdx.input.getX(i) > 300) {
                     if (jumpTime == 17f / PPM) {
-                        System.out.println("initial Impuls");
                         playerBody.applyLinearImpulse(new Vector2(0f, 38f * dt), playerBody.getWorldCenter(), true);
                     }
                     if (jumpTime > 0) {
                         jumpTime -= dt;
                         playerBody.applyLinearImpulse(new Vector2(0f, 18f * dt), playerBody.getWorldCenter(), true);
                     } else {
-                        System.out.println("- velocity");
+
                     }
                 }
             }
@@ -165,7 +170,7 @@ public class Player implements GameObject, Disposable {
             }
         }
 
-        if (Math.abs(playerBody.getLinearVelocity().x) >= 0.001f) {
+        if (Math.abs(playerBody.getLinearVelocity().x) >= 0.001f && Math.abs(playerBody.getLinearVelocity().y) < 0.1f) {
             spriteBatch.draw(textureRegions[0][frame], playerBody.getPosition().x - 0.07f ,playerBody.getPosition().y - 0.07f, 0.13f,0.20f);
         } else {
             spriteBatch.draw(textureRegions[0][0], playerBody.getPosition().x - 0.07f ,playerBody.getPosition().y - 0.07f, 0.13f,0.20f);
@@ -186,9 +191,8 @@ public class Player implements GameObject, Disposable {
     }
 
     public void jumped(){
-        if (playerBody.getLinearVelocity().y < 0) {
+        if (playerBody.getLinearVelocity().y < -1f) {
             playerBody.setLinearVelocity(playerBody.getLinearVelocity().x, 0);
-            System.out.println("Velocity x+ fix");
         }
     }
 

@@ -28,7 +28,7 @@ public abstract class StaticObject {
         polygonShape.setAsBox(width / PPM / 2, height / PPM / 2);
         fixtureDef.shape = polygonShape;
         fixtureDef.filter.categoryBits = BitFilterDef.GROUND_BIT;
-        fixtureDef.filter.maskBits = BitFilterDef.PLAYER_BIT | BitFilterDef.OBJECT_BIT | BitFilterDef.ENEMY_BIT;
+        fixtureDef.filter.maskBits = BitFilterDef.PLAYER_BIT | BitFilterDef.OBJECT_BIT | BitFilterDef.ENEMY_BIT | BitFilterDef.PLAYER_REVERSE_VEL_BIT;
         fixture = body.createFixture(fixtureDef);
 
         polygonShape.dispose();

@@ -19,12 +19,16 @@ public class MyContactListener implements ContactListener {
     @AsyncContextWarning
     @Override
     public void beginContact(Contact contact) {
-        if (contact.getFixtureA().getFilterData().categoryBits + contact.getFixtureB().getFilterData().categoryBits == BitFilterDef.PLAYER_ON_GROUND) {
+        int checksum = contact.getFixtureA().getFilterData().categoryBits + contact.getFixtureB().getFilterData().categoryBits;
+
+        if (checksum == BitFilterDef.PLAYER_ON_GROUND) {
             playerOnGround ++;
-            playScreen.getPlayer().jumped();
         }
-        if (contact.getFixtureA().getFilterData().categoryBits + contact.getFixtureB().getFilterData().categoryBits == BitFilterDef.PLAYER_CO_ENEMY) {
+        if (checksum == BitFilterDef.PLAYER_CO_ENEMY) {
             playScreen.getPlayer().loseLife();
+        }
+        if (checksum == BitFilterDef.PLAYER_REVERSE_VEL) {
+            playScreen.getPlayer().jumped();
         }
     }
 
