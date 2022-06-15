@@ -1,11 +1,15 @@
 package de.dhbw.satp.particle;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.Disposable;
 
-public class ParticleManager {
+import java.awt.peer.DialogPeer;
+
+public class ParticleManager implements Disposable {
 
     private final int MAX_PARTICLE_IN_WORLD = 4;
     private final Array<ParticleEffect> particles;
@@ -25,6 +29,7 @@ public class ParticleManager {
                 particleEffect.start();
 
                 particles.add(particleEffect);
+
             } else if (type.equalsIgnoreCase("Rain.p")) {
                 ParticleEffect particleEffect = new ParticleEffect();
                 particleEffect.load(Gdx.files.internal("particle/rain.p"), Gdx.files.internal("particle/"));
@@ -34,10 +39,10 @@ public class ParticleManager {
 
                 particles.add(particleEffect);
             }
+        } else {
+            System.out.println("Particle Limit exceeded");
         }
     }
-
-    //hi
 
     public void update(float dt) {
         for (ParticleEffect particleEffect : particles) {
@@ -45,13 +50,24 @@ public class ParticleManager {
         }
     }
 
-    public void render(SpriteBatch spriteBatch) {
+    public void render(SpriteBatch spriteBatch, Camera camera) {
         currentActive = 0;
+
         for (ParticleEffect particleEffect : particles) {
-            currentActive++;
-            particleEffect.draw(spriteBatch);
-            if (particleEffect.isComplete()) {
-                particleEffect.reset();
+
+            //Only render, if camera is showing them
+            float leftViewPortX = camera.position.x - camera.viewportWidth;
+            float rightViewPortX = camera.position.x + camera.viewportWidth;
+
+            if (particleEffect.getEmitters().get(0).getX() > leftViewPortX && particleEffect.getEmitters().get(0).getX() < rightViewPortX) {
+
+                currentActive++;
+                particleEffect.draw(spriteBatch);
+
+                //endless Loop
+                if (particleEffect.isComplete()) {
+                    particleEffect.reset();
+                }
             }
         }
     }
@@ -66,5 +82,12 @@ public class ParticleManager {
 
     public int getActive() {
         return currentActive;
+    }
+
+    @Override
+    public void dispose() {
+        for (ParticleEffect particleEffect : particles) {
+            particleEffect.dispose();
+        }
     }
 }

@@ -30,6 +30,7 @@ public class PlayScreen implements Screen {
 
     private final JumpAndRunMain jumpAndRunMain;
     private int camState = 0;
+    private int waitCount = 75;
 
     private boolean toEnd = false;
 
@@ -106,9 +107,9 @@ public class PlayScreen implements Screen {
         debugOnScreenDisplay.setPlayerInfo("PLAYER |" +
                 "   POSITION : X " + player.getX() + "\n" +
                 "                                       Y " + player.getY() + "\n" +
-                "                                       VEL X " + player.getPlayerBody().getLinearVelocity().x + "\n" +
+                "                   Velocity        VEL X " + player.getPlayerBody().getLinearVelocity().x + "\n" +
                 "                                       VEL Y " + player.getPlayerBody().getLinearVelocity().y + "\n" +
-                "                                       STATE " + player.getLives() + " IsInvincible: " + player.isInvincible());
+                "                   Lives            STATE " + player.getLives() + " IsInvincible: " + player.isInvincible());
 
         debugOnScreenDisplay.setParticelMangerInfo("PARTIC MANAGER |" +
                 "   QUEUE: " + "0/0" +
@@ -118,6 +119,14 @@ public class PlayScreen implements Screen {
 
     private void updateCamera(float dt) {
         //TODO: Camera vom Spieler lösen und Kamera Fahrt Smoother machen - Camera Y align
+        if (player.getX() >= 30f) {
+            waitCount--;
+            if (waitCount <= 0) {
+                if (camera.position.x < 32f) {
+                    camera.position.x += dt / 2;
+                }
+            }
+        }
         if (player.getY() > 1.5f && myContactListener.isPlayerOnGround()) {
             camState = 1;
         } else if (player.getY() < 1.25 && myContactListener.isPlayerOnGround()) {
@@ -193,7 +202,7 @@ public class PlayScreen implements Screen {
         //render | Batch Renderer
         player.render(jumpAndRunMain.spriteBatch);
         entityManager.render(jumpAndRunMain.spriteBatch);
-        particleManager.render(jumpAndRunMain.spriteBatch);
+        particleManager.render(jumpAndRunMain.spriteBatch, camera);
 
         //end
         jumpAndRunMain.spriteBatch.end();
@@ -227,6 +236,7 @@ public class PlayScreen implements Screen {
     public void dispose() {
         world.dispose();
         player.dispose();
+        particleManager.dispose();
         parallaxRenderer.dispose();
         entityManager.dispose();
     }
@@ -238,9 +248,6 @@ public class PlayScreen implements Screen {
         return player;
     }
 
-    public EntityManager getEntityManager() {
-        return entityManager;
-    }
     public ParticleManager getParticleManager() {
         return particleManager;
     }

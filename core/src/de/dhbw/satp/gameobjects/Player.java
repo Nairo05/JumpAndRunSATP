@@ -52,7 +52,7 @@ public class Player implements GameObject, Disposable {
         CircleShape bodyCircleShape = new CircleShape();
         bodyCircleShape.setRadius(7f / PPM);
         fixtureDef.shape = bodyCircleShape;
-        fixtureDef.filter.categoryBits = BitFilterDef.OBJECT_BIT;
+        fixtureDef.filter.categoryBits = BitFilterDef.PLAYER_BIT;
         fixtureDef.filter.maskBits = BitFilterDef.GROUND_BIT | BitFilterDef.OBJECT_BIT | BitFilterDef.ENEMY_BIT;
         playerBody.createFixture(fixtureDef);
 
@@ -107,12 +107,12 @@ public class Player implements GameObject, Disposable {
             jumpTime = 17f / PPM;
         }
         //--------------------------------------------- Mouse and Keyboard ----------------------------------------------------------------
-        if (Gdx.input.isKeyPressed(Input.Keys.D) || Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+        if ((Gdx.input.isKeyPressed(Input.Keys.D) || Gdx.input.isKeyPressed(Input.Keys.RIGHT)) && playerBody.getPosition().x <= 30f) {
             if (playerBody.getLinearVelocity().x < 1.5f) {
                 playerBody.applyLinearImpulse(new Vector2(10f * dt, 0), playerBody.getWorldCenter(), true);
             }
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.A) || Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+        if ((Gdx.input.isKeyPressed(Input.Keys.A) || Gdx.input.isKeyPressed(Input.Keys.LEFT)) && playerBody.getPosition().x <= 30f) {
             if (playerBody.getLinearVelocity().x > -1.5f) {
                 playerBody.applyLinearImpulse(new Vector2(-10f * dt, 0), playerBody.getWorldCenter(), true);
             }

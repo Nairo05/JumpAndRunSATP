@@ -83,9 +83,10 @@ public class ParallaxRenderer implements Disposable {
 
         //Parallax-Effect per Frame
         if (enableParallax) {
-            bg0Position1.add(-speed / PARALLAX_FACTOR * dt * Statics.FOREGROUND_FPS, 0);
-            bg0Position2.add(-speed / PARALLAX_FACTOR * dt * Statics.FOREGROUND_FPS, 0);
-            bg0Position3.add(-speed / PARALLAX_FACTOR * dt * Statics.FOREGROUND_FPS, 0);
+            //Movement frameTime * 1/frameTime (Statics.FOREGROUND_FPS) to smooth out
+            bg0Position1.add(-1f * speed / PARALLAX_FACTOR * dt * Statics.FOREGROUND_FPS, 0);
+            bg0Position2.add(-1f * speed / PARALLAX_FACTOR * dt * Statics.FOREGROUND_FPS, 0);
+            bg0Position3.add(-1f * speed / PARALLAX_FACTOR * dt * Statics.FOREGROUND_FPS, 0);
         }
 
         //Get Viewport metrics
