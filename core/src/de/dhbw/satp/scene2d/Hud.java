@@ -38,7 +38,7 @@ public class Hud implements Disposable {
 
     public Hud (PlayScreen playScreen, SpriteBatch batch) {
         this.playScreen = playScreen;
-        viewport = new ExtendViewport(Statics.WINDOW_WIDTH, Statics.WINDOW_HEIGHT, new OrthographicCamera());
+        viewport = new ExtendViewport(Statics.VIRTUAL_WIDTH, Statics.VIRTUAL_HEIGHT, new OrthographicCamera());
         stage = new Stage(viewport, batch);
         player = playScreen.getPlayer();
 

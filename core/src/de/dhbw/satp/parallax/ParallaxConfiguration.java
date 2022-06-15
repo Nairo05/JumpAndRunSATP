@@ -1,5 +1,6 @@
 package de.dhbw.satp.parallax;
 
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
@@ -14,7 +15,14 @@ public class ParallaxConfiguration {
     }
 
     public void load(String s) {
+
         try {
+
+            //Android uses a different file system (linked Asset-Folder)
+            if (Gdx.app.getType() == Application.ApplicationType.Android) {
+                    s = "assets/" + s;
+            }
+
             FileHandle handle = Gdx.files.local(s);
             String text = handle.readString();
 
