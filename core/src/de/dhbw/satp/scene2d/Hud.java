@@ -19,21 +19,31 @@ public class Hud implements Disposable {
 
     //Filepath of Sprites
     private static final String DIGIT_SPRITE_PATH = "sprite/digits.png";
+    private static final String HEART_SPRITE_PATH = "sprite/heart.png";
 
     public Stage stage;
     private final PlayScreen playScreen;
+    private final Player player;
 
-    //Level timer
+    //Tables
     private final Table timerTable;
+    private final Table livesTable;
+
+    //Textures
     private final Texture digitsTexture;
+    private final Texture livesTexture;
+
     private int time;
     private int framecount = 0;
+    private int lives;
 
-    private final Image[] images;
+    private final Image[] digitImages;
+    private final Image[] liveImages;
 
     public Hud (PlayScreen playScreen, SpriteBatch batch) {
 
         this.playScreen = playScreen;
+        player = playScreen.getPlayer();
         Viewport viewport = new ExtendViewport(Statics.VIRTUAL_WIDTH, Statics.VIRTUAL_HEIGHT, new OrthographicCamera());
         stage = new Stage(viewport, batch);
 
@@ -47,11 +57,28 @@ public class Hud implements Disposable {
         digitsTexture = new Texture(DIGIT_SPRITE_PATH);
         TextureRegion[][] digits = TextureRegion.split(digitsTexture, 8, 12);
 
-        images = new Image[10];
+        digitImages = new Image[10];
 
         for (int i = 0; i < 10; i++) {
-            images[i] = new Image(digits[0][i]);
+            digitImages[i] = new Image(digits[0][i]);
         }
+
+        //Lives
+        lives = 3;
+        livesTable = new Table();
+        livesTable.top();
+        livesTable.left();
+        livesTable.setFillParent(true);
+
+        livesTexture = new Texture(HEART_SPRITE_PATH);
+
+        liveImages = new Image[3];
+
+        for (int i = 0; i < 3; i++) {
+            liveImages[i] = new Image(livesTexture);
+        }
+
+
 
     }
 
@@ -74,15 +101,25 @@ public class Hud implements Disposable {
         if (time >= 0) {
             timerTable.clear();
 
-            timerTable.add(images[timerDigit1]).padTop(16f).padRight(4f);
-            timerTable.add(images[timerDigit2]).padTop(16f).padRight(4f);
-            timerTable.add(images[timerDigit3]).padTop(16f).padRight(16f);
+            timerTable.add(digitImages[timerDigit1]).padTop(11f).padRight(4f);
+            timerTable.add(digitImages[timerDigit2]).padTop(11f).padRight(4f);
+            timerTable.add(digitImages[timerDigit3]).padTop(11f).padRight(16f);
         } else {
             playScreen.endGame();
         }
 
         stage.addActor(timerTable);
 
+        //Lives Management ------------------------------------------------------------
+        livesTable.clear();
+        livesTable.add(liveImages[0]).padTop(8f).padLeft(10f);
+        for (int i = 1; i < player.getLives(); i++) {
+            livesTable.add(liveImages[i]).padTop(8f);
+        }
+
+        stage.addActor(livesTable);
+
+        //----------------------------------------------------------------------------
         stage.act(dt);
     }
 
@@ -95,5 +132,6 @@ public class Hud implements Disposable {
     public void dispose() {
         stage.dispose();
         digitsTexture.dispose();
+        livesTexture.dispose();
     }
 }
