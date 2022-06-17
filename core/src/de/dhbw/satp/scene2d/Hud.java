@@ -17,37 +17,47 @@ import de.dhbw.satp.screens.PlayScreen;
 
 public class Hud implements Disposable {
 
+    //Filepath of Sprites
+    private static final String DIGIT_SPRITE_PATH = "sprite/digits.png";
+
     public Stage stage;
     private final PlayScreen playScreen;
 
+    //Level timer
     private final Table timerTable;
-
-    private int time;
     private final Texture digitsTexture;
-    private final TextureRegion[][] digits;
+    private int time;
     private int framecount = 0;
 
+    private final Image[] images;
+
     public Hud (PlayScreen playScreen, SpriteBatch batch) {
+
         this.playScreen = playScreen;
         Viewport viewport = new ExtendViewport(Statics.VIRTUAL_WIDTH, Statics.VIRTUAL_HEIGHT, new OrthographicCamera());
         stage = new Stage(viewport, batch);
-        Player player = playScreen.getPlayer();
 
+        //Level timer
         time = 120;
         timerTable = new Table();
         timerTable.top();
         timerTable.right();
         timerTable.setFillParent(true);
 
-        digitsTexture = new Texture("sprite/digits.png");
-        digits = TextureRegion.split(digitsTexture, 8, 12);
+        digitsTexture = new Texture(DIGIT_SPRITE_PATH);
+        TextureRegion[][] digits = TextureRegion.split(digitsTexture, 8, 12);
 
-        System.out.println("HUD-Constructor abgearbeitet...");
+        images = new Image[10];
+
+        for (int i = 0; i < 10; i++) {
+            images[i] = new Image(digits[0][i]);
+        }
+
     }
 
     public void update(float dt) {
 
-        //Level-Time Management
+        //Level timer Management -----------------------------------------------------
         framecount++;
         if ((framecount % Statics.FOREGROUND_FPS) == 0) {
             boolean finishedLevel = false;
@@ -63,20 +73,17 @@ public class Hud implements Disposable {
 
         if (time >= 0) {
             timerTable.clear();
-            Image timerImage1 = new Image(digits[0][timerDigit1]);
-            Image timerImage2 = new Image(digits[0][timerDigit2]);
-            Image timerImage3 = new Image(digits[0][timerDigit3]);
 
-            timerTable.add(timerImage1).padTop(16f).padRight(4f);
-            timerTable.add(timerImage2).padTop(16f).padRight(4f);
-            timerTable.add(timerImage3).padTop(16f).padRight(16f);
+            timerTable.add(images[timerDigit1]).padTop(16f).padRight(4f);
+            timerTable.add(images[timerDigit2]).padTop(16f).padRight(4f);
+            timerTable.add(images[timerDigit3]).padTop(16f).padRight(16f);
         } else {
             playScreen.endGame();
         }
 
         stage.addActor(timerTable);
-        stage.act(dt);
 
+        stage.act(dt);
     }
 
     public void renderStage() {
