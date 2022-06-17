@@ -118,7 +118,6 @@ public class Player implements GameObject, Disposable {
             }
         }
         if (Gdx.input.isKeyPressed(Input.Keys.W) || Gdx.input.isKeyPressed(Input.Keys.UP) || Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
-            //TODO: inital Impulse + variable
             if (jumpTime == 17f / PPM) {
                 playerBody.applyLinearImpulse(new Vector2(0f, 38f * dt), playerBody.getWorldCenter(), true);
             }

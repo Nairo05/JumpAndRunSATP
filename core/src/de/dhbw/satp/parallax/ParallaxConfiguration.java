@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.Array;
 
 public class ParallaxConfiguration {
+    //TODO: Use JSON file and try to preload it
 
     private final Array<ParallaxBackgroundLayer> layers;
 

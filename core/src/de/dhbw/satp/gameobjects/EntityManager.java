@@ -9,6 +9,8 @@ import com.badlogic.gdx.utils.Queue;
 
 public class EntityManager implements Disposable {
 
+    //TODO: Gegner mit Stacheln, auf den man nicht springen darf   ...für Herr Uhl ;)
+
     private final int MAX_ENTITIES_IN_WORLD = 16;
     private final int MAX_QUEUED_ENTITIES = 32;
 

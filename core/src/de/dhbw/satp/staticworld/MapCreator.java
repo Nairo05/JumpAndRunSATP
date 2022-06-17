@@ -17,6 +17,7 @@ import com.badlogic.gdx.utils.Disposable;
 import de.dhbw.satp.screens.PlayScreen;
 
 public class MapCreator implements Disposable {
+    //TODO: Fix PolygonShape handling
 
     private final World world;
     private TiledMap map;

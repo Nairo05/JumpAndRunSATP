@@ -18,29 +18,20 @@ import de.dhbw.satp.screens.PlayScreen;
 public class Hud implements Disposable {
 
     public Stage stage;
-    private Viewport viewport;
-    private PlayScreen playScreen;
-    private Player player;
+    private final PlayScreen playScreen;
 
-    private Table timerTable;
+    private final Table timerTable;
 
     private int time;
-    private int timerDigit1 = 0;
-    private int timerDigit2 = 0;
-    private int timerDigit3 = 0;
-    private Image timerImage1;
-    private Image timerImage2;
-    private Image timerImage3;
-    private Texture digitsTexture;
-    private TextureRegion[][] digits;
+    private final Texture digitsTexture;
+    private final TextureRegion[][] digits;
     private int framecount = 0;
-    private boolean finishedLevel = false;
 
     public Hud (PlayScreen playScreen, SpriteBatch batch) {
         this.playScreen = playScreen;
-        viewport = new ExtendViewport(Statics.VIRTUAL_WIDTH, Statics.VIRTUAL_HEIGHT, new OrthographicCamera());
+        Viewport viewport = new ExtendViewport(Statics.VIRTUAL_WIDTH, Statics.VIRTUAL_HEIGHT, new OrthographicCamera());
         stage = new Stage(viewport, batch);
-        player = playScreen.getPlayer();
+        Player player = playScreen.getPlayer();
 
         time = 120;
         timerTable = new Table();
@@ -58,22 +49,23 @@ public class Hud implements Disposable {
 
         //Level-Time Management
         framecount++;
-        if ((framecount % Statics.FOREGROUND_FPS) == 0) { //TODO: Das zu exakten Sekunden machen
+        if ((framecount % Statics.FOREGROUND_FPS) == 0) {
+            boolean finishedLevel = false;
             if (!finishedLevel) {
                 time--;
                 System.out.println(time);
             }
         }
 
-        timerDigit3 = time % 10;
-        timerDigit2 = (time / 10) % 10;
-        timerDigit1 = (time / 100) % 10;
+        int timerDigit3 = time % 10;
+        int timerDigit2 = (time / 10) % 10;
+        int timerDigit1 = (time / 100) % 10;
 
         if (time >= 0) {
             timerTable.clear();
-            timerImage1 = new Image(digits[0][timerDigit1]);
-            timerImage2 = new Image(digits[0][timerDigit2]);
-            timerImage3 = new Image(digits[0][timerDigit3]);
+            Image timerImage1 = new Image(digits[0][timerDigit1]);
+            Image timerImage2 = new Image(digits[0][timerDigit2]);
+            Image timerImage3 = new Image(digits[0][timerDigit3]);
 
             timerTable.add(timerImage1).padTop(16f).padRight(4f);
             timerTable.add(timerImage2).padTop(16f).padRight(4f);

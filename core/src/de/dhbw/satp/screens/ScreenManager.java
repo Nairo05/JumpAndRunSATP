@@ -7,6 +7,7 @@ import java.util.HashMap;
 import de.dhbw.satp.main.JumpAndRunMain;
 
 public class ScreenManager {
+    //TODO: Use abstract class, avoid boilerplate code
 
     private final JumpAndRunMain main;
     private SCREEN currentScreen;

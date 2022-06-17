@@ -118,7 +118,7 @@ public class PlayScreen implements Screen {
                 "                                       VEL Y " + player.getPlayerBody().getLinearVelocity().y + "\n" +
                 "                   Lives            STATE " + player.getLives() + " IsInvincible: " + player.isInvincible());
 
-        debugOnScreenDisplay.setParticelMangerInfo("PARTIC MANAGER |" +
+        debugOnScreenDisplay.setParticleManagerInfo("PARTIC MANAGER |" +
                 "   QUEUE: " + "0/0" +
                 "   EMITTER : " + particleManager.getParticleSize() + "/" + particleManager.getMAX_PARTICLE_IN_WORLD() +
                 "   ACTIVE: " + particleManager.getActive());
@@ -246,6 +246,7 @@ public class PlayScreen implements Screen {
     public void dispose() {
         world.dispose();
         player.dispose();
+        hud.dispose();
         particleManager.dispose();
         parallaxRenderer.dispose();
         entityManager.dispose();
