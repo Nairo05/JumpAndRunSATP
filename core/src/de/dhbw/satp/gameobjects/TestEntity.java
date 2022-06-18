@@ -22,7 +22,7 @@ public class TestEntity extends DynamicEntity {
 
         CircleShape circleShape = new CircleShape();
         circleShape.setRadius(7f / Statics.PPM);
-        fixtureDef.filter.categoryBits = BitFilterDef.ENEMY_BIT;
+        fixtureDef.filter.categoryBits = BitFilterDef.ENEMY_BODY_BIT;
         fixtureDef.shape = circleShape;
 
         fixture = body.createFixture(fixtureDef);
@@ -32,14 +32,13 @@ public class TestEntity extends DynamicEntity {
     }
 
     @Override
-    public void onHit() {
+    public void onHeadHit() {
 
     }
 
     @Override
-    public void destroyBody() {
-        world.destroyBody(body);
-        isDestroyed = true;
+    public void onBodyHit() {
+
     }
 
     @Override

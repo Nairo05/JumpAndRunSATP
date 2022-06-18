@@ -13,6 +13,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
+import de.dhbw.satp.gameobjects.Enemy;
 import de.dhbw.satp.gameobjects.EntityManager;
 import de.dhbw.satp.parallax.ParallaxConfiguration;
 import de.dhbw.satp.parallax.ParallaxRenderer;
@@ -99,7 +100,7 @@ public class PlayScreen implements Screen {
         }
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.O)) {
-            entityManager.spawnDynamicEntity(new ToSpawnObjectDefinition<>(TestEntity.class, 80f,100f));
+            entityManager.spawnDynamicEntity(new ToSpawnObjectDefinition<>(Enemy.class, 80f,100f));
         }
 
         debugOnScreenDisplay.setFrameInfo("FRAME INFO |" +
@@ -261,6 +262,10 @@ public class PlayScreen implements Screen {
 
     public ParticleManager getParticleManager() {
         return particleManager;
+    }
+
+    public EntityManager getEntityManager() {
+        return entityManager;
     }
 
     public void endGame() {

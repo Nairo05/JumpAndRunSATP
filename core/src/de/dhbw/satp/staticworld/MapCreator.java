@@ -14,6 +14,9 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Disposable;
 
+import de.dhbw.satp.gameobjects.DynamicEntity;
+import de.dhbw.satp.gameobjects.Enemy;
+import de.dhbw.satp.gameobjects.ToSpawnObjectDefinition;
 import de.dhbw.satp.screens.PlayScreen;
 
 public class MapCreator implements Disposable {
@@ -56,7 +59,7 @@ public class MapCreator implements Disposable {
             FixtureDef fixtureDef = new FixtureDef();
             fixtureDef.shape = polygon;
             fixtureDef.filter.categoryBits = BitFilterDef.GROUND_BIT;
-            fixtureDef.filter.maskBits = BitFilterDef.PLAYER_BIT | BitFilterDef.OBJECT_BIT | BitFilterDef.ENEMY_BIT;
+            fixtureDef.filter.maskBits = BitFilterDef.PLAYER_BIT | BitFilterDef.ENEMY_BODY_BIT;
             body.createFixture(fixtureDef);
         }
 
@@ -65,6 +68,9 @@ public class MapCreator implements Disposable {
                 System.out.println(mapObject.getName() + "overriding the Start-Position for Entity Player");
                 playerRectangle.x = (mapObject.getRectangle().x + mapObject.getRectangle().width / 2) / PPM;
                 playerRectangle.y = (mapObject.getRectangle().y + 16) / PPM;
+            } else if (mapObject.getName().equalsIgnoreCase("Enemy1")) {
+                System.out.println("Found an enemy1 " + (mapObject.getRectangle().x + mapObject.getRectangle().width / 2) / PPM + " - " + (mapObject.getRectangle().y + 16) / PPM);
+                playScreen.getEntityManager().spawnDynamicEntity(new ToSpawnObjectDefinition<>(Enemy.class, (mapObject.getRectangle().x + mapObject.getRectangle().width / 2), (mapObject.getRectangle().y + 16)));
             }
         }
 

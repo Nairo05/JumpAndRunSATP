@@ -40,6 +40,9 @@ public class EntityManager implements Disposable {
 
                 if (currentSpawnDef.getBlueprint() == TestEntity.class) {
                     dynamicEntityArrayList.add(new TestEntity(world, currentSpawnDef.getPosXInWorldUnits(), currentSpawnDef.getPosYInWorldUnits()));
+                } else if (currentSpawnDef.getBlueprint() == Enemy.class) {
+                    dynamicEntityArrayList.add(new Enemy(world, currentSpawnDef.getPosXInWorldUnits(), currentSpawnDef.getPosYInWorldUnits()));
+                    System.out.println("Spawned new Enemy at " + currentSpawnDef.getPosXInWorldUnits() + " " + currentSpawnDef.getPosYInWorldUnits());
                 }
             }
         }

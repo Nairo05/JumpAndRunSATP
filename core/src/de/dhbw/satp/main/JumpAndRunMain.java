@@ -10,6 +10,8 @@ import de.dhbw.satp.screens.ScreenManager;
 
 public class JumpAndRunMain extends Game {
 
+	//TODO: Asset Manager
+
 	public SpriteBatch spriteBatch;
 	public ScreenManager screenManager;
 

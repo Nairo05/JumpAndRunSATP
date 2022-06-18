@@ -32,12 +32,12 @@ public class Hud implements Disposable {
     //Textures
     private final Texture digitsTexture;
     private final Texture livesTexture;
+    private final TextureRegion[][] digits;
 
     private int time;
     private int framecount = 0;
     private int lives;
 
-    private final Image[] digitImages;
     private final Image[] liveImages;
 
     public Hud (PlayScreen playScreen, SpriteBatch batch) {
@@ -55,13 +55,8 @@ public class Hud implements Disposable {
         timerTable.setFillParent(true);
 
         digitsTexture = new Texture(DIGIT_SPRITE_PATH);
-        TextureRegion[][] digits = TextureRegion.split(digitsTexture, 8, 12);
+        digits = TextureRegion.split(digitsTexture, 8, 12);
 
-        digitImages = new Image[10];
-
-        for (int i = 0; i < 10; i++) {
-            digitImages[i] = new Image(digits[0][i]);
-        }
 
         //Lives
         lives = 3;
@@ -101,9 +96,13 @@ public class Hud implements Disposable {
         if (time >= 0) {
             timerTable.clear();
 
-            timerTable.add(digitImages[timerDigit1]).padTop(11f).padRight(4f);
-            timerTable.add(digitImages[timerDigit2]).padTop(11f).padRight(4f);
-            timerTable.add(digitImages[timerDigit3]).padTop(11f).padRight(16f);
+            Image timerImage1 = new Image(digits[0][timerDigit1]);
+            Image timerImage2 = new Image(digits[0][timerDigit2]);
+            Image timerImage3 = new Image(digits[0][timerDigit3]);
+
+            timerTable.add(timerImage1).padTop(4f).padRight(4f);
+            timerTable.add(timerImage2).padTop(4f).padRight(4f);
+            timerTable.add(timerImage3).padTop(4f).padRight(8f);
         } else {
             playScreen.endGame();
         }
@@ -112,9 +111,9 @@ public class Hud implements Disposable {
 
         //Lives Management ------------------------------------------------------------
         livesTable.clear();
-        livesTable.add(liveImages[0]).padTop(8f).padLeft(10f);
+        livesTable.add(liveImages[0]).padTop(2f).padLeft(6f);
         for (int i = 1; i < player.getLives(); i++) {
-            livesTable.add(liveImages[i]).padTop(8f);
+            livesTable.add(liveImages[i]).padTop(2f);
         }
 
         stage.addActor(livesTable);

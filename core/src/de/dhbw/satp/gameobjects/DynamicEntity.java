@@ -31,8 +31,13 @@ public abstract class DynamicEntity implements GameObject, Disposable {
     }
 
     protected abstract void defineHitBox();
-    public abstract void onHit();
-    public abstract void destroyBody();
+    public abstract void onHeadHit();
+    public abstract void onBodyHit();
+
+    public void destroyBody() {
+        world.destroyBody(body);
+        isDestroyed = true;
+    }
 
     public void prepareDestroy(){
         if (!isDestroyed && !toDestroy) {

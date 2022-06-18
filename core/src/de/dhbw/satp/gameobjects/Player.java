@@ -53,7 +53,7 @@ public class Player implements GameObject, Disposable {
         bodyCircleShape.setRadius(7f / PPM);
         fixtureDef.shape = bodyCircleShape;
         fixtureDef.filter.categoryBits = BitFilterDef.PLAYER_BIT;
-        fixtureDef.filter.maskBits = BitFilterDef.GROUND_BIT | BitFilterDef.OBJECT_BIT | BitFilterDef.ENEMY_BIT;
+        fixtureDef.filter.maskBits = BitFilterDef.GROUND_BIT | BitFilterDef.ENEMY_BODY_BIT | BitFilterDef.ENEMY_HEAD_BIT;
         playerBody.createFixture(fixtureDef);
 
         EdgeShape foot = new EdgeShape();
@@ -78,7 +78,7 @@ public class Player implements GameObject, Disposable {
 
     @Override
     public void update(float dt) {
-        //TODO reusrive algorithm
+        //TODO recusrive algorithm
         if (playerBody.getPosition().y < 0) {
             loseLife();
             playerBody.setTransform(1, 1, 0);
@@ -197,6 +197,11 @@ public class Player implements GameObject, Disposable {
 
     public Body getPlayerBody() {
         return playerBody;
+    }
+
+    public void hitEnemy() {
+        loseLife();
+        //TODO: bounce back player when enemy is hit...
     }
 
     public void loseLife() {

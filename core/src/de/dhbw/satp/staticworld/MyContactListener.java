@@ -5,6 +5,11 @@ import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Manifold;
 
+import org.graalvm.compiler.core.phases.EconomyCompilerConfiguration;
+
+import de.dhbw.satp.gameobjects.DynamicEntity;
+import de.dhbw.satp.gameobjects.Enemy;
+import de.dhbw.satp.gameobjects.Player;
 import de.dhbw.satp.screens.PlayScreen;
 
 public class MyContactListener implements ContactListener {
@@ -25,7 +30,16 @@ public class MyContactListener implements ContactListener {
             playerOnGround ++;
         }
         if (checksum == BitFilterDef.PLAYER_CO_ENEMY) {
-            playScreen.getPlayer().loseLife();
+            playScreen.getPlayer().hitEnemy();
+        }
+        if (checksum == BitFilterDef.PLAYER_CO_ENEMY_HEAD) {
+            if (contact.getFixtureA().getFilterData().categoryBits == BitFilterDef.ENEMY_HEAD_BIT) {
+                DynamicEntity entity  = (DynamicEntity) contact.getFixtureA().getUserData();
+                entity.prepareDestroy();
+            } else if (contact.getFixtureB().getFilterData().categoryBits == BitFilterDef.ENEMY_HEAD_BIT) {
+                DynamicEntity entity  = (DynamicEntity) contact.getFixtureB().getUserData();
+                entity.prepareDestroy();
+            }
         }
         if (checksum == BitFilterDef.PLAYER_REVERSE_VEL) {
             playScreen.getPlayer().jumped();
