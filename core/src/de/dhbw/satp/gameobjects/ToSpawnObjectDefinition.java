@@ -6,12 +6,14 @@ public class ToSpawnObjectDefinition<T extends DynamicEntity> {
 
     private final float posXInWorldUnits;
     private final float posYInWorldUnits;
+    private final float width;
 
-    public ToSpawnObjectDefinition(Class<T> blueprint, float posXInWorldUnits, float posYInWorldUnits) {
+    public ToSpawnObjectDefinition(Class<T> blueprint, float posXInWorldUnits, float posYInWorldUnits, float width) {
         this.blueprint = blueprint;
 
         this.posXInWorldUnits = posXInWorldUnits;
         this.posYInWorldUnits = posYInWorldUnits;
+        this.width = width;
     }
 
     public float getPosXInWorldUnits() {
@@ -20,6 +22,10 @@ public class ToSpawnObjectDefinition<T extends DynamicEntity> {
 
     public float getPosYInWorldUnits() {
         return posYInWorldUnits;
+    }
+
+    public float getWidth() {
+        return width;
     }
 
     public Class<T> getBlueprint() {

@@ -69,8 +69,8 @@ public class MapCreator implements Disposable {
                 playerRectangle.x = (mapObject.getRectangle().x + mapObject.getRectangle().width / 2) / PPM;
                 playerRectangle.y = (mapObject.getRectangle().y + 16) / PPM;
             } else if (mapObject.getName().equalsIgnoreCase("Enemy1")) {
-                System.out.println("Found an enemy1 " + (mapObject.getRectangle().x + mapObject.getRectangle().width / 2) / PPM + " - " + (mapObject.getRectangle().y + 16) / PPM);
-                playScreen.getEntityManager().spawnDynamicEntity(new ToSpawnObjectDefinition<>(Enemy.class, (mapObject.getRectangle().x + mapObject.getRectangle().width / 2), (mapObject.getRectangle().y + 16)));
+                System.out.println("Found an enemy1 " + (mapObject.getRectangle().x + mapObject.getRectangle().width / 2) / PPM + " - " + (mapObject.getRectangle().y + 16) / PPM + " with width of: " + mapObject.getRectangle().width);
+                playScreen.getEntityManager().spawnDynamicEntity(new ToSpawnObjectDefinition<>(Enemy.class, (mapObject.getRectangle().x + mapObject.getRectangle().width / 2), (mapObject.getRectangle().y + 16), mapObject.getRectangle().width));
             }
         }
 

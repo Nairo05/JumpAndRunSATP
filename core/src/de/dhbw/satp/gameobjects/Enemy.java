@@ -16,13 +16,21 @@ public class Enemy extends DynamicEntity {
 
     private static final String ENEMY_SPRITE_PATH = "sprite/enemy/Bloated Bedbug/BloatedBedbugIdleSide.png";
 
+    private final float leftBound;
+    private final float rightBound;
+    private boolean movesLeft = false;
+
     private Texture texture;
     private TextureRegion[][] textureRegions;
     private int framecount = 0;
     private int frame = 0;
 
-    public Enemy(World world, float posXInWorldUnits, float posYInWorldUnits) {
+
+    public Enemy(World world, float posXInWorldUnits, float posYInWorldUnits, float width) {
         super(world, posXInWorldUnits, posYInWorldUnits);
+        float roamWidth = width / 2;
+        this.leftBound = (posXInWorldUnits - (roamWidth)) / Statics.PPM;
+        this.rightBound = (posXInWorldUnits + (roamWidth)) / Statics.PPM;
     }
 
     @Override
@@ -50,6 +58,7 @@ public class Enemy extends DynamicEntity {
         CircleShape circleShape = new CircleShape();
         circleShape.setRadius(6f / Statics.PPM);
         bodyFixtureDef.filter.categoryBits = BitFilterDef.ENEMY_BODY_BIT;
+        bodyFixtureDef.filter.maskBits = BitFilterDef.PLAYER_BIT | BitFilterDef.GROUND_BIT;
         bodyFixtureDef.shape = circleShape;
 
         fixture = body.createFixture(bodyFixtureDef);
@@ -70,6 +79,7 @@ public class Enemy extends DynamicEntity {
 
     @Override
     public void update(float dt) {
+
         if (toDestroy) {
             destroyBody();
             toDestroy = false;
@@ -81,6 +91,18 @@ public class Enemy extends DynamicEntity {
             if (frame > 3) {
                 frame = 0;
             }
+        }
+
+        if(movesLeft) {
+            body.setLinearVelocity(-0.2f, 0f);
+        } else {
+            body.setLinearVelocity(0.2f, 0f);
+        }
+
+        if(body.getWorldCenter().x <= leftBound) {
+            movesLeft = false;
+        } else if (body.getWorldCenter().x >= rightBound) {
+            movesLeft = true;
         }
     }
 

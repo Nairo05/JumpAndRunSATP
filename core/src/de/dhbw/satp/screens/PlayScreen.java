@@ -100,7 +100,7 @@ public class PlayScreen implements Screen {
         }
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.O)) {
-            entityManager.spawnDynamicEntity(new ToSpawnObjectDefinition<>(Enemy.class, 80f,100f));
+            entityManager.spawnDynamicEntity(new ToSpawnObjectDefinition<>(Enemy.class, 80f, 70f, 32f));
         }
 
         debugOnScreenDisplay.setFrameInfo("FRAME INFO |" +

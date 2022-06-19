@@ -35,6 +35,9 @@ public class Player implements GameObject, Disposable {
     private short lives = 3;
     private short invincibilityFrames = 120;
 
+    private boolean hitEnemy = false;
+    private int freezeTime = 0;
+
     public Player(PlayScreen playScreen, float xInWorldUnit, float yInWorldUnit) {
         this.playScreen = playScreen;
         World world = playScreen.getWorld();
@@ -96,10 +99,24 @@ public class Player implements GameObject, Disposable {
             }
         }
 
+        if(freezeTime > 0) {
+            freezeTime--;
+        }
+
         if (invincibilityFrames < 120 && invincibilityFrames > 0) {
             invincibilityFrames--;
         } else if (invincibilityFrames <= 0) {
             invincibilityFrames = 120;
+        }
+
+        if(hitEnemy) {
+            freezeTime = 20;
+            if (playerBody.getLinearVelocity().x >= 0f) {
+                playerBody.applyLinearImpulse(-2f, 1.5f, playerBody.getWorldCenter().x, playerBody.getWorldCenter().y, true);
+            } else {
+                playerBody.applyLinearImpulse(2f, 1.5f, playerBody.getWorldCenter().x, playerBody.getWorldCenter().y, true);
+            }
+            hitEnemy = false;
         }
 
 
@@ -107,52 +124,54 @@ public class Player implements GameObject, Disposable {
             jumpTime = 17f / PPM;
         }
         //--------------------------------------------- Mouse and Keyboard ----------------------------------------------------------------
-        if ((Gdx.input.isKeyPressed(Input.Keys.D) || Gdx.input.isKeyPressed(Input.Keys.RIGHT)) && playerBody.getPosition().x <= 30f) {
-            if (playerBody.getLinearVelocity().x < 1.5f) {
-                playerBody.applyLinearImpulse(new Vector2(10f * dt, 0), playerBody.getWorldCenter(), true);
+        if (freezeTime <= 0) {
+            if ((Gdx.input.isKeyPressed(Input.Keys.D) || Gdx.input.isKeyPressed(Input.Keys.RIGHT)) && playerBody.getPosition().x <= 30f) {
+                if (playerBody.getLinearVelocity().x < 1.5f) {
+                    playerBody.applyLinearImpulse(new Vector2(10f * dt, 0), playerBody.getWorldCenter(), true);
+                }
             }
-        }
-        if ((Gdx.input.isKeyPressed(Input.Keys.A) || Gdx.input.isKeyPressed(Input.Keys.LEFT)) && playerBody.getPosition().x <= 30f) {
-            if (playerBody.getLinearVelocity().x > -1.5f) {
-                playerBody.applyLinearImpulse(new Vector2(-10f * dt, 0), playerBody.getWorldCenter(), true);
+            if ((Gdx.input.isKeyPressed(Input.Keys.A) || Gdx.input.isKeyPressed(Input.Keys.LEFT)) && playerBody.getPosition().x <= 30f) {
+                if (playerBody.getLinearVelocity().x > -1.5f) {
+                    playerBody.applyLinearImpulse(new Vector2(-10f * dt, 0), playerBody.getWorldCenter(), true);
+                }
             }
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.W) || Gdx.input.isKeyPressed(Input.Keys.UP) || Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
-            if (jumpTime == 17f / PPM) {
-                playerBody.applyLinearImpulse(new Vector2(0f, 38f * dt), playerBody.getWorldCenter(), true);
-            }
-            if (jumpTime > 0) {
+            if (Gdx.input.isKeyPressed(Input.Keys.W) || Gdx.input.isKeyPressed(Input.Keys.UP) || Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
+                if (jumpTime == 17f / PPM) {
+                    playerBody.applyLinearImpulse(new Vector2(0f, 38f * dt), playerBody.getWorldCenter(), true);
+                }
+                if (jumpTime > 0) {
                     jumpTime -= dt;
                     playerBody.applyLinearImpulse(new Vector2(0f, 18f * dt), playerBody.getWorldCenter(), true);
-            } else {
+                } else {
 
-            }
-        }
-
-        // ------------------------------------------------- Android ---------------------------------------------------------------------
-        for (int i = 0 ; i < 3; i++){
-
-            if (Gdx.input.isTouched(i)){
-
-                if (Gdx.input.getX(i) > 0 && Gdx.input.getX(i) < 300) {
-                    if (playerBody.getLinearVelocity().x < 1.5f) {
-                        playerBody.applyLinearImpulse(new Vector2(10f * dt, 0), playerBody.getWorldCenter(), true);
-                    }
-                } else if (Gdx.input.getX(i) > 300) {
-                    if (jumpTime == 17f / PPM) {
-                        playerBody.applyLinearImpulse(new Vector2(0f, 38f * dt), playerBody.getWorldCenter(), true);
-                    }
-                    if (jumpTime > 0) {
-                        jumpTime -= dt;
-                        playerBody.applyLinearImpulse(new Vector2(0f, 18f * dt), playerBody.getWorldCenter(), true);
-                    } else {
-
-                    }
                 }
             }
         }
 
+        // ------------------------------------------------- Android ---------------------------------------------------------------------
+        if(freezeTime <= 0) {
+            for (int i = 0; i < 3; i++) {
 
+                if (Gdx.input.isTouched(i)) {
+
+                    if (Gdx.input.getX(i) > 0 && Gdx.input.getX(i) < 300) {
+                        if (playerBody.getLinearVelocity().x < 1.5f) {
+                            playerBody.applyLinearImpulse(new Vector2(10f * dt, 0), playerBody.getWorldCenter(), true);
+                        }
+                    } else if (Gdx.input.getX(i) > 300) {
+                        if (jumpTime == 17f / PPM) {
+                            playerBody.applyLinearImpulse(new Vector2(0f, 38f * dt), playerBody.getWorldCenter(), true);
+                        }
+                        if (jumpTime > 0) {
+                            jumpTime -= dt;
+                            playerBody.applyLinearImpulse(new Vector2(0f, 18f * dt), playerBody.getWorldCenter(), true);
+                        } else {
+
+                        }
+                    }
+                }
+            }
+        }
 
     }
 
@@ -200,8 +219,8 @@ public class Player implements GameObject, Disposable {
     }
 
     public void hitEnemy() {
+        hitEnemy = true;
         loseLife();
-        //TODO: bounce back player when enemy is hit...
     }
 
     public void loseLife() {
