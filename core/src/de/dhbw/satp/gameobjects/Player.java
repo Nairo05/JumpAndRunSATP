@@ -37,6 +37,7 @@ public class Player implements GameObject, Disposable {
 
     private boolean hitEnemy = false;
     private int freezeTime = 0;
+    private boolean playerIsOnGround = false;
 
     public Player(PlayScreen playScreen, float xInWorldUnit, float yInWorldUnit) {
         this.playScreen = playScreen;
@@ -81,6 +82,7 @@ public class Player implements GameObject, Disposable {
 
     @Override
     public void update(float dt) {
+        playerIsOnGround = playScreen.myContactListener.isPlayerOnGround();
         //TODO recusrive algorithm
         if (playerBody.getPosition().y < 0) {
             loseLife();
@@ -236,5 +238,9 @@ public class Player implements GameObject, Disposable {
 
     public boolean isInvincible() {
         return invincibilityFrames < 120;
+    }
+
+    public boolean isPlayerIsOnGround() {
+        return playerIsOnGround;
     }
 }

@@ -7,6 +7,7 @@ import com.badlogic.gdx.utils.Disposable;
 
 import de.dhbw.satp.main.Statics;
 
+//Data-Object, holds needed information
 public class ParallaxBackgroundLayer implements Disposable {
 
     private final float VIEWPORT_STRETCH_FACTOR = 1f;

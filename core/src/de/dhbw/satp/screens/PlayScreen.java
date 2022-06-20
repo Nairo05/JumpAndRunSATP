@@ -15,6 +15,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 
 import de.dhbw.satp.gameobjects.Enemy;
 import de.dhbw.satp.gameobjects.EntityManager;
+import de.dhbw.satp.helper.CameraManager;
 import de.dhbw.satp.parallax.ParallaxConfiguration;
 import de.dhbw.satp.parallax.ParallaxRenderer;
 import de.dhbw.satp.particle.ParticleManager;
@@ -32,16 +33,14 @@ import de.dhbw.satp.staticworld.MyContactListener;
 public class PlayScreen implements Screen {
 
     private final JumpAndRunMain jumpAndRunMain;
-    private int camState = 0;
-    private int waitCount = 75;
 
     private boolean toEnd = false;
 
     private final World world;
     public MyContactListener myContactListener;
 
-    private final OrthographicCamera camera;
     private final Viewport viewport;
+    private final CameraManager cameraManager;
 
     private final Player player;
     private final EntityManager entityManager;
@@ -61,11 +60,8 @@ public class PlayScreen implements Screen {
         entityManager = new EntityManager(world);
         particleManager = new ParticleManager();
 
-        camera = new OrthographicCamera();
-        viewport = new ExtendViewport(Statics.VIRTUAL_WIDTH / PPM, Statics.VIRTUAL_HEIGHT / PPM, camera);
-        camera.position.set(2.1f, 1.06f,0f);
-        camera.zoom = 1f;
-        camera.update();
+        cameraManager = new CameraManager();
+        viewport = new ExtendViewport(Statics.VIRTUAL_WIDTH / PPM, Statics.VIRTUAL_HEIGHT / PPM, cameraManager.getCamera());
 
         myContactListener = new MyContactListener(this);
         world.setContactListener(myContactListener);
@@ -90,14 +86,6 @@ public class PlayScreen implements Screen {
 
     private void handleDebug(float dt) {
         debugOnScreenDisplay.update(dt);
-
-        if (Gdx.input.isKeyJustPressed(Input.Keys.F5)) {
-            if (camera.zoom == 1f) {
-                camera.zoom = 4f;
-            } else {
-                camera.zoom = 1f;
-            }
-        }
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.O)) {
             entityManager.spawnDynamicEntity(new ToSpawnObjectDefinition<>(Enemy.class, 80f, 70f, 32f));
@@ -125,36 +113,6 @@ public class PlayScreen implements Screen {
                 "   ACTIVE: " + particleManager.getActive());
     }
 
-    private void updateCamera(float dt) {
-        //TODO: Camera vom Spieler lösen und Kamera Fahrt Smoother machen - Camera Y align
-        if (player.getX() >= 30f) {
-            waitCount--;
-            if (waitCount <= 0) {
-                if (camera.position.x < 32f) {
-                    camera.position.x += dt / 2;
-                }
-            }
-        }
-        if (player.getY() > 1.5f && myContactListener.isPlayerOnGround()) {
-            camState = 1;
-        } else if (player.getY() < 1.25 && myContactListener.isPlayerOnGround()) {
-            camState = 2;
-        }
-        if (camState == 1) {
-            if (camera.position.y < 2.1f) {
-                camera.position.y += dt * 1.2f;
-            }
-        }
-        if (camState == 2) {
-            if (camera.position.y > 1.06f) {
-                camera.position.y -= dt * 1.4;
-            }
-        }
-        if (player.getX() > 2.1f && player.getX() < 29.9f) {
-            camera.position.x = player.getX();
-        }
-        camera.update();
-    }
 
 
     private void updatePlayer(float dt) {
@@ -165,12 +123,12 @@ public class PlayScreen implements Screen {
         entityManager.update(dt);
         particleManager.update(dt);
 
-        updateCamera(dt);
+        cameraManager.update(player, dt);
         updatePlayer(dt);
         handleDebug(dt);
         hud.update(dt);
 
-        parallaxRenderer.update(dt, camera);
+        parallaxRenderer.update(dt, cameraManager.getCamera());
     }
 
     @Override
@@ -180,19 +138,20 @@ public class PlayScreen implements Screen {
             return;
         }
 
+        //---------------------------------------------------------------------------------------------------------------- Phase 1 update
+        update(delta);
+
+        //---------------------------------------------------------------------------------------------------------------- Phase 2 physics
+        world.step(Gdx.graphics.getDeltaTime(), 6, 2);
+
+        //---------------------------------------------------------------------------------------------------------------- Phase 3 graphics
+
+        //Clear Screen
         Gdx.gl20.glClearColor(0.180f, 0.353f, 0.537f, 1f);
         Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        //---------------------------------------------------------------------------------------------------------------- Phase 1 update Phase
-        update(delta);
-
-        //---------------------------------------------------------------------------------------------------------------- Phase 2 Physik
-        world.step(Gdx.graphics.getDeltaTime(), 6, 2);
-
-        //---------------------------------------------------------------------------------------------------------------- Phase 3 Grafiken
-
         //begin (1/2)
-        jumpAndRunMain.spriteBatch.setProjectionMatrix(camera.combined);
+        jumpAndRunMain.spriteBatch.setProjectionMatrix(cameraManager.getCamera().combined);
         jumpAndRunMain.spriteBatch.begin();
 
         //render | Batch Renderer
@@ -201,23 +160,24 @@ public class PlayScreen implements Screen {
         //end (1/2)
         jumpAndRunMain.spriteBatch.end();
 
-        orthogonalTiledMapRenderer.setView(camera);
+        //cant render while Batch-Rendering
+        orthogonalTiledMapRenderer.setView(cameraManager.getCamera());
         orthogonalTiledMapRenderer.render();
 
         //begin (2/2)
-        jumpAndRunMain.spriteBatch.setProjectionMatrix(camera.combined);
+        jumpAndRunMain.spriteBatch.setProjectionMatrix(cameraManager.getCamera().combined);
         jumpAndRunMain.spriteBatch.begin();
 
         //render | Batch Renderer
         player.render(jumpAndRunMain.spriteBatch);
         entityManager.render(jumpAndRunMain.spriteBatch);
-        particleManager.render(jumpAndRunMain.spriteBatch, camera);
+        particleManager.render(jumpAndRunMain.spriteBatch, cameraManager.getCamera());
 
-        //end
+        //end (2/2)
         jumpAndRunMain.spriteBatch.end();
 
-        //
-        debugOnScreenDisplay.renderWithoutBatch(world, camera.combined);
+        //Hud
+        debugOnScreenDisplay.renderWithoutBatch(world, cameraManager.getCamera().combined);
         debugOnScreenDisplay.renderStage();
 
         hud.renderStage();

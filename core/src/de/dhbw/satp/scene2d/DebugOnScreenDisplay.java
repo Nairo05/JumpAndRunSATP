@@ -41,12 +41,18 @@ public class DebugOnScreenDisplay {
         Viewport viewport = new ExtendViewport(Statics.WINDOW_WIDTH, Statics.WINDOW_HEIGHT, new OrthographicCamera());
         stage = new Stage(viewport, spriteBatch);
 
+        stage.addActor(debuggerInfo);
         stage.addActor(frameInfo);
         stage.addActor(playerInfo);
         stage.addActor(entityManagerInfo);
         stage.addActor(particleManagerInfo);
 
         debugRenderer = new Box2DDebugRenderer();
+        debugRenderer.setDrawAABBs(true);
+        debugRenderer.setDrawVelocities(true);
+        debugRenderer.setDrawContacts(true);
+        debugRenderer.setDrawBodies(true);
+        debugRenderer.setDrawJoints(true);
     }
 
 

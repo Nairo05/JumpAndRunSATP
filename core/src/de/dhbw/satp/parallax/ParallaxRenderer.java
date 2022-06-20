@@ -10,7 +10,7 @@ import de.dhbw.satp.main.Statics;
 /**
  * Custom Renderer
  *
- * can render n*m Background pieces and adds a Parallax-Effect to each
+ * can render n*m scrolling Background pieces and adds a Parallax-Effect to each Layer
  *
  * */
 public class ParallaxRenderer implements Disposable {
@@ -60,7 +60,7 @@ public class ParallaxRenderer implements Disposable {
 
             //Parallax-Effect per Frame
             if (enableParallax) {
-                //Movement frameTime * 1/frameTime (Statics.FOREGROUND_FPS) to smooth out
+                //Movement frameTime dt * expected frameTime (Statics.FOREGROUND_FPS) to smooth out
                 for (int j = 0; j < layerArray.get(i).getBackgroundCount(); j++) {
                     layerArray.get(i).getPosition(j).add(-1f * speed / layerArray.get(i).getParallaxFactor() * dt * Statics.FOREGROUND_FPS, 0);
                 }
