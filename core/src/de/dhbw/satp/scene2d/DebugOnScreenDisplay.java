@@ -11,7 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
-import de.dhbw.satp.main.Statics;
+import de.dhbw.satp.main.FinalStatics;
 
 public class DebugOnScreenDisplay {
 
@@ -38,7 +38,7 @@ public class DebugOnScreenDisplay {
         entityManagerInfo = new StageText2D(10f, 520f);
         playerInfo = new StageText2D(10f, 480f);
 
-        Viewport viewport = new ExtendViewport(Statics.WINDOW_WIDTH, Statics.WINDOW_HEIGHT, new OrthographicCamera());
+        Viewport viewport = new ExtendViewport(FinalStatics.WINDOW_WIDTH, FinalStatics.WINDOW_HEIGHT, new OrthographicCamera());
         stage = new Stage(viewport, spriteBatch);
 
         stage.addActor(debuggerInfo);

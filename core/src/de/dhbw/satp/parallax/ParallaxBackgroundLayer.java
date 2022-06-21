@@ -5,7 +5,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 
-import de.dhbw.satp.main.Statics;
+import de.dhbw.satp.main.FinalStatics;
 
 //Data-Object, holds needed information
 public class ParallaxBackgroundLayer implements Disposable {
@@ -27,8 +27,8 @@ public class ParallaxBackgroundLayer implements Disposable {
         positions = new Array<>();
         yOffset = 0f;
 
-        backgroundWith = bg.getWidth() / (Statics.PPM * VIEWPORT_STRETCH_FACTOR);
-        backgroundHeigth = bg.getHeight() / (Statics.PPM * VIEWPORT_STRETCH_FACTOR);
+        backgroundWith = bg.getWidth() / (FinalStatics.PPM * VIEWPORT_STRETCH_FACTOR);
+        backgroundHeigth = bg.getHeight() / (FinalStatics.PPM * VIEWPORT_STRETCH_FACTOR);
     }
 
     public void addBackGround(float x) {

@@ -1,13 +1,12 @@
 package de.dhbw.satp.gameobjects;
 
-import static de.dhbw.satp.main.Statics.PPM;
+import static de.dhbw.satp.main.FinalStatics.PPM;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -57,7 +56,7 @@ public class Player implements GameObject, Disposable {
         bodyCircleShape.setRadius(7f / PPM);
         fixtureDef.shape = bodyCircleShape;
         fixtureDef.filter.categoryBits = BitFilterDef.PLAYER_BIT;
-        fixtureDef.filter.maskBits = BitFilterDef.GROUND_BIT | BitFilterDef.ENEMY_BODY_BIT | BitFilterDef.ENEMY_HEAD_BIT;
+        fixtureDef.filter.maskBits = BitFilterDef.GROUND_BIT | BitFilterDef.ENEMY_BODY_BIT | BitFilterDef.ENEMY_HEAD_BIT | BitFilterDef.ONE_WAY_GROUND;
         playerBody.createFixture(fixtureDef);
 
         EdgeShape foot = new EdgeShape();

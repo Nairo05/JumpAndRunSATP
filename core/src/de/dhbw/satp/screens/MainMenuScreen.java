@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -12,7 +11,7 @@ import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import de.dhbw.satp.main.JumpAndRunMain;
-import de.dhbw.satp.main.Statics;
+import de.dhbw.satp.main.FinalStatics;
 
 public class MainMenuScreen implements Screen {
 
@@ -26,7 +25,7 @@ public class MainMenuScreen implements Screen {
     public MainMenuScreen(JumpAndRunMain main) {
         this.main = main;
         camera = new OrthographicCamera();
-        Viewport viewport = new ExtendViewport(Statics.VIRTUAL_WIDTH, Statics.VIRTUAL_HEIGHT, camera);
+        Viewport viewport = new ExtendViewport(FinalStatics.VIRTUAL_WIDTH, FinalStatics.VIRTUAL_HEIGHT, camera);
 
         levelTable = new Table();
         levelTable.top();
@@ -34,7 +33,7 @@ public class MainMenuScreen implements Screen {
         levelTable.setFillParent(true);
 
 
-        stage.addAction(Actions.sequence(Actions.fadeIn(0.3f)));
+        //stage.addAction(Actions.sequence(Actions.fadeIn(0.3f)));
     }
 
     @Override

@@ -9,7 +9,7 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 
-import de.dhbw.satp.main.Statics;
+import de.dhbw.satp.main.FinalStatics;
 import de.dhbw.satp.staticworld.BitFilterDef;
 
 public class Enemy extends DynamicEntity {
@@ -29,25 +29,25 @@ public class Enemy extends DynamicEntity {
     public Enemy(World world, float posXInWorldUnits, float posYInWorldUnits, float width) {
         super(world, posXInWorldUnits, posYInWorldUnits);
         float roamWidth = width / 2;
-        this.leftBound = (posXInWorldUnits - (roamWidth)) / Statics.PPM;
-        this.rightBound = (posXInWorldUnits + (roamWidth)) / Statics.PPM;
+        this.leftBound = (posXInWorldUnits - (roamWidth)) / FinalStatics.PPM;
+        this.rightBound = (posXInWorldUnits + (roamWidth)) / FinalStatics.PPM;
+
+        texture = new Texture(ENEMY_SPRITE_PATH);
+        textureRegions = TextureRegion.split(texture, 16, 16);
     }
 
     @Override
     protected void defineHitBox() {
-
-        texture = new Texture(ENEMY_SPRITE_PATH);
-        textureRegions = TextureRegion.split(texture, 16, 16);
 
         FixtureDef headFixtureDef = new FixtureDef();
         FixtureDef bodyFixtureDef = new FixtureDef();
 
         PolygonShape polygonShape = new PolygonShape();
         Vector2[] vertices = {
-                new Vector2(-5.5f, 8f).scl(1f/Statics.PPM),
-                new Vector2(5.5f, 8f).scl(1f/Statics.PPM),
-                new Vector2(-2.5f, 3f).scl(1f/Statics.PPM),
-                new Vector2(2.5f, 3f).scl(1f/Statics.PPM)
+                new Vector2(-7.5f, 10f).scl(1f/ FinalStatics.PPM),
+                new Vector2(7.5f, 10f).scl(1f/ FinalStatics.PPM),
+                new Vector2(-3.5f, 3f).scl(1f/ FinalStatics.PPM),
+                new Vector2(3.5f, 3f).scl(1f/ FinalStatics.PPM)
         };
         polygonShape.set(vertices);
         headFixtureDef.shape = polygonShape;
@@ -57,9 +57,9 @@ public class Enemy extends DynamicEntity {
         body.createFixture(headFixtureDef).setUserData(this);
 
         CircleShape circleShape = new CircleShape();
-        circleShape.setRadius(6f / Statics.PPM);
+        circleShape.setRadius(6f / FinalStatics.PPM);
         bodyFixtureDef.filter.categoryBits = BitFilterDef.ENEMY_BODY_BIT;
-        bodyFixtureDef.filter.maskBits = BitFilterDef.PLAYER_BIT | BitFilterDef.GROUND_BIT;
+        bodyFixtureDef.filter.maskBits = BitFilterDef.PLAYER_BIT | BitFilterDef.GROUND_BIT | BitFilterDef.ENEMY_BODY_BIT;
         bodyFixtureDef.shape = circleShape;
 
         fixture = body.createFixture(bodyFixtureDef);
@@ -82,35 +82,42 @@ public class Enemy extends DynamicEntity {
     public void update(float dt) {
 
         if (toDestroy) {
+
             destroyBody();
             toDestroy = false;
-        }
 
-        framecount++;
-        if ((framecount % 6) == 0) {
-            frame++;
-            if (frame > 3) {
-                frame = 0;
-            }
-        }
-
-        if(movesLeft) {
-            body.setLinearVelocity(-0.2f, 0f);
         } else {
-            body.setLinearVelocity(0.2f, 0f);
-        }
 
-        if(body.getWorldCenter().x <= leftBound) {
-            movesLeft = false;
-        } else if (body.getWorldCenter().x >= rightBound) {
-            movesLeft = true;
+            if (!isDestroyed) {
+                framecount++;
+                if ((framecount % 6) == 0) {
+                    frame++;
+                    if (frame > 3) {
+                        frame = 0;
+                    }
+                }
+
+                if (movesLeft) {
+                    body.setLinearVelocity(-0.2f, 0f);
+                } else {
+                    body.setLinearVelocity(0.2f, 0f);
+                }
+
+                if (body.getWorldCenter().x <= leftBound) {
+                    movesLeft = false;
+                } else if (body.getWorldCenter().x >= rightBound) {
+                    movesLeft = true;
+                }
+            }
+
         }
     }
 
     @Override
     public void render(SpriteBatch spriteBatch) {
 
-        if (!isDestroyed()) {
+        if (!isDestroyed() && !toDestroy) {
+
             if (body.getLinearVelocity().x < -0.1f) {
                 if (!textureRegions[0][frame].isFlipX()) {
                     textureRegions[0][frame].flip(true, false);
@@ -121,12 +128,13 @@ public class Enemy extends DynamicEntity {
                     textureRegions[0][frame].flip(true, false);
                 }
             }
-        }
 
-        if (Math.abs(body.getLinearVelocity().x) >= 0.001f && Math.abs(body.getLinearVelocity().y) < 0.1f) {
-            spriteBatch.draw(textureRegions[0][frame], body.getPosition().x - 0.07f ,body.getPosition().y - 0.07f, 0.13f,0.15f);
-        } else {
-            spriteBatch.draw(textureRegions[0][0], body.getPosition().x - 0.07f ,body.getPosition().y - 0.07f, 0.13f,0.15f);
+            if (Math.abs(body.getLinearVelocity().x) >= 0.001f && Math.abs(body.getLinearVelocity().y) < 0.1f) {
+                spriteBatch.draw(textureRegions[0][frame], body.getPosition().x - 0.07f ,body.getPosition().y - 0.07f, 0.13f,0.15f);
+            } else {
+                spriteBatch.draw(textureRegions[0][0], body.getPosition().x - 0.07f ,body.getPosition().y - 0.07f, 0.13f,0.15f);
+            }
+
         }
     }
 

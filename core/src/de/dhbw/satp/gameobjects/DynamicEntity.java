@@ -1,6 +1,6 @@
 package de.dhbw.satp.gameobjects;
 
-import static de.dhbw.satp.main.Statics.PPM;
+import static de.dhbw.satp.main.FinalStatics.PPM;
 
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;

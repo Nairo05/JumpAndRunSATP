@@ -5,7 +5,7 @@ import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 
-import de.dhbw.satp.main.Statics;
+import de.dhbw.satp.main.FinalStatics;
 import de.dhbw.satp.staticworld.BitFilterDef;
 
 public class TestEntity extends DynamicEntity {
@@ -21,7 +21,7 @@ public class TestEntity extends DynamicEntity {
         FixtureDef fixtureDef = new FixtureDef();
 
         CircleShape circleShape = new CircleShape();
-        circleShape.setRadius(7f / Statics.PPM);
+        circleShape.setRadius(7f / FinalStatics.PPM);
         fixtureDef.filter.categoryBits = BitFilterDef.ENEMY_BODY_BIT;
         fixtureDef.shape = circleShape;
 

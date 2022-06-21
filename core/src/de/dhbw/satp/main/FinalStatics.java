@@ -1,6 +1,6 @@
 package de.dhbw.satp.main;
 
-public class Statics {
+public class FinalStatics {
 
     //Object
     public static final float BLOCK_UNIT = 16f;

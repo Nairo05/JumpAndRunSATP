@@ -1,12 +1,11 @@
 package de.dhbw.satp.screens;
 
-import static de.dhbw.satp.main.Statics.PPM;
+import static de.dhbw.satp.main.FinalStatics.PPM;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
@@ -20,11 +19,10 @@ import de.dhbw.satp.parallax.ParallaxConfiguration;
 import de.dhbw.satp.parallax.ParallaxRenderer;
 import de.dhbw.satp.particle.ParticleManager;
 import de.dhbw.satp.gameobjects.Player;
-import de.dhbw.satp.gameobjects.TestEntity;
 import de.dhbw.satp.gameobjects.ToSpawnObjectDefinition;
 import de.dhbw.satp.scene2d.DebugOnScreenDisplay;
 import de.dhbw.satp.main.JumpAndRunMain;
-import de.dhbw.satp.main.Statics;
+import de.dhbw.satp.main.FinalStatics;
 import de.dhbw.satp.scene2d.Hud;
 import de.dhbw.satp.staticworld.MapCreator;
 import de.dhbw.satp.staticworld.MyContactListener;
@@ -61,7 +59,7 @@ public class PlayScreen implements Screen {
         particleManager = new ParticleManager();
 
         cameraManager = new CameraManager();
-        viewport = new ExtendViewport(Statics.VIRTUAL_WIDTH / PPM, Statics.VIRTUAL_HEIGHT / PPM, cameraManager.getCamera());
+        viewport = new ExtendViewport(FinalStatics.VIRTUAL_WIDTH / PPM, FinalStatics.VIRTUAL_HEIGHT / PPM, cameraManager.getCamera());
 
         myContactListener = new MyContactListener(this);
         world.setContactListener(myContactListener);

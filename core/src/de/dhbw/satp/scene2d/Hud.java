@@ -12,7 +12,7 @@ import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import de.dhbw.satp.gameobjects.Player;
-import de.dhbw.satp.main.Statics;
+import de.dhbw.satp.main.FinalStatics;
 import de.dhbw.satp.screens.PlayScreen;
 
 public class Hud implements Disposable {
@@ -44,7 +44,7 @@ public class Hud implements Disposable {
 
         this.playScreen = playScreen;
         player = playScreen.getPlayer();
-        Viewport viewport = new ExtendViewport(Statics.VIRTUAL_WIDTH, Statics.VIRTUAL_HEIGHT, new OrthographicCamera());
+        Viewport viewport = new ExtendViewport(FinalStatics.VIRTUAL_WIDTH, FinalStatics.VIRTUAL_HEIGHT, new OrthographicCamera());
         stage = new Stage(viewport, batch);
 
         //Level timer
@@ -81,7 +81,7 @@ public class Hud implements Disposable {
 
         //Level timer Management -----------------------------------------------------
         framecount++;
-        if ((framecount % Statics.FOREGROUND_FPS) == 0) {
+        if ((framecount % FinalStatics.FOREGROUND_FPS) == 0) {
             boolean finishedLevel = false;
             if (!finishedLevel) {
                 time--;

@@ -12,6 +12,7 @@ public class BitFilterDef {
     public static final short GROUND_BIT = 4;
     public static final short ENEMY_HEAD_BIT = 8;
     public static final short ENEMY_BODY_BIT = 16;
+    public static final short ONE_WAY_GROUND = 32;
 
     //Colliding Bits
     public static final short PLAYER_REVERSE_VEL = PLAYER_REVERSE_VEL_BIT + GROUND_BIT;
