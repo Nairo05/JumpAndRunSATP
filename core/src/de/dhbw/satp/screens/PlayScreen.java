@@ -36,13 +36,13 @@ public class PlayScreen implements Screen {
 
     private boolean toEnd = false;
 
+    private final Player player;
     private final World world;
     public MyContactListener myContactListener;
 
     private final Viewport viewport;
     private final CameraManager cameraManager;
 
-    private final Player player;
     private final EntityManager entityManager;
     private final ParticleManager particleManager;
 

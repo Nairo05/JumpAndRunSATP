@@ -35,10 +35,14 @@ public class MyContactListener implements ContactListener {
         if (checksum == BitFilterDef.PLAYER_CO_ENEMY_HEAD) {
             if (contact.getFixtureA().getFilterData().categoryBits == BitFilterDef.ENEMY_HEAD_BIT) {
                 DynamicEntity entity  = (DynamicEntity) contact.getFixtureA().getUserData();
-                entity.prepareDestroy();
+                if(playScreen.getPlayer().getPlayerBody().getLinearVelocity().y < 0)  {
+                    entity.prepareDestroy();
+                }
             } else if (contact.getFixtureB().getFilterData().categoryBits == BitFilterDef.ENEMY_HEAD_BIT) {
                 DynamicEntity entity  = (DynamicEntity) contact.getFixtureB().getUserData();
-                entity.prepareDestroy();
+                if(playScreen.getPlayer().getPlayerBody().getLinearVelocity().y < 0)  {
+                    entity.prepareDestroy();
+                }
             }
         }
         if (checksum == BitFilterDef.PLAYER_REVERSE_VEL) {

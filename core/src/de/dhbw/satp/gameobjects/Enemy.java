@@ -44,8 +44,8 @@ public class Enemy extends DynamicEntity {
 
         PolygonShape polygonShape = new PolygonShape();
         Vector2[] vertices = {
-                new Vector2(-4.5f, 8f).scl(1f/Statics.PPM),
-                new Vector2(4.5f, 8f).scl(1f/Statics.PPM),
+                new Vector2(-5.5f, 8f).scl(1f/Statics.PPM),
+                new Vector2(5.5f, 8f).scl(1f/Statics.PPM),
                 new Vector2(-2.5f, 3f).scl(1f/Statics.PPM),
                 new Vector2(2.5f, 3f).scl(1f/Statics.PPM)
         };
@@ -53,6 +53,7 @@ public class Enemy extends DynamicEntity {
         headFixtureDef.shape = polygonShape;
         headFixtureDef.filter.categoryBits = BitFilterDef.ENEMY_HEAD_BIT;
         headFixtureDef.filter.maskBits = BitFilterDef.PLAYER_BIT;
+        headFixtureDef.isSensor = true;
         body.createFixture(headFixtureDef).setUserData(this);
 
         CircleShape circleShape = new CircleShape();
