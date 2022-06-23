@@ -3,16 +3,24 @@ package de.dhbw.satp.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
+import de.dhbw.satp.main.FinalStatics;
 import de.dhbw.satp.main.JumpAndRunMain;
 
 public class InitLoadingScreen implements Screen {
 
     private final JumpAndRunMain main;
     private int counter = 20;
+    private ShapeRenderer shapeRenderer;
+    private int load;
 
     public InitLoadingScreen(JumpAndRunMain main) {
         this.main = main;
+        this.loadTextures();
+        shapeRenderer = new ShapeRenderer();
+        load = 32;
     }
 
     @Override
@@ -20,17 +28,28 @@ public class InitLoadingScreen implements Screen {
         System.out.println("Ich bin der Init-Loading Scrrennnn");
     }
 
+    private void loadTextures() {
+        main.assetManager.clear();
+        //TODO: Das gleiche für die Textur in der Klasse Enemy
+        main.assetManager.load("playersprite/skull1.png", Texture.class);
+        main.assetManager.finishLoading();
+        main.assetManager.update();
+    }
+
     @Override
     public void render(float delta) {
-        Gdx.gl20.glClearColor(0f, 1f, 0f, 1f);
+
+        Gdx.gl20.glClearColor(0f, 0f, 0f, 1f);
         Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        if (counter > 0) {
-            counter--;
-        }
-        if (counter == 0 ) {
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        shapeRenderer.setColor(1f, 1f, 1f, 1f);
+        shapeRenderer.rect(30,30,load,32);
+        shapeRenderer.end();
+        if (load < FinalStatics.WINDOW_WIDTH - 64) {
+            load += 10;
+        } else if(main.assetManager.isFinished()) {
             main.screenManager.nextScreen();
         }
-
     }
 
     @Override

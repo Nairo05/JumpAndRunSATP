@@ -4,6 +4,7 @@ import static de.dhbw.satp.main.FinalStatics.PPM;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -42,7 +43,8 @@ public class Player implements GameObject, Disposable {
         this.playScreen = playScreen;
         World world = playScreen.getWorld();
 
-        texture = new Texture("playersprite/skull1.png");
+        texture = playScreen.getAssetManager().get("playersprite/skull1.png", Texture.class);
+
         textureRegions = TextureRegion.split(texture, 13, 20);
 
         BodyDef playerDef = new BodyDef();

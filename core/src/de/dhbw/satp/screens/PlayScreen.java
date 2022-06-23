@@ -5,6 +5,7 @@ import static de.dhbw.satp.main.FinalStatics.PPM;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
@@ -173,7 +174,7 @@ public class PlayScreen implements Screen {
 
         shader.begin();
         //Shader bindings
-        //shader.setUniformf("u_distort", new Vector3(MathUtils.random(0.01f), MathUtils.random(0.01f),0));
+        shader.setUniformf("u_distort", new Vector3(MathUtils.random(0.01f), MathUtils.random(0.01f),0));
         shader.end();
 
         //begin (1/2)
@@ -256,5 +257,9 @@ public class PlayScreen implements Screen {
 
     public void endGame() {
         toEnd = true;
+    }
+
+    public AssetManager getAssetManager() {
+        return jumpAndRunMain.assetManager;
     }
 }
