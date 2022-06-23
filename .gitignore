@@ -1,6 +1,8 @@
 ## Java
 assets/tmx/NightFinal.tmx.bak
 
+local.properties
+
 *.class
 *.war
 *.ear
