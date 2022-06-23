@@ -61,7 +61,7 @@ public class PlayScreen implements Screen {
 
         world = new World(new Vector2(0f,-9.81f), true);
 
-        entityManager = new EntityManager(world);
+        entityManager = new EntityManager(this);
         particleManager = new ParticleManager();
 
         cameraManager = new CameraManager();

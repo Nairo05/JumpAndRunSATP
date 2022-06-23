@@ -7,6 +7,8 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.Queue;
 
+import de.dhbw.satp.screens.PlayScreen;
+
 public class EntityManager implements Disposable {
 
     //TODO: Gegner mit Stacheln, auf den man nicht springen darf   ...für Herr Uhl ;)
@@ -15,14 +17,16 @@ public class EntityManager implements Disposable {
     private final int MAX_QUEUED_ENTITIES = 32;
 
     private final World world;
+    private final PlayScreen playScreen;
 
     private final Array<DynamicEntity> dynamicEntityArrayList;
     private final Queue<ToSpawnObjectDefinition<? extends DynamicEntity>> queuedEntities;
 
-    public EntityManager(World world) {
+    public EntityManager(PlayScreen playScreen) {
         queuedEntities = new Queue<>(MAX_QUEUED_ENTITIES);
         dynamicEntityArrayList = new Array<>();
-        this.world = world;
+        this.world = playScreen.getWorld();
+        this.playScreen = playScreen;
     }
 
     public void spawnDynamicEntity(ToSpawnObjectDefinition<? extends DynamicEntity> toSpawnObjectDefinition) {
@@ -39,9 +43,9 @@ public class EntityManager implements Disposable {
                 queuedEntities.removeFirst();
 
                 if (currentSpawnDef.getBlueprint() == TestEntity.class) {
-                    dynamicEntityArrayList.add(new TestEntity(world, currentSpawnDef.getPosXInWorldUnits(), currentSpawnDef.getPosYInWorldUnits()));
+                    dynamicEntityArrayList.add(new TestEntity(playScreen, currentSpawnDef.getPosXInWorldUnits(), currentSpawnDef.getPosYInWorldUnits()));
                 } else if (currentSpawnDef.getBlueprint() == Enemy.class) {
-                    dynamicEntityArrayList.add(new Enemy(world, currentSpawnDef.getPosXInWorldUnits(), currentSpawnDef.getPosYInWorldUnits(), currentSpawnDef.getWidth()));
+                    dynamicEntityArrayList.add(new Enemy(playScreen, currentSpawnDef.getPosXInWorldUnits(), currentSpawnDef.getPosYInWorldUnits(), currentSpawnDef.getWidth()));
                     System.out.println("Spawned new Enemy at " + currentSpawnDef.getPosXInWorldUnits() + " " + currentSpawnDef.getPosYInWorldUnits());
                 }
             }

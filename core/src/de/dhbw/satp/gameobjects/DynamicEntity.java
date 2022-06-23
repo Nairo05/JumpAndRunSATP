@@ -8,6 +8,8 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Disposable;
 
+import de.dhbw.satp.screens.PlayScreen;
+
 public abstract class DynamicEntity implements GameObject, Disposable {
 
     protected Body body;
@@ -16,8 +18,8 @@ public abstract class DynamicEntity implements GameObject, Disposable {
     protected boolean toDestroy = false;
     protected boolean isDestroyed = false;
 
-    public DynamicEntity(World world, float posXInWorldUnits, float posYInWorldUnits) {
-        this.world = world;
+    public DynamicEntity(PlayScreen playScreen, float posXInWorldUnits, float posYInWorldUnits) {
+        this.world = playScreen.getWorld();
         defineEntityAttributes(posXInWorldUnits, posYInWorldUnits);
     }
 

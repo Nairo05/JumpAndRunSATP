@@ -10,6 +10,7 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 
 import de.dhbw.satp.main.FinalStatics;
+import de.dhbw.satp.screens.PlayScreen;
 import de.dhbw.satp.staticworld.BitFilterDef;
 
 public class Enemy extends DynamicEntity {
@@ -26,8 +27,8 @@ public class Enemy extends DynamicEntity {
     private int frame = 0;
 
 
-    public Enemy(World world, float posXInWorldUnits, float posYInWorldUnits, float width) {
-        super(world, posXInWorldUnits, posYInWorldUnits);
+    public Enemy(PlayScreen playScreen, float posXInWorldUnits, float posYInWorldUnits, float width) {
+        super(playScreen, posXInWorldUnits, posYInWorldUnits);
         float roamWidth = width / 2;
         this.leftBound = (posXInWorldUnits - (roamWidth)) / FinalStatics.PPM;
         this.rightBound = (posXInWorldUnits + (roamWidth)) / FinalStatics.PPM;

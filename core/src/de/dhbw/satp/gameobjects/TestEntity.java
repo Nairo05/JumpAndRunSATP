@@ -6,14 +6,15 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 
 import de.dhbw.satp.main.FinalStatics;
+import de.dhbw.satp.screens.PlayScreen;
 import de.dhbw.satp.staticworld.BitFilterDef;
 
 public class TestEntity extends DynamicEntity {
 
     private int lifeSpan = 600;
 
-    public TestEntity(World world, float posXInWorldUnits, float posYInWorldUnits) {
-        super(world, posXInWorldUnits, posYInWorldUnits);
+    public TestEntity(PlayScreen playScreen, float posXInWorldUnits, float posYInWorldUnits) {
+        super(playScreen, posXInWorldUnits, posYInWorldUnits);
     }
 
     @Override
