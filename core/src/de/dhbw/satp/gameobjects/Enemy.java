@@ -15,8 +15,6 @@ import de.dhbw.satp.staticworld.BitFilterDef;
 
 public class Enemy extends DynamicEntity {
 
-    private static final String ENEMY_SPRITE_PATH = "sprite/enemy/Bloated Bedbug/BloatedBedbugIdleSide.png";
-
     private final float leftBound;
     private final float rightBound;
     private boolean movesLeft = false;
@@ -29,11 +27,12 @@ public class Enemy extends DynamicEntity {
 
     public Enemy(PlayScreen playScreen, float posXInWorldUnits, float posYInWorldUnits, float width) {
         super(playScreen, posXInWorldUnits, posYInWorldUnits);
+
         float roamWidth = width / 2;
         this.leftBound = (posXInWorldUnits - (roamWidth)) / FinalStatics.PPM;
         this.rightBound = (posXInWorldUnits + (roamWidth)) / FinalStatics.PPM;
 
-        texture = new Texture(ENEMY_SPRITE_PATH);
+        texture = playScreen.getAssetManager().get("sprite/enemy/Bloated Bedbug/BloatedBedbugIdleSide.png", Texture.class);
         textureRegions = TextureRegion.split(texture, 16, 16);
     }
 

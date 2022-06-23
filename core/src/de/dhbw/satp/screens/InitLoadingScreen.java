@@ -30,8 +30,8 @@ public class InitLoadingScreen implements Screen {
 
     private void loadTextures() {
         main.assetManager.clear();
-        //TODO: Das gleiche für die Textur in der Klasse Enemy
         main.assetManager.load("playersprite/skull1.png", Texture.class);
+        main.assetManager.load("sprite/enemy/Bloated Bedbug/BloatedBedbugIdleSide.png", Texture.class);
         main.assetManager.finishLoading();
         main.assetManager.update();
     }
