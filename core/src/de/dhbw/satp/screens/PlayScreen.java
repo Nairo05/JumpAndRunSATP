@@ -8,7 +8,9 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -81,8 +83,8 @@ public class PlayScreen implements Screen {
 
         ShaderProgram.pedantic = false;
         shader = new ShaderProgram(
-                Gdx.files.internal("shaders/passthrough.vsh"),
-                Gdx.files.internal("shaders/passthrough.fsh"));
+                Gdx.files.internal("shaders/earthquake.vsh"),
+                Gdx.files.internal("shaders/earthquake.fsh"));
 
         if (!shader.isCompiled()) {
             System.err.println(shader.getLog());
@@ -168,6 +170,11 @@ public class PlayScreen implements Screen {
         //Clear Screen
         Gdx.gl20.glClearColor(0.180f, 0.353f, 0.537f, 1f);
         Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+        shader.begin();
+        //Shader bindings
+        //shader.setUniformf("u_distort", new Vector3(MathUtils.random(0.01f), MathUtils.random(0.01f),0));
+        shader.end();
 
         //begin (1/2)
         jumpAndRunMain.spriteBatch.setProjectionMatrix(cameraManager.getCamera().combined);

@@ -24,6 +24,7 @@ public class MainMenuScreen implements Screen {
 
     public MainMenuScreen(JumpAndRunMain main) {
         this.main = main;
+
         camera = new OrthographicCamera();
         Viewport viewport = new ExtendViewport(FinalStatics.VIRTUAL_WIDTH, FinalStatics.VIRTUAL_HEIGHT, camera);
 
@@ -31,7 +32,6 @@ public class MainMenuScreen implements Screen {
         levelTable.top();
         levelTable.right();
         levelTable.setFillParent(true);
-
 
         //stage.addAction(Actions.sequence(Actions.fadeIn(0.3f)));
     }
@@ -45,6 +45,8 @@ public class MainMenuScreen implements Screen {
     public void render(float delta) {
         Gdx.gl20.glClearColor(1f, 1f, 0f, 1f);
         Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+        main.screenManager.nextScreen();
     }
 
     @Override
