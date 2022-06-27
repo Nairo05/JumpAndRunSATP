@@ -4,6 +4,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Disposable;
 
 public class LevelButton extends Actor implements Disposable {
@@ -16,11 +18,26 @@ public class LevelButton extends Actor implements Disposable {
     private final Texture idTexture;
     private final TextureRegion[][] textureRegions;
     private int id;
+    private Image imageButton;
+    private Image imageNumber;
+    private Group group;
 
     public LevelButton(int id) {
         buttonTexture = new Texture(BUTTON_SPRITE_PATH);
         idTexture = new Texture(ID1_SPRITE_PATH);
         textureRegions = TextureRegion.split(idTexture, 48, 64);
+
+        group = new Group();
+        imageButton = new Image(buttonTexture);
+        imageNumber = new Image(textureRegions[0][id % 11]);
+        imageNumber.setSize(30f, 30f);
+        imageNumber.setPosition(7f, 3f);
+        group.addActor(imageButton);
+        group.addActor(imageNumber);
+    }
+
+    public Group getGroup() {
+        return group;
     }
 
     @Override
@@ -35,6 +52,7 @@ public class LevelButton extends Actor implements Disposable {
 
     @Override
     public void dispose() {
-
+        buttonTexture.dispose();
+        idTexture.dispose();
     }
 }
