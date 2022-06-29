@@ -1,4 +1,5 @@
 //4 point Vertex Shader
+precision mediump float;
 
 //given
 attribute vec4 a_color;

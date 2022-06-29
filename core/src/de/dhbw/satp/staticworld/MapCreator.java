@@ -26,7 +26,7 @@ public class MapCreator implements Disposable {
         this.world = playScreen.getWorld();
         //TODO: move in level-loading screen
         tmxMapLoader = new TmxMapLoader();
-        map = tmxMapLoader.load("tmx/1-1.tmx");
+        map = tmxMapLoader.load("tmx/NightFinal.tmx");
         playerRectangle = new Rectangle(3.3f,5f,1,1);
 
         //HitBox-Layer

@@ -41,13 +41,15 @@ public class InitLoadingScreen implements Screen {
 
         Gdx.gl20.glClearColor(0f, 0f, 0f, 1f);
         Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(1f, 1f, 1f, 1f);
         shapeRenderer.rect(30,30,load,32);
         shapeRenderer.end();
-        if (load < FinalStatics.WINDOW_WIDTH - 64) {
+
+        if (load < Gdx.graphics.getWidth() - 64) {
             load += 10;
-        } else if(main.assetManager.isFinished()) {
+        } else {
             main.screenManager.nextScreen();
         }
     }

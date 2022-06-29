@@ -54,8 +54,6 @@ public class PlayScreen implements Screen {
     private final ParallaxRenderer parallaxRenderer;
     private final OrthogonalTiledMapRenderer orthogonalTiledMapRenderer;
 
-    private ShaderProgram shader;
-
     public PlayScreen(JumpAndRunMain jumpAndRunMain) {
         this.jumpAndRunMain = jumpAndRunMain;
 
@@ -81,24 +79,6 @@ public class PlayScreen implements Screen {
         parallaxRenderer = new ParallaxRenderer(parallaxConfiguration);
 
         orthogonalTiledMapRenderer = new OrthogonalTiledMapRenderer(mapCreator.getMap(), 1f / PPM);
-
-        ShaderProgram.pedantic = false;
-        shader = new ShaderProgram(
-                Gdx.files.internal("shaders/earthquake.vsh"),
-                Gdx.files.internal("shaders/earthquake.fsh"));
-
-        if (!shader.isCompiled()) {
-            System.err.println(shader.getLog());
-            System.exit(0);
-        }
-
-        if (shader.getLog().length()!=0){
-            System.out.println(shader.getLog());
-        }
-
-        orthogonalTiledMapRenderer.getBatch().setShader(shader);
-
-
     }
 
     @Override
@@ -171,11 +151,6 @@ public class PlayScreen implements Screen {
         //Clear Screen
         Gdx.gl20.glClearColor(0.180f, 0.353f, 0.537f, 1f);
         Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-        shader.begin();
-        //Shader bindings
-        shader.setUniformf("u_distort", new Vector3(MathUtils.random(0.01f), MathUtils.random(0.01f),0));
-        shader.end();
 
         //begin (1/2)
         jumpAndRunMain.spriteBatch.setProjectionMatrix(cameraManager.getCamera().combined);

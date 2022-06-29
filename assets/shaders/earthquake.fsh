@@ -1,4 +1,5 @@
 //Pixel Shader
+precision mediump float;
 
 //given
 uniform sampler2D u_sampler2D;
