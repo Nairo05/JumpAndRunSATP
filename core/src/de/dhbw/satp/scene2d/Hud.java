@@ -54,7 +54,7 @@ public class Hud implements Disposable {
         timerTable.right();
         timerTable.setFillParent(true);
 
-        digitsTexture = new Texture(DIGIT_SPRITE_PATH);
+        digitsTexture = playScreen.getAssetManager().get(DIGIT_SPRITE_PATH);
         digits = TextureRegion.split(digitsTexture, 8, 12);
 
 
@@ -65,15 +65,13 @@ public class Hud implements Disposable {
         livesTable.left();
         livesTable.setFillParent(true);
 
-        livesTexture = new Texture(HEART_SPRITE_PATH);
+        livesTexture = playScreen.getAssetManager().get(HEART_SPRITE_PATH);
 
         liveImages = new Image[3];
 
         for (int i = 0; i < 3; i++) {
             liveImages[i] = new Image(livesTexture);
         }
-
-
 
     }
 
@@ -130,7 +128,5 @@ public class Hud implements Disposable {
     @Override
     public void dispose() {
         stage.dispose();
-        digitsTexture.dispose();
-        livesTexture.dispose();
     }
 }

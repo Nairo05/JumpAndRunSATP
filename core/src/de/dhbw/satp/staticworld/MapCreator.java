@@ -12,6 +12,7 @@ import com.badlogic.gdx.utils.Disposable;
 
 import de.dhbw.satp.gameobjects.Enemy;
 import de.dhbw.satp.gameobjects.ToSpawnObjectDefinition;
+import de.dhbw.satp.main.NotFinalStatics;
 import de.dhbw.satp.screens.PlayScreen;
 
 public class MapCreator implements Disposable {
@@ -26,7 +27,13 @@ public class MapCreator implements Disposable {
         this.world = playScreen.getWorld();
         //TODO: move in level-loading screen
         tmxMapLoader = new TmxMapLoader();
-        map = tmxMapLoader.load("tmx/NightFinal.tmx");
+        try {
+            map = tmxMapLoader.load(NotFinalStatics.levelPath);
+        } catch (Exception e) {
+            System.err.println("Warning: File not found - loading default level: 1-1");
+            map = tmxMapLoader.load("tmx/1-1.tmx");
+        }
+
         playerRectangle = new Rectangle(3.3f,5f,1,1);
 
         //HitBox-Layer

@@ -5,8 +5,13 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Disposable;
+
+import de.dhbw.satp.main.JumpAndRunMain;
+import de.dhbw.satp.main.NotFinalStatics;
 
 public class LevelButton extends Actor implements Disposable {
 
@@ -14,26 +19,31 @@ public class LevelButton extends Actor implements Disposable {
     private static final String BUTTON_SPRITE_PATH = "menu/ui/BTN_GREEN_SQ.png";
     private static final String ID1_SPRITE_PATH = "menu/menunumbers.png";
 
+    private final JumpAndRunMain main;
     private final Texture buttonTexture;
     private final Texture idTexture;
-    private final TextureRegion[][] textureRegions;
-    private int id;
-    private Image imageButton;
-    private Image imageNumber;
-    private Group group;
+    private final Group group;
+    private final int id;
 
-    public LevelButton(int id) {
-        buttonTexture = new Texture(BUTTON_SPRITE_PATH);
-        idTexture = new Texture(ID1_SPRITE_PATH);
-        textureRegions = TextureRegion.split(idTexture, 48, 64);
+
+    public LevelButton(int id, JumpAndRunMain main) {
+        this.id = id;
+        this.main = main;
+
+        buttonTexture = main.assetManager.get(BUTTON_SPRITE_PATH);
+        idTexture = main.assetManager.get(ID1_SPRITE_PATH);
+        TextureRegion[][] textureRegions = TextureRegion.split(idTexture, 48, 64);
+
+        Image imageButton = new Image(buttonTexture);
+        Image imageNumber = new Image(textureRegions[0][id % 11]);
+        imageNumber.setSize(30f, 30f);
+        imageNumber.setPosition(8f, 3f);
 
         group = new Group();
-        imageButton = new Image(buttonTexture);
-        imageNumber = new Image(textureRegions[0][id % 11]);
-        imageNumber.setSize(30f, 30f);
-        imageNumber.setPosition(7f, 3f);
         group.addActor(imageButton);
         group.addActor(imageNumber);
+        group.addListener(new MenuClickListener());
+
     }
 
     public Group getGroup() {
@@ -52,7 +62,15 @@ public class LevelButton extends Actor implements Disposable {
 
     @Override
     public void dispose() {
-        buttonTexture.dispose();
-        idTexture.dispose();
+    }
+
+    private class MenuClickListener extends ClickListener {
+
+        @Override
+        public void clicked(InputEvent event, float x, float y) {
+            System.out.println("Clicked " + id + " on: " + x + " " + y);
+            NotFinalStatics.levelPath = "tmx/1-" + id + ".tmx";
+            main.screenManager.nextScreen();
+        }
     }
 }

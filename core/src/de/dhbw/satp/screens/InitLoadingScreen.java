@@ -25,13 +25,21 @@ public class InitLoadingScreen implements Screen {
 
     @Override
     public void show() {
-        System.out.println("Ich bin der Init-Loading Scrrennnn");
+        System.out.println("Init Loading Screen started.");
     }
 
     private void loadTextures() {
         main.assetManager.clear();
         main.assetManager.load("playersprite/skull1.png", Texture.class);
         main.assetManager.load("sprite/enemy/Bloated Bedbug/BloatedBedbugIdleSide.png", Texture.class);
+        main.assetManager.load("menu/symbols/TEXT_MENU_1.png", Texture.class);
+        main.assetManager.load("tmx/backgrounds/background_0.png", Texture.class);
+        main.assetManager.load("tmx/backgrounds/background_1.png", Texture.class);
+        main.assetManager.load("tmx/backgrounds/background_2.png", Texture.class);
+        main.assetManager.load("menu/menunumbers.png", Texture.class);
+        main.assetManager.load("menu/ui/BTN_GREEN_SQ.png", Texture.class);
+        main.assetManager.load("sprite/digits.png", Texture.class);
+        main.assetManager.load("sprite/heart.png", Texture.class);
         main.assetManager.finishLoading();
         main.assetManager.update();
     }
