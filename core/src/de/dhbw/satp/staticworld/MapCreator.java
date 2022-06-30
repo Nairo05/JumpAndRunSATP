@@ -11,6 +11,8 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Disposable;
 
 import de.dhbw.satp.gameobjects.Enemy;
+import de.dhbw.satp.gameobjects.EnemySpike;
+import de.dhbw.satp.gameobjects.EnemyStandard;
 import de.dhbw.satp.gameobjects.ToSpawnObjectDefinition;
 import de.dhbw.satp.main.NotFinalStatics;
 import de.dhbw.satp.screens.PlayScreen;
@@ -64,7 +66,10 @@ public class MapCreator implements Disposable {
 
             } else if (mapObject.getName().equalsIgnoreCase("Enemy1")) {
                 System.out.println("Found an enemy1 " + (mapObject.getRectangle().x + mapObject.getRectangle().width / 2) / PPM + " - " + (mapObject.getRectangle().y + 16) / PPM + " with width of: " + mapObject.getRectangle().width);
-                playScreen.getEntityManager().spawnDynamicEntity(new ToSpawnObjectDefinition<>(Enemy.class, (mapObject.getRectangle().x + mapObject.getRectangle().width / 2), (mapObject.getRectangle().y + 16), mapObject.getRectangle().width));
+                playScreen.getEntityManager().spawnDynamicEntity(new ToSpawnObjectDefinition<>(EnemyStandard.class, (mapObject.getRectangle().x + mapObject.getRectangle().width / 2), (mapObject.getRectangle().y + 16), mapObject.getRectangle().width));
+            } else if (mapObject.getName().equalsIgnoreCase("Enemy2")) {
+                System.out.println("Found an enemy2 " + (mapObject.getRectangle().x + mapObject.getRectangle().width / 2) / PPM + " - " + (mapObject.getRectangle().y + 16) / PPM + " with width of: " + mapObject.getRectangle().width);
+                playScreen.getEntityManager().spawnDynamicEntity(new ToSpawnObjectDefinition<>(EnemySpike.class, (mapObject.getRectangle().x + mapObject.getRectangle().width / 2), (mapObject.getRectangle().y + 16), mapObject.getRectangle().width));
             }
         }
 

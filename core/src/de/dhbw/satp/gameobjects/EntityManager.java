@@ -11,8 +11,6 @@ import de.dhbw.satp.screens.PlayScreen;
 
 public class EntityManager implements Disposable {
 
-    //TODO: Gegner mit Stacheln, auf den man nicht springen darf   ...für Herr Uhl ;)
-
     private final int MAX_ENTITIES_IN_WORLD = 16;
     private final int MAX_QUEUED_ENTITIES = 32;
 
@@ -44,8 +42,11 @@ public class EntityManager implements Disposable {
 
                 if (currentSpawnDef.getBlueprint() == TestEntity.class) {
                     dynamicEntityArrayList.add(new TestEntity(playScreen, currentSpawnDef.getPosXInWorldUnits(), currentSpawnDef.getPosYInWorldUnits()));
-                } else if (currentSpawnDef.getBlueprint() == Enemy.class) {
-                    dynamicEntityArrayList.add(new Enemy(playScreen, currentSpawnDef.getPosXInWorldUnits(), currentSpawnDef.getPosYInWorldUnits(), currentSpawnDef.getWidth()));
+                } else if (currentSpawnDef.getBlueprint() == EnemyStandard.class) {
+                    dynamicEntityArrayList.add(new EnemyStandard(playScreen, currentSpawnDef.getPosXInWorldUnits(), currentSpawnDef.getPosYInWorldUnits(), currentSpawnDef.getWidth()));
+                    System.out.println("Spawned new Enemy at " + currentSpawnDef.getPosXInWorldUnits() + " " + currentSpawnDef.getPosYInWorldUnits());
+                } else if (currentSpawnDef.getBlueprint() == EnemySpike.class) {
+                    dynamicEntityArrayList.add(new EnemySpike(playScreen, currentSpawnDef.getPosXInWorldUnits(), currentSpawnDef.getPosYInWorldUnits(), currentSpawnDef.getWidth()));
                     System.out.println("Spawned new Enemy at " + currentSpawnDef.getPosXInWorldUnits() + " " + currentSpawnDef.getPosYInWorldUnits());
                 }
             }

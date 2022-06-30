@@ -44,6 +44,7 @@ public class InitLoadingScreen implements Screen {
         //Sprite
         main.assetManager.load("playersprite/skull1.png", Texture.class);
         main.assetManager.load("sprite/enemy/Bloated Bedbug/BloatedBedbugIdleSide.png", Texture.class);
+        main.assetManager.load("sprite/enemy/Lethal Scorpion/LethalScorpionIdleSide.png", Texture.class);
         main.assetManager.load("sprite/digits.png", Texture.class);
         main.assetManager.load("sprite/heart.png", Texture.class);
         //Menu

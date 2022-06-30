@@ -16,6 +16,7 @@ import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import de.dhbw.satp.gameobjects.Enemy;
+import de.dhbw.satp.gameobjects.EnemyStandard;
 import de.dhbw.satp.gameobjects.EntityManager;
 import de.dhbw.satp.gameobjects.Player;
 import de.dhbw.satp.gameobjects.ToSpawnObjectDefinition;
@@ -94,7 +95,7 @@ public class PlayScreen implements Screen {
         debugOnScreenDisplay.update(dt);
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.O)) {
-            entityManager.spawnDynamicEntity(new ToSpawnObjectDefinition<>(Enemy.class, 80f, 70f, 32f));
+            entityManager.spawnDynamicEntity(new ToSpawnObjectDefinition<>(EnemyStandard.class, 80f, 70f, 32f));
         }
 
         debugOnScreenDisplay.setFrameInfo("FRAME INFO |" +

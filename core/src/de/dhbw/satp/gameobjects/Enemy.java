@@ -13,14 +13,15 @@ import de.dhbw.satp.main.FinalStatics;
 import de.dhbw.satp.screens.PlayScreen;
 import de.dhbw.satp.staticworld.BitFilterDef;
 
-public class Enemy extends DynamicEntity {
+public abstract class Enemy extends DynamicEntity {
 
     private final float leftBound;
     private final float rightBound;
     private boolean movesLeft = false;
 
-    private Texture texture;
-    private TextureRegion[][] textureRegions;
+    protected PlayScreen playScreen;
+    protected Texture texture;
+    protected TextureRegion[][] textureRegions;
     private int framecount = 0;
     private int frame = 0;
 
@@ -32,8 +33,7 @@ public class Enemy extends DynamicEntity {
         this.leftBound = (posXInWorldUnits - (roamWidth)) / FinalStatics.PPM;
         this.rightBound = (posXInWorldUnits + (roamWidth)) / FinalStatics.PPM;
 
-        texture = playScreen.getAssetManager().get("sprite/enemy/Bloated Bedbug/BloatedBedbugIdleSide.png", Texture.class);
-        textureRegions = TextureRegion.split(texture, 16, 16);
+        this.playScreen = playScreen;
     }
 
     @Override
