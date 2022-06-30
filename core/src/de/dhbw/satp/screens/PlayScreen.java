@@ -9,7 +9,6 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.World;
@@ -23,7 +22,8 @@ import de.dhbw.satp.gameobjects.ToSpawnObjectDefinition;
 import de.dhbw.satp.helper.CameraManager;
 import de.dhbw.satp.main.FinalStatics;
 import de.dhbw.satp.main.JumpAndRunMain;
-import de.dhbw.satp.parallax.ParallaxConfiguration;
+import de.dhbw.satp.main.assetfragments.ParallaxAsset;
+import de.dhbw.satp.main.assetfragments.ShaderAsset;
 import de.dhbw.satp.parallax.ParallaxRenderer;
 import de.dhbw.satp.particle.ParticleManager;
 import de.dhbw.satp.scene2d.DebugOnScreenDisplay;
@@ -54,6 +54,8 @@ public class PlayScreen implements Screen {
     private final ParallaxRenderer parallaxRenderer;
     private final OrthogonalTiledMapRenderer orthogonalTiledMapRenderer;
 
+    private final ShaderProgram shaderProgram;
+
     public PlayScreen(JumpAndRunMain jumpAndRunMain) {
         this.jumpAndRunMain = jumpAndRunMain;
 
@@ -74,11 +76,13 @@ public class PlayScreen implements Screen {
         debugOnScreenDisplay = new DebugOnScreenDisplay(jumpAndRunMain.spriteBatch);
         hud = new Hud(this, jumpAndRunMain.spriteBatch);
 
-        ParallaxConfiguration parallaxConfiguration = new ParallaxConfiguration();
-        parallaxConfiguration.load("tmx/1-1.parallax");
-        parallaxRenderer = new ParallaxRenderer(parallaxConfiguration);
+        parallaxRenderer = new ParallaxRenderer(getAssetManager().get("tmx/1-1.parallax", ParallaxAsset.class));
+
+        shaderProgram = getAssetManager().get("shaders/colorshift", ShaderAsset.class).getShaderProgram();
 
         orthogonalTiledMapRenderer = new OrthogonalTiledMapRenderer(mapCreator.getMap(), 1f / PPM);
+
+        orthogonalTiledMapRenderer.getBatch().setShader(shaderProgram);
     }
 
     @Override
@@ -151,6 +155,10 @@ public class PlayScreen implements Screen {
         //Clear Screen
         Gdx.gl20.glClearColor(0.180f, 0.353f, 0.537f, 1f);
         Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+        shaderProgram.begin();
+        shaderProgram.setUniformf("u_shift", new Vector3(0.2f,0.2f,0.2f));
+        shaderProgram.end();
 
         //begin (1/2)
         jumpAndRunMain.spriteBatch.setProjectionMatrix(cameraManager.getCamera().combined);

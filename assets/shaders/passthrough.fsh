@@ -1,14 +1,16 @@
 //Pixel Shader
+#ifdef GL_ES
+#define LOWP lowp
 precision mediump float;
-
+#else
+#define LOWP
+#endif
 //given
-uniform sampler2D u_sampler2D;
-
+uniform sampler2D u_texture;
 //set
-varying vec4 v_color;
-varying vec2 v_texCoord0;
-
+varying LOWP vec4 v_color;
+varying vec2 v_texCoords;
 //Code
 void main() {
-    gl_FragColor = texture2D(u_sampler2D, v_texCoord0) * v_color;
+    gl_FragColor = v_color * texture2D(u_texture, v_texCoords);
 }

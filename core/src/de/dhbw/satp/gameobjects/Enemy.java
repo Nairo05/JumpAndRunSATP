@@ -140,8 +140,5 @@ public class Enemy extends DynamicEntity {
 
     @Override
     public void dispose() {
-        texture.dispose();
     }
 }
-
-

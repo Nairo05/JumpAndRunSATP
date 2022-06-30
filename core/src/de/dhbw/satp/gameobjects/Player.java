@@ -201,7 +201,6 @@ public class Player implements GameObject, Disposable {
 
     @Override
     public void dispose() {
-        texture.dispose();
     }
 
     public float getX() {

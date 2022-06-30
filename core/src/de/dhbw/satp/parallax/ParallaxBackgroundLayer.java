@@ -20,7 +20,7 @@ public class ParallaxBackgroundLayer implements Disposable {
     private final Array<Vector2> positions;
 
     private final float backgroundWith;
-    private final float backgroundHeigth;
+    private final float backgroundHeight;
 
     public ParallaxBackgroundLayer(Texture texture) {
         bg = texture;
@@ -28,7 +28,7 @@ public class ParallaxBackgroundLayer implements Disposable {
         yOffset = 0f;
 
         backgroundWith = bg.getWidth() / (FinalStatics.PPM * VIEWPORT_STRETCH_FACTOR);
-        backgroundHeigth = bg.getHeight() / (FinalStatics.PPM * VIEWPORT_STRETCH_FACTOR);
+        backgroundHeight = bg.getHeight() / (FinalStatics.PPM * VIEWPORT_STRETCH_FACTOR);
     }
 
     public void addBackGround(float x) {
@@ -39,11 +39,12 @@ public class ParallaxBackgroundLayer implements Disposable {
         return positions.size;
     }
 
+    public void clearBackGround() {
+        positions.clear();
+    }
+
     public Vector2 getPosition(int index) {
-        if (index < positions.size) {
-            return positions.get(index);
-        }
-        return Vector2.Zero;
+        return positions.get(index);
     }
 
     public Texture getBg() {
@@ -55,7 +56,7 @@ public class ParallaxBackgroundLayer implements Disposable {
     }
 
     public float getBackgroundHeigth() {
-        return backgroundHeigth;
+        return backgroundHeight;
     }
 
     public float getyOffset() {
@@ -86,4 +87,6 @@ public class ParallaxBackgroundLayer implements Disposable {
     public void dispose() {
         bg.dispose();
     }
+
+
 }

@@ -1,4 +1,4 @@
-package de.dhbw.satp.parallax;
+package de.dhbw.satp.main.assetfragments;
 
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
@@ -6,12 +6,14 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.Array;
 
-public class ParallaxConfiguration {
+import de.dhbw.satp.parallax.ParallaxBackgroundLayer;
+
+public class ParallaxAsset {
     //TODO: Use JSON file and try to preload it
 
     private final Array<ParallaxBackgroundLayer> layers;
 
-    public ParallaxConfiguration() {
+    public ParallaxAsset() {
         layers = new Array<>();
     }
 

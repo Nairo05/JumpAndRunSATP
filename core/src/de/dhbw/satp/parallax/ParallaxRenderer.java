@@ -6,6 +6,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 
 import de.dhbw.satp.main.FinalStatics;
+import de.dhbw.satp.main.assetfragments.ParallaxAsset;
 
 /**
  * Custom Renderer
@@ -21,13 +22,19 @@ public class ParallaxRenderer implements Disposable {
     //Offset to avoid "Black-Render-Lines"
     private final float RENDER_OFFSET = 0.005f;
 
-    private final Array<ParallaxBackgroundLayer> layerArray = new Array<>();
+    private final Array<ParallaxBackgroundLayer> layerArray;
 
     private float camOld = 0;
 
-    public ParallaxRenderer(ParallaxConfiguration parallaxConfiguration) {
+    public ParallaxRenderer(ParallaxAsset parallaxAsset) {
 
-        layerArray.addAll(parallaxConfiguration.getPBgLayers());
+        layerArray = new Array<>();
+
+        layerArray.addAll(parallaxAsset.getPBgLayers());
+
+        for (int i = 0; i < layerArray.size; i++) {
+            layerArray.get(i).clearBackGround();
+        }
 
         //Start-Position of ech Background
         for (int i = 0; i < layerArray.size; i++) {
@@ -35,6 +42,7 @@ public class ParallaxRenderer implements Disposable {
                 layerArray.get(i).addBackGround(j * layerArray.get(i).getBackgroundWith() - j * RENDER_OFFSET);
             }
         }
+
     }
 
     public void update(float dt, Camera camera) {
@@ -84,8 +92,5 @@ public class ParallaxRenderer implements Disposable {
     @Override
     public void dispose() {
         //release Video-RAM
-        for (int i = 0; i < layerArray.size; i++) {
-            layerArray.get(i).dispose();
-        }
     }
 }
