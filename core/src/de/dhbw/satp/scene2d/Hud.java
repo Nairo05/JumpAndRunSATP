@@ -48,7 +48,7 @@ public class Hud implements Disposable {
         stage = new Stage(viewport, batch);
 
         //Level timer
-        time = 120;
+        time = 300;
         timerTable = new Table();
         timerTable.top();
         timerTable.right();
