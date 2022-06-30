@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 import de.dhbw.satp.main.FinalStatics;
@@ -17,12 +18,18 @@ public class InitLoadingScreen implements Screen {
     private int counter = 20;
     private ShapeRenderer shapeRenderer;
     private int load;
+    private Texture texture;
+    private TextureRegion[][] textureRegion;
+    private int frameCount = 0;
+    private int currentFrame = 0;
 
     public InitLoadingScreen(JumpAndRunMain main) {
         this.main = main;
         this.loadTextures();
         shapeRenderer = new ShapeRenderer();
         load = 32;
+        texture = new Texture("playersprite/skull1.png");
+        textureRegion = TextureRegion.split(texture, 13, 20);
     }
 
     @Override
@@ -62,6 +69,7 @@ public class InitLoadingScreen implements Screen {
     @Override
     public void render(float delta) {
 
+        frameCount++;
         Gdx.gl20.glClearColor(0f, 0f, 0f, 1f);
         Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
@@ -75,6 +83,18 @@ public class InitLoadingScreen implements Screen {
         } else {
             main.screenManager.nextScreen();
         }
+
+        if (frameCount % 10 == 0) {
+            currentFrame++;
+            if (currentFrame > 3) {
+                currentFrame = 0;
+            }
+        }
+
+
+        main.spriteBatch.begin();
+        main.spriteBatch.draw(textureRegion[0][currentFrame], 50, 80, 65, 100);
+        main.spriteBatch.end();
     }
 
     @Override
@@ -99,6 +119,7 @@ public class InitLoadingScreen implements Screen {
 
     @Override
     public void dispose() {
-        System.out.println("Ich ürde gelöscht ich bin initloading");
+        System.out.println("Ich wurde gelöscht, ich bin initloading");
+        texture.dispose();
     }
 }
