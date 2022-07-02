@@ -58,7 +58,9 @@ public class Player implements GameObject, Disposable {
         bodyCircleShape.setRadius(7f / PPM);
         fixtureDef.shape = bodyCircleShape;
         fixtureDef.filter.categoryBits = BitFilterDef.PLAYER_BIT;
-        fixtureDef.filter.maskBits = BitFilterDef.GROUND_BIT | BitFilterDef.ENEMY_BODY_BIT | BitFilterDef.ENEMY_HEAD_BIT | BitFilterDef.ONE_WAY_GROUND;
+        fixtureDef.filter.maskBits = BitFilterDef.GROUND_BIT | BitFilterDef.ENEMY_BODY_BIT
+                | BitFilterDef.ENEMY_HEAD_BIT | BitFilterDef.ONE_WAY_GROUND
+                | BitFilterDef.COLLECITBLE_BIT;
         playerBody.createFixture(fixtureDef);
 
         EdgeShape foot = new EdgeShape();

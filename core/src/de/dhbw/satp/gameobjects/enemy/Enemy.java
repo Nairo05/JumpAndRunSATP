@@ -1,4 +1,4 @@
-package de.dhbw.satp.gameobjects;
+package de.dhbw.satp.gameobjects.enemy;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -9,6 +9,7 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 
+import de.dhbw.satp.gameobjects.DynamicEntity;
 import de.dhbw.satp.main.FinalStatics;
 import de.dhbw.satp.screens.PlayScreen;
 import de.dhbw.satp.staticworld.BitFilterDef;

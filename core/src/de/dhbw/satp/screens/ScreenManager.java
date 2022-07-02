@@ -32,6 +32,9 @@ public class ScreenManager {
     }
 
     public void nextScreen() {
+
+        System.out.println("-- Switch Screen command, current: " + currentScreen.name());
+
         switch (currentScreen) {
             case INIT_LOADING:
                 setCurrentScreen(SCREEN.MAIN_MENU);
@@ -79,6 +82,8 @@ public class ScreenManager {
                 screenMap.get(SCREEN.GAME_OVER).dispose();
                 break;
         }
+
+        System.out.println("-- Switch Screen command, to: " + currentScreen.name());
     }
 
     public SCREEN getCurrentScreen() {

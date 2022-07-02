@@ -1,6 +1,7 @@
 package de.dhbw.satp.particle;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -11,11 +12,14 @@ import java.awt.peer.DialogPeer;
 
 public class ParticleManager implements Disposable {
 
+    private AssetManager assetManager;
     private final int MAX_PARTICLE_IN_WORLD = 4;
     private final Array<ParticleEffect> particles;
     private int currentActive = 0;
 
-    public ParticleManager() {
+    public ParticleManager(AssetManager assetManager) {
+        this.assetManager  = assetManager;
+
         particles = new Array<>(MAX_PARTICLE_IN_WORLD);
     }
 

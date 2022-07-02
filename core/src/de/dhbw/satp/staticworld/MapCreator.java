@@ -10,9 +10,8 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Disposable;
 
-import de.dhbw.satp.gameobjects.Enemy;
-import de.dhbw.satp.gameobjects.EnemySpike;
-import de.dhbw.satp.gameobjects.EnemyStandard;
+import de.dhbw.satp.gameobjects.enemy.EnemySpike;
+import de.dhbw.satp.gameobjects.enemy.EnemyStandard;
 import de.dhbw.satp.gameobjects.ToSpawnObjectDefinition;
 import de.dhbw.satp.main.NotFinalStatics;
 import de.dhbw.satp.screens.PlayScreen;
@@ -76,6 +75,11 @@ public class MapCreator implements Disposable {
         //Particle-Layer
         for (RectangleMapObject mapObject : map.getLayers().get(5).getObjects().getByType(RectangleMapObject.class)) {
             playScreen.getParticleManager().addParticleEffect(mapObject.getName(), mapObject.getRectangle().x / PPM, mapObject.getRectangle().y / PPM);
+        }
+
+        //Collectible-Layer
+        for (RectangleMapObject mapObject : map.getLayers().get(6).getObjects().getByType(RectangleMapObject.class)) {
+            playScreen.getCollectibleManager().createCoinAndRegister(mapObject.getRectangle().x, mapObject.getRectangle().y).freeze();
         }
     }
 

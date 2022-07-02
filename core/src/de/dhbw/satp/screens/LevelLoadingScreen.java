@@ -54,6 +54,6 @@ public class LevelLoadingScreen implements Screen {
 
     @Override
     public void dispose() {
-        System.out.println("LevelLoading deisposed");
+        System.out.println("LevelLoadingScreen dispose call");
     }
 }

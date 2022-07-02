@@ -35,12 +35,12 @@ public class ParallaxBackgroundLayer implements Disposable {
         positions.add(new Vector2(x, 0f));
     }
 
-    public int getBackgroundCount() {
-        return positions.size;
-    }
-
     public void clearBackGround() {
         positions.clear();
+    }
+
+    public int getBackgroundCount() {
+        return positions.size;
     }
 
     public Vector2 getPosition(int index) {

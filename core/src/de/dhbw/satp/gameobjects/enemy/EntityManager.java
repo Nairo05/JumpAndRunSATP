@@ -1,4 +1,4 @@
-package de.dhbw.satp.gameobjects;
+package de.dhbw.satp.gameobjects.enemy;
 
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -7,6 +7,9 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.Queue;
 
+import de.dhbw.satp.gameobjects.DynamicEntity;
+import de.dhbw.satp.gameobjects.TestEntity;
+import de.dhbw.satp.gameobjects.ToSpawnObjectDefinition;
 import de.dhbw.satp.screens.PlayScreen;
 
 public class EntityManager implements Disposable {

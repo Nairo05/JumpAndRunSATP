@@ -1,6 +1,5 @@
 package de.dhbw.satp.main.assetfragments;
 
-
 import com.badlogic.gdx.assets.AssetDescriptor;
 import com.badlogic.gdx.assets.AssetLoaderParameters;
 import com.badlogic.gdx.assets.AssetManager;
@@ -18,8 +17,10 @@ public class ParallaxFragmentAssetLoader extends SynchronousAssetLoader<Parallax
     @Override
     public ParallaxAsset load(AssetManager assetManager, String fileName, FileHandle file, ParallaxParameter parameter) {
         ParallaxAsset parallaxAsset = new ParallaxAsset();
+
         System.out.println("loading CustomAsset ParallaxAsset (ParallaxConfiguration.java)");
         parallaxAsset.load(fileName);
+
         return parallaxAsset;
     }
 

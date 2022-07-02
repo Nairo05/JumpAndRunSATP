@@ -19,11 +19,14 @@ public class ShaderFragmentAssetLoader extends SynchronousAssetLoader<ShaderAsse
 
         ShaderAsset shaderAsset = new ShaderAsset();
         shaderAsset.initialize();
+
         System.out.println("loading CustomAsset ShaderAsset (ShaderProgramm.java)");
         shaderAsset.setShaderProgram(fileName);
+
         if (shaderAsset.getShaderProgram().isCompiled()) {
             System.out.println("- loaded Shader " + fileName);
             return shaderAsset;
+
         } else {
             shaderAsset.printErrors();
             System.out.println("- cant load Shader " + fileName + " using default instead, Stacktrace: ");

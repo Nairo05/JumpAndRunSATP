@@ -11,12 +11,9 @@ import de.dhbw.satp.main.assetfragments.ParallaxAsset;
 import de.dhbw.satp.main.assetfragments.ParallaxFragmentAssetLoader;
 import de.dhbw.satp.main.assetfragments.ShaderAsset;
 import de.dhbw.satp.main.assetfragments.ShaderFragmentAssetLoader;
-import de.dhbw.satp.screens.PlayScreen;
 import de.dhbw.satp.screens.ScreenManager;
 
 public class JumpAndRunMain extends Game {
-
-	//TODO: Asset Manager
 
 	public SpriteBatch spriteBatch;
 	public AssetManager assetManager;
@@ -25,10 +22,13 @@ public class JumpAndRunMain extends Game {
 	@Override
 	public void create () {
 		spriteBatch = new SpriteBatch();
+
 		assetManager = new AssetManager();
 		assetManager.setLoader(ParallaxAsset.class, new ParallaxFragmentAssetLoader(new InternalFileHandleResolver()));
 		assetManager.setLoader(ShaderAsset.class, new ShaderFragmentAssetLoader(new InternalFileHandleResolver()));
+
 		screenManager = new ScreenManager(this);
+
 	}
 
 	@Override
@@ -43,5 +43,12 @@ public class JumpAndRunMain extends Game {
 	@Override
 	public void dispose () {
 		super.dispose();
+
+		System.out.println("Initial dispose Call");
+
+		assetManager.clear();
+
+		assetManager.dispose();
+		spriteBatch.dispose();
 	}
 }

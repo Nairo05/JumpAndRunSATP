@@ -21,6 +21,7 @@ public class DebugOnScreenDisplay {
     private final StageText2D debuggerInfo;
     private final StageText2D particleManagerInfo;
     private final StageText2D entityManagerInfo;
+    private final StageText2D spawnAble;
     private final StageText2D frameInfo;
     private final StageText2D playerInfo;
 
@@ -36,7 +37,8 @@ public class DebugOnScreenDisplay {
         frameInfo = new StageText2D(10f, 580f);
         particleManagerInfo = new StageText2D(10f, 540f);
         entityManagerInfo = new StageText2D(10f, 520f);
-        playerInfo = new StageText2D(10f, 480f);
+        spawnAble = new StageText2D(10f, 500f);
+        playerInfo = new StageText2D(10f, 460f);
 
         Viewport viewport = new ExtendViewport(FinalStatics.WINDOW_WIDTH, FinalStatics.WINDOW_HEIGHT, new OrthographicCamera());
         stage = new Stage(viewport, spriteBatch);
@@ -46,6 +48,7 @@ public class DebugOnScreenDisplay {
         stage.addActor(playerInfo);
         stage.addActor(entityManagerInfo);
         stage.addActor(particleManagerInfo);
+        stage.addActor(spawnAble);
 
         debugRenderer = new Box2DDebugRenderer();
         debugRenderer.setDrawAABBs(true);
@@ -90,6 +93,9 @@ public class DebugOnScreenDisplay {
     }
     public void setPlayerInfo(String playerInfo) {
         this.playerInfo.setText(playerInfo);
+    }
+    public void setSpawnAbleInfo(String text) {
+        this.spawnAble.setText(text);
     }
     public void setParticleManagerInfo(String particleInfo) {
         this.particleManagerInfo.setText(particleInfo);

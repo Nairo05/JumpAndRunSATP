@@ -1,5 +1,6 @@
 package de.dhbw.satp.staticworld;
 
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
@@ -8,7 +9,7 @@ import com.badlogic.gdx.physics.box2d.Manifold;
 import java.util.Random;
 
 import de.dhbw.satp.gameobjects.DynamicEntity;
-import de.dhbw.satp.gameobjects.Enemy;
+import de.dhbw.satp.gameobjects.enemy.Enemy;
 import de.dhbw.satp.gameobjects.ToSpawnObjectDefinition;
 import de.dhbw.satp.screens.PlayScreen;
 
@@ -57,6 +58,22 @@ public class MyContactListener implements ContactListener {
                 DynamicEntity entity  = (DynamicEntity) contact.getFixtureB().getUserData();
                 entity.onHeadHit();
                 System.out.println("async deleted");
+            }
+        }
+        if (checksum == BitFilterDef.PLAYER_COLLECT_COIN) {
+            if (contact.getFixtureA().getFilterData().categoryBits == BitFilterDef.COLLECITBLE_BIT) {
+                DynamicEntity entity  = (DynamicEntity) contact.getFixtureA().getUserData();
+                if (MathUtils.random(4) == 0) {
+                    playScreen.setEarthQuakeCount(MathUtils.random(60));
+                }
+                entity.onBodyHit();
+            }
+            if (contact.getFixtureB().getFilterData().categoryBits == BitFilterDef.COLLECITBLE_BIT) {
+                DynamicEntity entity  = (DynamicEntity) contact.getFixtureB().getUserData();
+                entity.onBodyHit();
+                if (MathUtils.random(10) == 0) {
+                    playScreen.setEarthQuakeCount(MathUtils.random(200));
+                }
             }
         }
     }

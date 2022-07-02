@@ -9,15 +9,17 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
-import de.dhbw.satp.gameobjects.Enemy;
-import de.dhbw.satp.gameobjects.EnemyStandard;
-import de.dhbw.satp.gameobjects.EntityManager;
+import de.dhbw.satp.gameobjects.collectible.CollectibleManager;
+import de.dhbw.satp.gameobjects.collectible.DynamicCoin;
+import de.dhbw.satp.gameobjects.enemy.EnemyStandard;
+import de.dhbw.satp.gameobjects.enemy.EntityManager;
 import de.dhbw.satp.gameobjects.Player;
 import de.dhbw.satp.gameobjects.ToSpawnObjectDefinition;
 import de.dhbw.satp.helper.CameraManager;
@@ -38,6 +40,7 @@ public class PlayScreen implements Screen {
     private final JumpAndRunMain jumpAndRunMain;
 
     private boolean toEnd = false;
+    private int earthQuakeCount = 0;
 
     private final Player player;
     private final World world;
@@ -48,6 +51,7 @@ public class PlayScreen implements Screen {
 
     private final EntityManager entityManager;
     private final ParticleManager particleManager;
+    private final CollectibleManager collectibleManager;
 
     private final DebugOnScreenDisplay debugOnScreenDisplay;
     private final Hud hud;
@@ -63,7 +67,8 @@ public class PlayScreen implements Screen {
         world = new World(new Vector2(0f,-9.81f), true);
 
         entityManager = new EntityManager(this);
-        particleManager = new ParticleManager();
+        particleManager = new ParticleManager(getAssetManager());
+        collectibleManager = new CollectibleManager(this);
 
         cameraManager = new CameraManager();
         viewport = new ExtendViewport(FinalStatics.VIRTUAL_WIDTH / PPM, FinalStatics.VIRTUAL_HEIGHT / PPM, cameraManager.getCamera());
@@ -95,7 +100,7 @@ public class PlayScreen implements Screen {
         debugOnScreenDisplay.update(dt);
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.O)) {
-            entityManager.spawnDynamicEntity(new ToSpawnObjectDefinition<>(EnemyStandard.class, 80f, 70f, 32f));
+            collectibleManager.aSyncSpawn(DynamicCoin.class, 200,400);
         }
 
         debugOnScreenDisplay.setFrameInfo("FRAME INFO |" +
@@ -118,6 +123,12 @@ public class PlayScreen implements Screen {
                 "   QUEUE: " + "0/0" +
                 "   EMITTER : " + particleManager.getParticleSize() + "/" + particleManager.getMAX_PARTICLE_IN_WORLD() +
                 "   ACTIVE: " + particleManager.getActive());
+
+        debugOnScreenDisplay.setSpawnAbleInfo("COLLE MANAGER |" +
+                "   QUEUE: " + collectibleManager.getQueued() + "/" + collectibleManager.getQueuedMaxSize() + "" +
+                "   SPAWNED: " + collectibleManager.getCount() + "/" + collectibleManager.getSize() +
+                "   ACTIVE: " + collectibleManager.getActiveCount() + "/" + collectibleManager.getCount());
+
     }
 
 
@@ -129,8 +140,9 @@ public class PlayScreen implements Screen {
     private void update(float dt) {
         entityManager.update(dt);
         particleManager.update(dt);
-
+        collectibleManager.update(dt, cameraManager.getCamera());
         cameraManager.update(player, dt);
+
         updatePlayer(dt);
         handleDebug(dt);
         hud.update(dt);
@@ -157,8 +169,24 @@ public class PlayScreen implements Screen {
         Gdx.gl20.glClearColor(0.180f, 0.353f, 0.537f, 1f);
         Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+        //Shader
         shaderProgram.begin();
-        shaderProgram.setUniformf("u_shift", new Vector3(0.2f,0.2f,0.2f));
+
+        Vector3 u_distort = Vector3.Zero;
+        float shaderValue = (collectibleManager.getCount() * 1f) / collectibleManager.getIntItCount();
+
+        if (earthQuakeCount > 0) {
+            earthQuakeCount--;
+
+            u_distort.set(MathUtils.random(0.01f)-0.005f, MathUtils.random(0.01f)-0.005f, 0);
+        }
+
+        if (shaderValue > 1f) {
+            shaderValue = 1f;
+        }
+
+        shaderProgram.setUniformf("u_distort", u_distort);
+        shaderProgram.setUniformf("u_shift", new Vector3(shaderValue,shaderValue,shaderValue));
         shaderProgram.end();
 
         //begin (1/2)
@@ -167,6 +195,7 @@ public class PlayScreen implements Screen {
 
         //render | Batch Renderer
         parallaxRenderer.render(jumpAndRunMain.spriteBatch);
+        collectibleManager.render(jumpAndRunMain.spriteBatch);
 
         //end (1/2)
         jumpAndRunMain.spriteBatch.end();
@@ -216,6 +245,7 @@ public class PlayScreen implements Screen {
 
     @Override
     public void dispose() {
+        System.out.println("PlayScreen dispose call (heavy)");
         world.dispose();
         player.dispose();
         hud.dispose();
@@ -245,5 +275,13 @@ public class PlayScreen implements Screen {
 
     public AssetManager getAssetManager() {
         return jumpAndRunMain.assetManager;
+    }
+
+    public CollectibleManager getCollectibleManager() {
+        return collectibleManager;
+    }
+
+    public void setEarthQuakeCount(int earthQuakeCount) {
+        this.earthQuakeCount += earthQuakeCount;
     }
 }

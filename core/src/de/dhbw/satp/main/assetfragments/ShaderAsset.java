@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 public class ShaderAsset {
 
     private ShaderProgram shaderProgram;
+
     public void initialize() {
         ShaderProgram.pedantic = false;
     }
@@ -15,9 +16,9 @@ public class ShaderAsset {
     }
 
     public void setShaderProgram(String filename) {
-        this.shaderProgram = new ShaderProgram(
-                Gdx.files.internal(filename + ".vsh"),
-                Gdx.files.internal(filename + ".fsh"));
+            this.shaderProgram = new ShaderProgram(
+                    Gdx.files.internal(filename + ".vsh"),
+                    Gdx.files.internal(filename + ".fsh"));
 
     }
 
@@ -37,6 +38,7 @@ public class ShaderAsset {
                 + "   v_texCoords = " + ShaderProgram.TEXCOORD_ATTRIBUTE + "0;\n" //
                 + "   gl_Position =  u_projTrans * " + ShaderProgram.POSITION_ATTRIBUTE + ";\n" //
                 + "}\n";
+
         String fragmentShader = "#ifdef GL_ES\n" //
                 + "#define LOWP lowp\n" //
                 + "precision mediump float;\n" //
@@ -50,7 +52,9 @@ public class ShaderAsset {
                 + "{\n" //
                 + "  gl_FragColor = v_color * texture2D(u_texture, v_texCoords);\n" //
                 + "}";
+
         this.shaderProgram = new ShaderProgram(vertexShader, fragmentShader);
+
         return this;
     }
 

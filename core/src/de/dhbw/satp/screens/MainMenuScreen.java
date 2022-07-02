@@ -19,12 +19,19 @@ import de.dhbw.satp.scene2d.LevelButton;
 public class MainMenuScreen implements Screen {
 
     private final int LEVELS = 10;
+    private final float scaleFactor = 2.1f;
 
     public Stage stage;
     private final Texture textTexture;
     private final Texture cloudTexture;
+    private final Texture cloudTexture1;
+    private JumpAndRunMain main;
 
     public MainMenuScreen(JumpAndRunMain main) {
+        this.main = main;
+
+        cloudTexture = main.assetManager.get("tmx/backgrounds/background_0.png");
+        cloudTexture1 = main.assetManager.get("tmx/backgrounds/background_1.png");
 
         OrthographicCamera camera = new OrthographicCamera();
         Viewport viewport = new ExtendViewport(FinalStatics.VIRTUAL_WIDTH, FinalStatics.VIRTUAL_HEIGHT, camera);
@@ -42,16 +49,6 @@ public class MainMenuScreen implements Screen {
         menuTable.add(textImage);
 
         stage.addActor(menuTable);
-
-        Table cloudTable = new Table();
-        cloudTable.bottom();
-        cloudTable.setFillParent(true);
-
-        cloudTexture = main.assetManager.get("tmx/backgrounds/background_1.png");
-        Image cloudImage = new Image(cloudTexture);
-        cloudTable.add(cloudImage).size(FinalStatics.VIRTUAL_WIDTH, FinalStatics.VIRTUAL_HEIGHT);
-
-        stage.addActor(cloudTable);
 
 
         LevelButton[] levelButtons = new LevelButton[LEVELS];
@@ -86,8 +83,16 @@ public class MainMenuScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        Gdx.gl20.glClearColor(0f, 0.7f, 0.93f, 1f);
+        Gdx.gl20.glClearColor(0.180f, 0.353f, 0.537f, 1f);
         Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+        main.spriteBatch.begin();
+        main.spriteBatch.draw(cloudTexture,0,cloudTexture1.getHeight() / 3f, cloudTexture.getWidth() * scaleFactor, cloudTexture.getHeight() * scaleFactor);
+        main.spriteBatch.draw(cloudTexture,cloudTexture.getWidth() * scaleFactor,cloudTexture1.getHeight() / 3f, cloudTexture.getWidth() * scaleFactor, cloudTexture.getHeight() * scaleFactor);
+        main.spriteBatch.draw(cloudTexture1, 0,0, cloudTexture1.getWidth() * scaleFactor, cloudTexture1.getHeight() * scaleFactor);
+        main.spriteBatch.draw(cloudTexture1, cloudTexture1.getWidth() * scaleFactor,0, cloudTexture1.getWidth() * scaleFactor, cloudTexture1.getHeight() * scaleFactor);
+        main.spriteBatch.end();
+
         stage.draw();
     }
 
@@ -113,7 +118,7 @@ public class MainMenuScreen implements Screen {
 
     @Override
     public void dispose() {
+        System.out.println("MainMenuScreen dispose call");
         stage.dispose();
-        System.out.println("Stopped Main Menu Screen.");
     }
 }

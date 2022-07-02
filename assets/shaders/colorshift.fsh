@@ -1,5 +1,5 @@
 //Pixel Shader
-precision mediump float;
+precision highp float;
 //given
 uniform sampler2D u_sampler2D;
 uniform vec3 u_shift;

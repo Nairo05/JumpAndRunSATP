@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
-import de.dhbw.satp.main.FinalStatics;
 import de.dhbw.satp.main.JumpAndRunMain;
 import de.dhbw.satp.main.assetfragments.ParallaxAsset;
 import de.dhbw.satp.main.assetfragments.ShaderAsset;
@@ -15,73 +14,100 @@ import de.dhbw.satp.main.assetfragments.ShaderAsset;
 public class InitLoadingScreen implements Screen {
 
     private final JumpAndRunMain main;
-    private int counter = 20;
-    private ShapeRenderer shapeRenderer;
-    private int load;
-    private Texture texture;
-    private TextureRegion[][] textureRegion;
+    private final ShapeRenderer shapeRenderer;
+    private float loadFactor = 0.15f;
+    private final Texture texture;
+    private final TextureRegion[][] textureRegion;
     private int frameCount = 0;
     private int currentFrame = 0;
+    private final Texture digitsTexture;
+    private final TextureRegion[][] digits;
 
     public InitLoadingScreen(JumpAndRunMain main) {
         this.main = main;
-        this.loadTextures();
         shapeRenderer = new ShapeRenderer();
-        load = 32;
         texture = new Texture("playersprite/skull1.png");
         textureRegion = TextureRegion.split(texture, 13, 20);
+        digitsTexture = new Texture("sprite/digits.png");
+        digits = TextureRegion.split(digitsTexture, 8, 12);
     }
 
     @Override
     public void show() {
         System.out.println("Init Loading Screen started.");
+
+        //load all Assets
+        loadSynchronizedAssets();
     }
 
-    private void loadTextures() {
+    private void loadSynchronizedAssets() {
+        //initial clean
         main.assetManager.clear();
+
         System.out.println("------------------------------ started loading of Assets ------------------------------");
-        System.out.println("loading DefaultAsset Texture (Texture.class)");
+
+        //SynchronousAssetLoader (synchronized with Render-Thread)
+        loadTexturesSync();
+        loadShadersSync();
+        loadParallaxSync();
+
+        //organize Atlas
+        main.assetManager.finishLoading();
+        main.assetManager.update();
+
+        System.out.println("------------------------------ finished loading of Assets ------------------------------");
+        System.out.println("AssetManager dump: \n" + main.assetManager.getDiagnostics());
+        System.out.println("------------------------------ finished loading of Assets ------------------------------");
+    }
+
+    private void loadShadersSync() {
+        main.assetManager.load("shaders/earthquake", ShaderAsset.class);
+        main.assetManager.load("shaders/colorshift", ShaderAsset.class);
+        main.assetManager.load("shaders/passthrough", ShaderAsset.class);
+    }
+
+    private void loadParallaxSync() {
+        main.assetManager.load("tmx/1-1.parallax", ParallaxAsset.class);
+        main.assetManager.load("tmx/backgrounds/background_0.png", Texture.class);
+        main.assetManager.load("tmx/backgrounds/background_1.png", Texture.class);
+        main.assetManager.load("tmx/backgrounds/background_2.png", Texture.class);
+    }
+
+    private void loadTexturesSync() {
         //Sprite
         main.assetManager.load("playersprite/skull1.png", Texture.class);
         main.assetManager.load("sprite/enemy/Bloated Bedbug/BloatedBedbugIdleSide.png", Texture.class);
         main.assetManager.load("sprite/enemy/Lethal Scorpion/LethalScorpionIdleSide.png", Texture.class);
         main.assetManager.load("sprite/digits.png", Texture.class);
         main.assetManager.load("sprite/heart.png", Texture.class);
+        main.assetManager.load("sprite/spr_coin_strip4.png", Texture.class);
+
         //Menu
         main.assetManager.load("menu/symbols/TEXT_MENU_1.png", Texture.class);
         main.assetManager.load("menu/menunumbers.png", Texture.class);
         main.assetManager.load("menu/ui/BTN_GREEN_SQ.png", Texture.class);
-        //Parallax
-        main.assetManager.load("tmx/1-1.parallax", ParallaxAsset.class);
-        main.assetManager.load("tmx/backgrounds/background_0.png", Texture.class);
-        main.assetManager.load("tmx/backgrounds/background_1.png", Texture.class);
-        main.assetManager.load("tmx/backgrounds/background_2.png", Texture.class);
-        //Shaders
-        main.assetManager.load("shaders/earthquake", ShaderAsset.class);
-        main.assetManager.load("shaders/colorshift", ShaderAsset.class);
-        main.assetManager.load("shaders/passthrough", ShaderAsset.class);
-        main.assetManager.finishLoading();
-        main.assetManager.update();
-        System.out.println("------------------------------ finished loading of Assets ------------------------------");
-        System.out.println("AssetManager dump: \n" + main.assetManager.getDiagnostics());
-        System.out.println("------------------------------ finished loading of Assets ------------------------------");
     }
 
     @Override
     public void render(float delta) {
+        main.assetManager.update();
 
+        loadFactor += 0.003f;
         frameCount++;
+
+        float loadingBar = loadFactor * (Gdx.graphics.getWidth() - 64);
+        int digit1 = (int) ((loadFactor * 1000) / 100) % 10;
+        int digit2 = (int) ((loadFactor * 1000) / 10) % 10;
+
         Gdx.gl20.glClearColor(0f, 0f, 0f, 1f);
         Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(1f, 1f, 1f, 1f);
-        shapeRenderer.rect(30,30,load,32);
+        shapeRenderer.rect(30,30,loadingBar,32);
         shapeRenderer.end();
 
-        if (load < Gdx.graphics.getWidth() - 64) {
-            load += 10;
-        } else {
+        if (loadingBar >= (Gdx.graphics.getWidth() - 80) && main.assetManager.isFinished()) {
             main.screenManager.nextScreen();
         }
 
@@ -95,6 +121,8 @@ public class InitLoadingScreen implements Screen {
 
         main.spriteBatch.begin();
         main.spriteBatch.draw(textureRegion[0][currentFrame], 50, 80, 65, 100);
+        main.spriteBatch.draw(digits[0][digit1], loadingBar - 26, 65, 24, 36);
+        main.spriteBatch.draw(digits[0][digit2], loadingBar, 65, 24, 36);
         main.spriteBatch.end();
     }
 
@@ -120,7 +148,9 @@ public class InitLoadingScreen implements Screen {
 
     @Override
     public void dispose() {
-        System.out.println("Ich wurde gelöscht, ich bin initloading");
+        System.out.println("InitLoadingScreen dispose call");
+        shapeRenderer.dispose();
         texture.dispose();
+        digitsTexture.dispose();
     }
 }
