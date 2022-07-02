@@ -7,6 +7,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
+import org.w3c.dom.Text;
+
 import de.dhbw.satp.main.JumpAndRunMain;
 import de.dhbw.satp.main.assetfragments.ParallaxAsset;
 import de.dhbw.satp.main.assetfragments.ShaderAsset;
@@ -23,6 +25,7 @@ public class InitLoadingScreen implements Screen {
     private final Texture digitsTexture;
     private final Texture percentTexture;
     private final TextureRegion[][] digits;
+    private final Texture tippTexture;
 
     public InitLoadingScreen(JumpAndRunMain main) {
         this.main = main;
@@ -32,6 +35,8 @@ public class InitLoadingScreen implements Screen {
         digitsTexture = new Texture("sprite/digits.png");
         digits = TextureRegion.split(digitsTexture, 8, 12);
         percentTexture = new Texture("sprite/percent.png");
+        tippTexture = new Texture("menu/tipps/tipp1.png");
+
     }
 
     @Override
@@ -94,7 +99,7 @@ public class InitLoadingScreen implements Screen {
     public void render(float delta) {
         main.assetManager.update();
 
-        loadFactor += 0.003f;
+        loadFactor += 0.0025f;
         frameCount++;
 
         float loadingBar = loadFactor * (Gdx.graphics.getWidth() - 64);
@@ -113,6 +118,7 @@ public class InitLoadingScreen implements Screen {
             main.screenManager.nextScreen();
         }
 
+
         if (frameCount % 10 == 0) {
             currentFrame++;
             if (currentFrame > 3) {
@@ -122,6 +128,7 @@ public class InitLoadingScreen implements Screen {
 
 
         main.spriteBatch.begin();
+        main.spriteBatch.draw(tippTexture, 10,Gdx.graphics.getHeight() - 250, 1200, 200);
         main.spriteBatch.draw(textureRegion[0][currentFrame], 50, 80, 65, 100);
         main.spriteBatch.draw(digits[0][digit1], loadingBar - 52, 65, 24, 36);
         main.spriteBatch.draw(digits[0][digit2], loadingBar - 26, 65, 24, 36);
