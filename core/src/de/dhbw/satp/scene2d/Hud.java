@@ -20,6 +20,7 @@ public class Hud implements Disposable {
     //Filepath of Sprites
     private static final String DIGIT_SPRITE_PATH = "sprite/digits.png";
     private static final String HEART_SPRITE_PATH = "sprite/heart.png";
+    private static final String COIN_SPRITE_PATH = "sprite/spr_coin_strip4.png";
 
     public Stage stage;
     private final PlayScreen playScreen;
@@ -28,17 +29,22 @@ public class Hud implements Disposable {
     //Tables
     private final Table timerTable;
     private final Table livesTable;
+    private final Table coinsTable;
 
     //Textures
     private final Texture digitsTexture;
     private final Texture livesTexture;
+    private final Texture ermeraldTexture;
     private final TextureRegion[][] digits;
+    private final TextureRegion[][] ermeraldIcon;
 
     private int time;
     private int framecount = 0;
     private int lives;
 
+    //Images
     private final Image[] liveImages;
+    private final Image emeraldImage;
 
     public Hud (PlayScreen playScreen, SpriteBatch batch) {
 
@@ -72,6 +78,18 @@ public class Hud implements Disposable {
         for (int i = 0; i < 3; i++) {
             liveImages[i] = new Image(livesTexture);
         }
+
+
+        //Coins
+        coinsTable = new Table();
+        coinsTable.top();
+        coinsTable.left();
+        coinsTable.padTop(18f).padLeft(6f);
+        coinsTable.setFillParent(true);
+
+        ermeraldTexture = playScreen.getAssetManager().get(COIN_SPRITE_PATH);
+        ermeraldIcon = TextureRegion.split(ermeraldTexture, 16, 16);
+        emeraldImage = new Image(ermeraldIcon[0][0]);
 
     }
 
@@ -116,7 +134,21 @@ public class Hud implements Disposable {
 
         stage.addActor(livesTable);
 
-        //----------------------------------------------------------------------------
+        //Coins Management-------------------------------------------------------------
+        int coinDigit1 = (player.getCoins() / 10) % 10;
+        int coinDigit2 = player.getCoins() % 10;
+
+        Image coin1 = new Image(digits[0][coinDigit1]);
+        Image coin2 = new Image(digits[0][coinDigit2]);
+
+        coinsTable.clear();
+        coinsTable.add(emeraldImage);
+        coinsTable.add(coin1).padLeft(3f);
+        coinsTable.add(coin2).padLeft(2f);
+
+        stage.addActor(coinsTable);
+
+        //------------
         stage.act(dt);
     }
 

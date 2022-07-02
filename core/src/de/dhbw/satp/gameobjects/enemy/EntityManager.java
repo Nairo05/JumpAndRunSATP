@@ -1,6 +1,7 @@
 package de.dhbw.satp.gameobjects.enemy;
 
 
+import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
@@ -66,10 +67,15 @@ public class EntityManager implements Disposable {
         updateDynamicEntities(dt);
     }
 
-    public void render(SpriteBatch spriteBatch) {
+    public void render(SpriteBatch spriteBatch, Camera camera) {
+
+        float leftViewPortX = camera.position.x - camera.viewportWidth;
+        float rightViewPortX = camera.position.x + camera.viewportWidth;
+
         for(DynamicEntity entity : dynamicEntityArrayList) {
-            //TODO: Prüfen, ob eingefroren
-            entity.render(spriteBatch);
+            if(!(entity.getX() < 0f) && (entity.getX() > leftViewPortX && entity.getX() < rightViewPortX)) {
+                entity.render(spriteBatch);
+            }
         }
     }
 

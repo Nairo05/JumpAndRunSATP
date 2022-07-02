@@ -210,7 +210,7 @@ public class PlayScreen implements Screen {
 
         //render | Batch Renderer
         player.render(jumpAndRunMain.spriteBatch);
-        entityManager.render(jumpAndRunMain.spriteBatch);
+        entityManager.render(jumpAndRunMain.spriteBatch, cameraManager.getCamera());
         particleManager.render(jumpAndRunMain.spriteBatch, cameraManager.getCamera());
 
         //end (2/2)

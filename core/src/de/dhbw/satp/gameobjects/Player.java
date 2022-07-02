@@ -28,16 +28,18 @@ public class Player implements GameObject, Disposable {
     private final PlayScreen playScreen;
 
     private TextureRegion[][] textureRegions;
-    int framecount = 0;
-    int frame = 0;
+    private int framecount = 0;
+    private int frame = 0;
 
     private float jumpTime = 17f / PPM;
+    private int coins = 0;
     private short lives = 3;
-    private short invincibilityFrames = 120;
 
     private boolean hitEnemy = false;
-    private int freezeTime = 0;
     private boolean playerIsOnGround = false;
+    private int freezeTime = 0;
+    private short invincibilityFrames = 120;
+
 
     public Player(PlayScreen playScreen, float xInWorldUnit, float yInWorldUnit) {
         this.playScreen = playScreen;
@@ -232,6 +234,14 @@ public class Player implements GameObject, Disposable {
             lives--;
             invincibilityFrames--;
         }
+    }
+
+    public void collectCoin() {
+        coins++;
+    }
+
+    public int getCoins() {
+        return coins;
     }
 
     public short getLives() {

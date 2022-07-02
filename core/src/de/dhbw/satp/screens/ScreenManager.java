@@ -7,7 +7,6 @@ import java.util.HashMap;
 import de.dhbw.satp.main.JumpAndRunMain;
 
 public class ScreenManager {
-    //TODO: Use abstract class, avoid boilerplate code
 
     private final JumpAndRunMain main;
     private SCREEN currentScreen;
@@ -37,53 +36,29 @@ public class ScreenManager {
 
         switch (currentScreen) {
             case INIT_LOADING:
-                setCurrentScreen(SCREEN.MAIN_MENU);
-
-                MainMenuScreen mainMenuScreen = new MainMenuScreen(main);
-                screenMap.put(SCREEN.MAIN_MENU, mainMenuScreen);
-                main.setScreen(mainMenuScreen);
-
-                screenMap.get(SCREEN.INIT_LOADING).dispose();
+            case GAME_OVER:
+                switchScreens(SCREEN.MAIN_MENU, new MainMenuScreen(main));
                 break;
             case MAIN_MENU:
-                setCurrentScreen(SCREEN.LEVEL_LOADING);
-
-                LevelLoadingScreen levelLoadingScreen = new LevelLoadingScreen(main);
-                screenMap.put(SCREEN.LEVEL_LOADING, levelLoadingScreen);
-                main.setScreen(levelLoadingScreen);
-
-                screenMap.get(SCREEN.MAIN_MENU).dispose();
+                switchScreens(SCREEN.LEVEL_LOADING, new LevelLoadingScreen(main));
                 break;
             case LEVEL_LOADING:
-                setCurrentScreen(SCREEN.PLAY);
-
-                PlayScreen playScreen = new PlayScreen(main);
-                screenMap.put(SCREEN.PLAY, playScreen);
-                main.setScreen(playScreen);
-
-                screenMap.get(SCREEN.LEVEL_LOADING).dispose();
+                switchScreens(SCREEN.PLAY, new PlayScreen(main));
                 break;
             case PLAY:
-                setCurrentScreen(SCREEN.GAME_OVER);
-
-                GameOverScreen gameOverScreen = new GameOverScreen();
-                screenMap.put(SCREEN.GAME_OVER, gameOverScreen);
-                main.setScreen(gameOverScreen);
-
-                screenMap.get(SCREEN.PLAY).dispose();
-                break;
-            case GAME_OVER:
-                setCurrentScreen(SCREEN.MAIN_MENU);
-
-                MainMenuScreen mainMenuScreen2 = new MainMenuScreen(main);
-                screenMap.put(SCREEN.MAIN_MENU, mainMenuScreen2);
-                main.setScreen(mainMenuScreen2);
-
-                screenMap.get(SCREEN.GAME_OVER).dispose();
+                switchScreens(SCREEN.GAME_OVER, new GameOverScreen());
                 break;
         }
 
         System.out.println("-- Switch Screen command, to: " + currentScreen.name());
+    }
+
+    private void switchScreens(SCREEN newScreen, Screen screen) {
+        SCREEN oldScreen = getCurrentScreen();
+        setCurrentScreen(newScreen);
+        screenMap.put(newScreen, screen);
+        main.setScreen(screen);
+        screenMap.get(oldScreen).dispose();
     }
 
     public SCREEN getCurrentScreen() {

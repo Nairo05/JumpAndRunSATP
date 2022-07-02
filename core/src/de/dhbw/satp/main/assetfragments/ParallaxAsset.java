@@ -29,7 +29,6 @@ public class ParallaxAsset {
             FileHandle handle = Gdx.files.local(s);
             String text = handle.readString();
 
-            //TODO only one
             text = text.replaceAll("\r\n",",");
             text = text.replaceAll(" ","");
 

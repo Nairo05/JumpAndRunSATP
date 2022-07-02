@@ -67,6 +67,7 @@ public class MyContactListener implements ContactListener {
                     playScreen.setEarthQuakeCount(MathUtils.random(60));
                 }
                 entity.onBodyHit();
+                playScreen.getPlayer().collectCoin();
             }
             if (contact.getFixtureB().getFilterData().categoryBits == BitFilterDef.COLLECITBLE_BIT) {
                 DynamicEntity entity  = (DynamicEntity) contact.getFixtureB().getUserData();
@@ -74,6 +75,7 @@ public class MyContactListener implements ContactListener {
                 if (MathUtils.random(10) == 0) {
                     playScreen.setEarthQuakeCount(MathUtils.random(200));
                 }
+                playScreen.getPlayer().collectCoin();
             }
         }
     }

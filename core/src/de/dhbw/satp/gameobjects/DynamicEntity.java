@@ -18,8 +18,6 @@ public abstract class DynamicEntity implements GameObject, Disposable {
     protected boolean toDestroy = false;
     protected boolean isDestroyed = false;
 
-// TODO check needed Parameter (PlayScreen -> AssetManager)
-
     public DynamicEntity(PlayScreen playScreen, float posXInWorldUnits, float posYInWorldUnits) {
         this.world = playScreen.getWorld();
         defineEntityAttributes(posXInWorldUnits, posYInWorldUnits);
@@ -51,5 +49,13 @@ public abstract class DynamicEntity implements GameObject, Disposable {
 
     public boolean isDestroyed() {
         return isDestroyed;
+    }
+
+    public float getX() {
+        if(!isDestroyed && !toDestroy) {
+            return body.getPosition().x;
+        } else {
+            return -1f;
+        }
     }
 }

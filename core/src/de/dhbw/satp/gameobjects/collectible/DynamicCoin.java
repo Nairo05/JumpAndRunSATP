@@ -91,7 +91,7 @@ public class DynamicCoin extends DynamicEntity {
         }
 
         if (inAnimation) {
-            speed.add(0.015f, 0.01f);
+            speed.add(-0.015f, 0.01f);
             textureDistort.add(speed);
             if (textureDistort.y > 3f) {
                 inAnimation = false;

@@ -21,6 +21,7 @@ public class InitLoadingScreen implements Screen {
     private int frameCount = 0;
     private int currentFrame = 0;
     private final Texture digitsTexture;
+    private final Texture percentTexture;
     private final TextureRegion[][] digits;
 
     public InitLoadingScreen(JumpAndRunMain main) {
@@ -30,6 +31,7 @@ public class InitLoadingScreen implements Screen {
         textureRegion = TextureRegion.split(texture, 13, 20);
         digitsTexture = new Texture("sprite/digits.png");
         digits = TextureRegion.split(digitsTexture, 8, 12);
+        percentTexture = new Texture("sprite/percent.png");
     }
 
     @Override
@@ -121,8 +123,9 @@ public class InitLoadingScreen implements Screen {
 
         main.spriteBatch.begin();
         main.spriteBatch.draw(textureRegion[0][currentFrame], 50, 80, 65, 100);
-        main.spriteBatch.draw(digits[0][digit1], loadingBar - 26, 65, 24, 36);
-        main.spriteBatch.draw(digits[0][digit2], loadingBar, 65, 24, 36);
+        main.spriteBatch.draw(digits[0][digit1], loadingBar - 52, 65, 24, 36);
+        main.spriteBatch.draw(digits[0][digit2], loadingBar - 26, 65, 24, 36);
+        main.spriteBatch.draw(percentTexture, loadingBar, 65, 24, 36);
         main.spriteBatch.end();
     }
 
@@ -152,5 +155,6 @@ public class InitLoadingScreen implements Screen {
         shapeRenderer.dispose();
         texture.dispose();
         digitsTexture.dispose();
+        percentTexture.dispose();
     }
 }
