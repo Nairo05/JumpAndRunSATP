@@ -93,6 +93,10 @@ public class InitLoadingScreen implements Screen {
         main.assetManager.load("menu/symbols/TEXT_MENU_1.png", Texture.class);
         main.assetManager.load("menu/menunumbers.png", Texture.class);
         main.assetManager.load("menu/ui/BTN_GREEN_SQ.png", Texture.class);
+        main.assetManager.load("menu/ui/levelclear.png", Texture.class);
+        main.assetManager.load("menu/ui/clicktoskip.png", Texture.class);
+        main.assetManager.load("menu/ui/background.png", Texture.class);
+        main.assetManager.load("menu/ui/selectlevel.png", Texture.class);
     }
 
     @Override

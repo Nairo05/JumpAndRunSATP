@@ -5,6 +5,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -24,14 +25,20 @@ public class MainMenuScreen implements Screen {
     public Stage stage;
     private final Texture textTexture;
     private final Texture cloudTexture;
-    private final Texture cloudTexture1;
     private JumpAndRunMain main;
+
+    private ParticleEffect particleEffect;
 
     public MainMenuScreen(JumpAndRunMain main) {
         this.main = main;
 
-        cloudTexture = main.assetManager.get("tmx/backgrounds/background_0.png");
-        cloudTexture1 = main.assetManager.get("tmx/backgrounds/background_1.png");
+        cloudTexture = main.assetManager.get("menu/ui/background.png");
+        textTexture =  main.assetManager.get("menu/ui/selectlevel.png");
+
+        particleEffect = new ParticleEffect();
+        particleEffect.load(Gdx.files.internal("particle/whitefly.p"), Gdx.files.internal("particle/"));
+        particleEffect.getEmitters().first().setPosition(100,100);
+        particleEffect.start();
 
         OrthographicCamera camera = new OrthographicCamera();
         Viewport viewport = new ExtendViewport(FinalStatics.VIRTUAL_WIDTH, FinalStatics.VIRTUAL_HEIGHT, camera);
@@ -43,10 +50,6 @@ public class MainMenuScreen implements Screen {
         menuTable.top();
         menuTable.padTop(10f);
         menuTable.setFillParent(true);
-
-        textTexture = main.assetManager.get("menu/symbols/TEXT_MENU_1.png");
-        Image textImage = new Image(textTexture);
-        menuTable.add(textImage);
 
         stage.addActor(menuTable);
 
@@ -83,14 +86,15 @@ public class MainMenuScreen implements Screen {
 
     @Override
     public void render(float delta) {
+        particleEffect.update(delta);
+
         Gdx.gl20.glClearColor(0.180f, 0.353f, 0.537f, 1f);
         Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         main.spriteBatch.begin();
-        main.spriteBatch.draw(cloudTexture,0,cloudTexture1.getHeight() / 3f, cloudTexture.getWidth() * scaleFactor, cloudTexture.getHeight() * scaleFactor);
-        main.spriteBatch.draw(cloudTexture,cloudTexture.getWidth() * scaleFactor,cloudTexture1.getHeight() / 3f, cloudTexture.getWidth() * scaleFactor, cloudTexture.getHeight() * scaleFactor);
-        main.spriteBatch.draw(cloudTexture1, 0,0, cloudTexture1.getWidth() * scaleFactor, cloudTexture1.getHeight() * scaleFactor);
-        main.spriteBatch.draw(cloudTexture1, cloudTexture1.getWidth() * scaleFactor,0, cloudTexture1.getWidth() * scaleFactor, cloudTexture1.getHeight() * scaleFactor);
+        main.spriteBatch.draw(cloudTexture, 0,0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        main.spriteBatch.draw(textTexture, 160, Gdx.graphics.getHeight() - 160);
+        particleEffect.draw(main.spriteBatch);
         main.spriteBatch.end();
 
         stage.draw();

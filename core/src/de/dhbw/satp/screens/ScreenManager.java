@@ -46,7 +46,7 @@ public class ScreenManager {
                 switchScreens(SCREEN.PLAY, new PlayScreen(main));
                 break;
             case PLAY:
-                switchScreens(SCREEN.GAME_OVER, new GameOverScreen());
+                switchScreens(SCREEN.GAME_OVER, new GameOverScreen(main));
                 break;
         }
 

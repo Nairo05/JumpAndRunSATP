@@ -22,6 +22,7 @@ public class DynamicCoin extends DynamicEntity {
     private float originX, originY;
     private float rotation = 120f;
     private boolean inAnimation = false;
+    private int animationCount = 15;
     private Vector2 textureDistort = new Vector2(0f,0f);
     private Vector2 speed = new Vector2(0f,0f);
 
@@ -91,9 +92,13 @@ public class DynamicCoin extends DynamicEntity {
         }
 
         if (inAnimation) {
+
+            animationCount--;
+
             speed.add(-0.015f, 0.01f);
             textureDistort.add(speed);
-            if (textureDistort.y > 3f) {
+
+            if (animationCount < 0) {
                 inAnimation = false;
             }
         }
