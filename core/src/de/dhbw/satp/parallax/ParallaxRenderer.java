@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 
-import de.dhbw.satp.main.FinalStatics;
+import de.dhbw.satp.main.NotFinalStatics;
 import de.dhbw.satp.main.assetfragments.ParallaxAsset;
 
 /**
@@ -70,7 +70,7 @@ public class ParallaxRenderer implements Disposable {
             if (enableParallax) {
                 //Movement frameTime dt * expected frameTime (Statics.FOREGROUND_FPS) to smooth out
                 for (int j = 0; j < layerArray.get(i).getBackgroundCount(); j++) {
-                    layerArray.get(i).getPosition(j).add(-1f * speed / layerArray.get(i).getParallaxFactor() * dt * FinalStatics.FOREGROUND_FPS, 0);
+                    layerArray.get(i).getPosition(j).add(-1f * speed / layerArray.get(i).getParallaxFactor() * dt * NotFinalStatics.FOREGROUND_FPS, 0);
                 }
             }
         }

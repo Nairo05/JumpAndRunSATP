@@ -11,7 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
-import de.dhbw.satp.main.FinalStatics;
+import de.dhbw.satp.main.NotFinalStatics;
 
 public class DebugOnScreenDisplay {
 
@@ -29,7 +29,7 @@ public class DebugOnScreenDisplay {
 
 
     public DebugOnScreenDisplay(SpriteBatch spriteBatch) {
-        this.debug = false;
+        this.debug = NotFinalStatics.debug;
 
         debuggerInfo = new StageText2D(10f, 620);
         debuggerInfo.setText("Debugger enabled, Press F3 to close, F4 to skip Screen, F5 to zoom in and out");
@@ -40,7 +40,7 @@ public class DebugOnScreenDisplay {
         spawnAble = new StageText2D(10f, 500f);
         playerInfo = new StageText2D(10f, 460f);
 
-        Viewport viewport = new ExtendViewport(FinalStatics.WINDOW_WIDTH, FinalStatics.WINDOW_HEIGHT, new OrthographicCamera());
+        Viewport viewport = new ExtendViewport(NotFinalStatics.WINDOW_WIDTH, NotFinalStatics.WINDOW_HEIGHT, new OrthographicCamera());
         stage = new Stage(viewport, spriteBatch);
 
         stage.addActor(debuggerInfo);

@@ -13,6 +13,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 
 import de.dhbw.satp.gameobjects.Player;
 import de.dhbw.satp.main.FinalStatics;
+import de.dhbw.satp.main.NotFinalStatics;
 import de.dhbw.satp.screens.PlayScreen;
 
 public class Hud implements Disposable {
@@ -97,7 +98,7 @@ public class Hud implements Disposable {
 
         //Level timer Management -----------------------------------------------------
         framecount++;
-        if ((framecount % FinalStatics.FOREGROUND_FPS) == 0) {
+        if ((framecount % NotFinalStatics.FOREGROUND_FPS) == 0) {
             boolean finishedLevel = false;
             if (!finishedLevel) {
                 time--;

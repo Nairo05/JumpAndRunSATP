@@ -1,12 +1,18 @@
 package de.dhbw.satp.main;
 
+import static de.dhbw.satp.main.SelectionsCheck.combobox;
+import static de.dhbw.satp.main.SelectionsCheck.l1;
+import static de.dhbw.satp.main.SelectionsCheck.l2;
+
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
+
 
 import javax.swing.*;
 
 import java.awt.Color;
 import java.awt.FlowLayout;
+import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -18,45 +24,166 @@ import javax.swing.JFrame;
 public class DesktopLauncher {
 
 	private static JFrame frame;
+	private static JRadioButton r1;
+	private static JRadioButton r2;
+	private static JRadioButton r3;
+	private static JComboBox debugSelection;
+	private static JComboBox resolutionSelection;
+
 
 	public static void main (String[] arg) {
 
 		frame = new JFrame();
 		frame.setBounds(600,400, 600,400);
-		frame.setLayout(new FlowLayout());
-		frame.setLayout(null);
-		JLabel jLabel = new JLabel();
-		jLabel. setBounds(600,400,600,400);
 		frame.setTitle("Craniums Adventure: Launcher");
-		frame.setVisible(true);
-		JButton jButton = new lButton("");
-		jButton.setText("START");
-		jButton.setBounds(250,250,10,15);
-		jButton.setSize(100,50);
-		frame.add(jLabel);
-		frame.add(jButton);
-		jButton.addActionListener(new ButtonListener());
-		frame.setResizable(false);
-		frame.getContentPane().setBackground(Color.BLACK);
 		Image icon = new ImageIcon("assets/menu/ui/pngwing.png").getImage();
 		frame.setIconImage(icon);
 
+		JPanel p1 = new JPanel();
+		JPanel p3 = new JPanel();
+		JPanel p4 = new JPanel();
+
+		JLabel fps =new JLabel("   FPS:");
+        r1 = new JRadioButton("30");
+		r2 = new JRadioButton("60");
+		r3 = new JRadioButton("144");
+		r2.setSelected(true);
+		p1.add(fps);
+		p1.add(r1);
+		p1.add(r2);
+		p1.add(r3);
+		ButtonGroup bg=new ButtonGroup();
+		bg.add(r1);
+		bg.add(r2);
+		bg.add(r3);
+
+	    p1.setLayout(new GridLayout(4,3));
+		JButton jButton = new lButton("");
+		jButton.setText("START");
+		jButton.setSize(100,60);
+
+		SelectionsCheck obj = new SelectionsCheck();
+		frame.setLayout(new FlowLayout());
+		frame.setLayout(null);
+		JLabel entwickler = new JLabel("EntwicklerModus:");
+		String s3[] = {"off","on"};
+
+		debugSelection = new JComboBox(s3);
+		JLabel graphik = new JLabel("Graphic:");
+		String s2[] = {"high","low","medium"};
+		resolutionSelection = new JComboBox(s2);
+		String s1[] = {"Standard","HD","Full HD","4K" };
+
+		combobox = new JComboBox(s1);
+		combobox.addItemListener(obj);
+		l1 = new JLabel("Resolution:");
+		l2 = new JLabel("[is selected]");
+		JPanel p2 = new JPanel();
+		l2.setForeground(Color.gray);
+
+		p2.add(l1);
+		p2.add(combobox);
+		p2.add(l2);
+
+        JLabel leer = new JLabel("");
+		JLabel leer1 = new JLabel("");
+		jButton.setBounds(500,500,200,100);
+
+		p4.add(leer);
+		p4.add(leer1);
+		p4.add(jButton);
+
+        p2.add(graphik);
+		p2.add(resolutionSelection);
+		p2.setLayout(new GridLayout(6 ,2));
+
+		p4.setLayout(new GridLayout(3,3));
+		p4.setLocation(500,350);
+
+		p3.add(entwickler);
+		p3.add(debugSelection);
+
+		frame.add(p1);
+		frame.add(p2);
+		frame.add(p3);
+		frame.add(p4);
+
+		r1.addActionListener(new ButtonListener2());
+		r3.addActionListener(new ButtonListener3());
+		debugSelection.addActionListener(new ButtonListener4());
+		jButton.addActionListener(new ButtonListener1());
+		resolutionSelection.addActionListener(new ButtonListener5());
+
+		frame.setResizable(false);
+		frame.setLayout(new GridLayout(2,2));
+		frame.setVisible(true);
 	}
 
-		public static  class ButtonListener implements ActionListener {
-
+		public static  class ButtonListener1 implements ActionListener {
 			@Override
 			public void actionPerformed(ActionEvent actionEvent) {
 				Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
 				config.setTitle("Craniums Adventure");
-				config.setForegroundFPS(FinalStatics.FOREGROUND_FPS);
-				config.setWindowedMode(FinalStatics.WINDOW_WIDTH, FinalStatics.WINDOW_HEIGHT);
+				config.setForegroundFPS(NotFinalStatics.FOREGROUND_FPS);
+				config.setWindowedMode(NotFinalStatics.WINDOW_WIDTH, NotFinalStatics.WINDOW_HEIGHT);
 				frame.dispose();
 				new Lwjgl3Application(new JumpAndRunMain(), config);
 			}
+		}
 
+		public static class ButtonListener2 implements ActionListener {
+			@Override
+			public void actionPerformed(ActionEvent actionEvent) {
+				NotFinalStatics.FOREGROUND_FPS = 30 ;
+			}
+		}
+
+		public static class ButtonListener3 implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent actionEvent) {
+			NotFinalStatics.FOREGROUND_FPS = 144 ;
+			}
+		}
+
+		public static class ButtonListener4 implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent actionEvent) {
+			String item= (String) debugSelection.getSelectedItem();
+			String o = "on";
+			if (o == item) {
+				NotFinalStatics.debug = true;
+			}
+		}
+
+	}
+
+	public static class ButtonListener5 implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent actionEvent) {
+			String item = (String) resolutionSelection.getSelectedItem();
+			String a = "4K";
+			if (a == item) {
+				NotFinalStatics.WINDOW_WIDTH = 4096;
+				NotFinalStatics.WINDOW_HEIGHT = 2160;
+			} else if (a == "HD") {
+				NotFinalStatics.WINDOW_WIDTH = 1280;
+				NotFinalStatics.WINDOW_HEIGHT = 720;
+			} else if (a == "Full HD") {
+				NotFinalStatics.WINDOW_WIDTH = 1920;
+				NotFinalStatics.WINDOW_HEIGHT = 1080;
+			}
+		}
+	}
+
+
+
+	public static class Jradiobutton extends JFrame {
+		public Jradiobutton(String windows) {
 
 		}
+
+
+	}
 
 }
 
