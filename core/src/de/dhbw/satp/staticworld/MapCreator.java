@@ -11,29 +11,21 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Disposable;
 
 import de.dhbw.satp.gameobjects.enemy.EnemySpike;
-import de.dhbw.satp.gameobjects.enemy.EnemyStandard;
+import de.dhbw.satp.gameobjects.enemy.EnemyDefault;
 import de.dhbw.satp.gameobjects.ToSpawnObjectDefinition;
+import de.dhbw.satp.main.Assets;
 import de.dhbw.satp.main.NotFinalStatics;
 import de.dhbw.satp.screens.PlayScreen;
 
 public class MapCreator implements Disposable {
-    //TODO: Fix PolygonShape handling
 
     private final World world;
     private TiledMap map;
-    private TmxMapLoader tmxMapLoader;
     private Rectangle playerRectangle;
 
     public MapCreator(PlayScreen playScreen) {
         this.world = playScreen.getWorld();
-        //TODO: move in level-loading screen
-        tmxMapLoader = new TmxMapLoader();
-        try {
-            map = tmxMapLoader.load(NotFinalStatics.levelPath);
-        } catch (Exception e) {
-            System.err.println("Warning: File not found - loading default level: 1-1");
-            map = tmxMapLoader.load("tmx/1-1.tmx");
-        }
+        map = playScreen.getAssetManager().get(Assets.level11);
 
         playerRectangle = new Rectangle(3.3f,5f,1,1);
 
@@ -65,7 +57,7 @@ public class MapCreator implements Disposable {
 
             } else if (mapObject.getName().equalsIgnoreCase("Enemy1")) {
                 System.out.println("Found an enemy1 " + (mapObject.getRectangle().x + mapObject.getRectangle().width / 2) / PPM + " - " + (mapObject.getRectangle().y + 16) / PPM + " with width of: " + mapObject.getRectangle().width);
-                playScreen.getEntityManager().spawnDynamicEntity(new ToSpawnObjectDefinition<>(EnemyStandard.class, (mapObject.getRectangle().x + mapObject.getRectangle().width / 2), (mapObject.getRectangle().y + 16), mapObject.getRectangle().width));
+                playScreen.getEntityManager().spawnDynamicEntity(new ToSpawnObjectDefinition<>(EnemyDefault.class, (mapObject.getRectangle().x + mapObject.getRectangle().width / 2), (mapObject.getRectangle().y + 16), mapObject.getRectangle().width));
             } else if (mapObject.getName().equalsIgnoreCase("Enemy2")) {
                 System.out.println("Found an enemy2 " + (mapObject.getRectangle().x + mapObject.getRectangle().width / 2) / PPM + " - " + (mapObject.getRectangle().y + 16) / PPM + " with width of: " + mapObject.getRectangle().width);
                 playScreen.getEntityManager().spawnDynamicEntity(new ToSpawnObjectDefinition<>(EnemySpike.class, (mapObject.getRectangle().x + mapObject.getRectangle().width / 2), (mapObject.getRectangle().y + 16), mapObject.getRectangle().width));
@@ -83,13 +75,9 @@ public class MapCreator implements Disposable {
         }
     }
 
-    public TiledMap getMap() {
-        return map;
-    }
-
     @Override
     public void dispose() {
-        map.dispose();
+
     }
 
     public Rectangle getPlayerRectangle() {

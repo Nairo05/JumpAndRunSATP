@@ -4,7 +4,6 @@ import static de.dhbw.satp.main.FinalStatics.PPM;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -15,12 +14,12 @@ import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.EdgeShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.utils.Disposable;
 
+import de.dhbw.satp.main.Assets;
 import de.dhbw.satp.screens.PlayScreen;
 import de.dhbw.satp.staticworld.BitFilterDef;
 
-public class Player implements GameObject, Disposable {
+public class Player implements GameObject {
 
     private Texture texture;
 
@@ -45,7 +44,7 @@ public class Player implements GameObject, Disposable {
         this.playScreen = playScreen;
         World world = playScreen.getWorld();
 
-        texture = playScreen.getAssetManager().get("playersprite/skull1.png", Texture.class);
+        texture = playScreen.getAssetManager().get(Assets.playerTexture);
 
         textureRegions = TextureRegion.split(texture, 13, 20);
 
@@ -88,7 +87,7 @@ public class Player implements GameObject, Disposable {
     @Override
     public void update(float dt) {
         playerIsOnGround = playScreen.myContactListener.isPlayerOnGround();
-        //TODO recusrive algorithm
+
         if (playerBody.getPosition().y < 0) {
             loseLife();
             playerBody.setTransform(1, 1, 0);
@@ -130,6 +129,7 @@ public class Player implements GameObject, Disposable {
         if (playScreen.myContactListener.isPlayerOnGround()) {
             jumpTime = 17f / PPM;
         }
+
         //--------------------------------------------- Mouse and Keyboard ----------------------------------------------------------------
         if (freezeTime <= 0) {
             if ((Gdx.input.isKeyPressed(Input.Keys.D) || Gdx.input.isKeyPressed(Input.Keys.RIGHT)) && playerBody.getPosition().x <= 30f) {
@@ -203,13 +203,10 @@ public class Player implements GameObject, Disposable {
     }
 
 
-    @Override
-    public void dispose() {
-    }
-
     public float getX() {
         return playerBody.getPosition().x;
     }
+
     public float getY() {
         return playerBody.getPosition().y;
     }

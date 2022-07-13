@@ -8,6 +8,7 @@ import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 
 import de.dhbw.satp.gameobjects.DynamicEntity;
+import de.dhbw.satp.main.Assets;
 import de.dhbw.satp.main.FinalStatics;
 import de.dhbw.satp.screens.PlayScreen;
 import de.dhbw.satp.staticworld.BitFilterDef;
@@ -23,7 +24,7 @@ public class DynamicHeart extends DynamicEntity {
     public DynamicHeart(PlayScreen playScreen, float posXInWorldUnits, float posYInWorldUnits) {
         super(playScreen, posXInWorldUnits, posYInWorldUnits);
 
-        texture = playScreen.getAssetManager().get("sprite/heart.png");
+        texture = playScreen.getAssetManager().get(Assets.heartSprite);
         textureRegion = TextureRegion.split(texture, 16,16);
 
         originX = texture.getWidth() / (FinalStatics.PPM * 1f) / 2;

@@ -46,8 +46,8 @@ public class EntityManager implements Disposable {
 
                 if (currentSpawnDef.getBlueprint() == TestEntity.class) {
                     dynamicEntityArrayList.add(new TestEntity(playScreen, currentSpawnDef.getPosXInWorldUnits(), currentSpawnDef.getPosYInWorldUnits()));
-                } else if (currentSpawnDef.getBlueprint() == EnemyStandard.class) {
-                    dynamicEntityArrayList.add(new EnemyStandard(playScreen, currentSpawnDef.getPosXInWorldUnits(), currentSpawnDef.getPosYInWorldUnits(), currentSpawnDef.getWidth()));
+                } else if (currentSpawnDef.getBlueprint() == EnemyDefault.class) {
+                    dynamicEntityArrayList.add(new EnemyDefault(playScreen, currentSpawnDef.getPosXInWorldUnits(), currentSpawnDef.getPosYInWorldUnits(), currentSpawnDef.getWidth()));
                     System.out.println("Spawned new Enemy at " + currentSpawnDef.getPosXInWorldUnits() + " " + currentSpawnDef.getPosYInWorldUnits());
                 } else if (currentSpawnDef.getBlueprint() == EnemySpike.class) {
                     dynamicEntityArrayList.add(new EnemySpike(playScreen, currentSpawnDef.getPosXInWorldUnits(), currentSpawnDef.getPosYInWorldUnits(), currentSpawnDef.getWidth()));

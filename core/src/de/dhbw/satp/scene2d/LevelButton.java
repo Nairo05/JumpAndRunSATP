@@ -3,7 +3,6 @@ package de.dhbw.satp.scene2d;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -12,14 +11,11 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.Scaling;
 
+import de.dhbw.satp.main.Assets;
 import de.dhbw.satp.main.JumpAndRunMain;
 import de.dhbw.satp.main.NotFinalStatics;
 
 public class LevelButton extends Actor implements Disposable {
-
-    //Filepaths of Sprites
-    private static final String BUTTON_SPRITE_PATH = "menu/ui/BTN_PLAIN6.png";
-    private static final String ID1_SPRITE_PATH = "menu/menunumbers.png";
 
     private final JumpAndRunMain main;
     private final Texture buttonTexture;
@@ -32,8 +28,8 @@ public class LevelButton extends Actor implements Disposable {
         this.id = id;
         this.main = main;
 
-        buttonTexture = new Texture(BUTTON_SPRITE_PATH);
-        idTexture = main.assetManager.get(ID1_SPRITE_PATH);
+        buttonTexture = main.assetManager.get(Assets.menuButton);
+        idTexture = main.assetManager.get(Assets.menuNumbers);
         TextureRegion[][] textureRegions = TextureRegion.split(idTexture, 48, 64);
 
         Image imageButton = new Image(buttonTexture);
@@ -74,7 +70,9 @@ public class LevelButton extends Actor implements Disposable {
 
         @Override
         public void clicked(InputEvent event, float x, float y) {
-            System.out.println("Clicked " + id + " on: " + x + " " + y);
+            if (NotFinalStatics.debug) {
+                System.out.println("Clicked " + id + " on: " + x + " " + y);
+            }
             NotFinalStatics.levelPath = "tmx/1-" + id + ".tmx";
             main.screenManager.nextScreen();
         }

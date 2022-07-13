@@ -8,17 +8,13 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 
-import java.awt.peer.DialogPeer;
-
 public class ParticleManager implements Disposable {
 
-    private AssetManager assetManager;
     private final int MAX_PARTICLE_IN_WORLD = 4;
     private final Array<ParticleEffect> particles;
     private int currentActive = 0;
 
-    public ParticleManager(AssetManager assetManager) {
-        this.assetManager  = assetManager;
+    public ParticleManager() {
 
         particles = new Array<>(MAX_PARTICLE_IN_WORLD);
     }

@@ -89,7 +89,6 @@ public class CollectibleManager {
     }
 
     public void aSyncSpawn(Class<? extends DynamicEntity> className, float x, float y) {
-        //TODO remove width
         queuedEntities.addLast(new ToSpawnObjectDefinition<>(className, x, y, 2f));
     }
 

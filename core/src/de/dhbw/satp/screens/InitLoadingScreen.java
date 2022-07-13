@@ -7,35 +7,38 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
-import org.w3c.dom.Text;
-
+import de.dhbw.satp.main.Assets;
 import de.dhbw.satp.main.JumpAndRunMain;
-import de.dhbw.satp.main.assetfragments.ParallaxAsset;
-import de.dhbw.satp.main.assetfragments.ShaderAsset;
+import de.dhbw.satp.main.NotFinalStatics;
 
 public class InitLoadingScreen implements Screen {
 
     private final JumpAndRunMain main;
+
     private final ShapeRenderer shapeRenderer;
-    private float loadFactor = 0.15f;
     private final Texture texture;
-    private final TextureRegion[][] textureRegion;
-    private int frameCount = 0;
-    private int currentFrame = 0;
     private final Texture digitsTexture;
     private final Texture percentTexture;
+    private final Texture tipTexture;
+    private final TextureRegion[][] textureRegion;
     private final TextureRegion[][] digits;
-    private final Texture tippTexture;
 
-    public InitLoadingScreen(JumpAndRunMain main) {
-        this.main = main;
+    private float loadFactor = 0.15f;
+    private int frameCount = 0;
+    private int currentAnimationFrame = 0;
+
+    public InitLoadingScreen(JumpAndRunMain jumpAndRunMain) {
+        this.main = jumpAndRunMain;
         shapeRenderer = new ShapeRenderer();
+
         texture = new Texture("playersprite/skull1.png");
         textureRegion = TextureRegion.split(texture, 13, 20);
+
         digitsTexture = new Texture("sprite/digits.png");
         digits = TextureRegion.split(digitsTexture, 8, 12);
+
         percentTexture = new Texture("sprite/percent.png");
-        tippTexture = new Texture("menu/tipps/tipp1.png");
+        tipTexture = new Texture("menu/tipps/tipp1.png");
 
     }
 
@@ -43,7 +46,7 @@ public class InitLoadingScreen implements Screen {
     public void show() {
         System.out.println("Init Loading Screen started.");
 
-        //load all Assets
+        //pre-load Assets
         loadSynchronizedAssets();
     }
 
@@ -51,7 +54,9 @@ public class InitLoadingScreen implements Screen {
         //initial clean
         main.assetManager.clear();
 
-        System.out.println("------------------------------ started loading of Assets ------------------------------");
+        if (NotFinalStatics.debug) {
+            System.out.println("------------------------------ started loading of Assets ------------------------------");
+        }
 
         //SynchronousAssetLoader (synchronized with Render-Thread)
         loadTexturesSync();
@@ -62,41 +67,43 @@ public class InitLoadingScreen implements Screen {
         main.assetManager.finishLoading();
         main.assetManager.update();
 
-        System.out.println("------------------------------ finished loading of Assets ------------------------------");
-        System.out.println("AssetManager dump: \n" + main.assetManager.getDiagnostics());
-        System.out.println("------------------------------ finished loading of Assets ------------------------------");
+        if (NotFinalStatics.debug) {
+            System.out.println("------------------------------ finished loading of Assets ------------------------------");
+            System.out.println("AssetManager dump: \n" + main.assetManager.getDiagnostics());
+            System.out.println("------------------------------ finished loading of Assets ------------------------------");
+        }
     }
 
     private void loadShadersSync() {
-        main.assetManager.load("shaders/earthquake", ShaderAsset.class);
-        main.assetManager.load("shaders/colorshift", ShaderAsset.class);
-        main.assetManager.load("shaders/passthrough", ShaderAsset.class);
+        main.assetManager.load(Assets.earthQuakeShader);
+        main.assetManager.load(Assets.colorShiftShader);
+        main.assetManager.load(Assets.passThroughShader);
     }
 
     private void loadParallaxSync() {
-        main.assetManager.load("tmx/1-1.parallax", ParallaxAsset.class);
-        main.assetManager.load("tmx/backgrounds/background_0.png", Texture.class);
-        main.assetManager.load("tmx/backgrounds/background_1.png", Texture.class);
-        main.assetManager.load("tmx/backgrounds/background_2.png", Texture.class);
+        main.assetManager.load(Assets.defaultBackgroundConfiguration);
+        main.assetManager.load(Assets.defaultBackgroundPart0);
+        main.assetManager.load(Assets.defaultBackgroundPart1);
+        main.assetManager.load(Assets.defaultBackgroundPart2);
     }
 
     private void loadTexturesSync() {
         //Sprite
-        main.assetManager.load("playersprite/skull1.png", Texture.class);
-        main.assetManager.load("sprite/enemy/Bloated Bedbug/BloatedBedbugIdleSide.png", Texture.class);
-        main.assetManager.load("sprite/enemy/Lethal Scorpion/LethalScorpionIdleSide.png", Texture.class);
-        main.assetManager.load("sprite/digits.png", Texture.class);
-        main.assetManager.load("sprite/heart.png", Texture.class);
-        main.assetManager.load("sprite/spr_coin_strip4.png", Texture.class);
+        main.assetManager.load(Assets.playerTexture);
+        main.assetManager.load(Assets.enemyDefaultSprite);
+        main.assetManager.load(Assets.enemySpikeSprite);
+        main.assetManager.load(Assets.digitSprite);
+        main.assetManager.load(Assets.heartSprite);
+        main.assetManager.load(Assets.coinSprite);
 
         //Menu
-        main.assetManager.load("menu/symbols/TEXT_MENU_1.png", Texture.class);
-        main.assetManager.load("menu/menunumbers.png", Texture.class);
-        main.assetManager.load("menu/ui/BTN_GREEN_SQ.png", Texture.class);
-        main.assetManager.load("menu/ui/levelclear.png", Texture.class);
-        main.assetManager.load("menu/ui/clicktoskip.png", Texture.class);
-        main.assetManager.load("menu/ui/background.png", Texture.class);
-        main.assetManager.load("menu/ui/selectlevel.png", Texture.class);
+        main.assetManager.load(Assets.menuSymbols);
+        main.assetManager.load(Assets.menuNumbers);
+        main.assetManager.load(Assets.menuButton);
+        main.assetManager.load(Assets.menuClearText);
+        main.assetManager.load(Assets.menuSkipText);
+        main.assetManager.load(Assets.menuBackground);
+        main.assetManager.load(Assets.menuSelectLevel);
     }
 
     @Override
@@ -124,16 +131,16 @@ public class InitLoadingScreen implements Screen {
 
 
         if (frameCount % 10 == 0) {
-            currentFrame++;
-            if (currentFrame > 3) {
-                currentFrame = 0;
+            currentAnimationFrame++;
+            if (currentAnimationFrame > 3) {
+                currentAnimationFrame = 0;
             }
         }
 
 
         main.spriteBatch.begin();
-        main.spriteBatch.draw(tippTexture, 10,Gdx.graphics.getHeight() - 250, 1200, 200);
-        main.spriteBatch.draw(textureRegion[0][currentFrame], 50, 80, 65, 100);
+        main.spriteBatch.draw(tipTexture, 10,Gdx.graphics.getHeight() - 250, 1200, 200);
+        main.spriteBatch.draw(textureRegion[0][currentAnimationFrame], 50, 80, 65, 100);
         main.spriteBatch.draw(digits[0][digit1], loadingBar - 52, 65, 24, 36);
         main.spriteBatch.draw(digits[0][digit2], loadingBar - 26, 65, 24, 36);
         main.spriteBatch.draw(percentTexture, loadingBar, 65, 24, 36);
@@ -167,5 +174,6 @@ public class InitLoadingScreen implements Screen {
         texture.dispose();
         digitsTexture.dispose();
         percentTexture.dispose();
+        tipTexture.dispose();
     }
 }

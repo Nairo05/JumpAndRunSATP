@@ -6,11 +6,7 @@ import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Manifold;
 
-import java.util.Random;
-
 import de.dhbw.satp.gameobjects.DynamicEntity;
-import de.dhbw.satp.gameobjects.enemy.Enemy;
-import de.dhbw.satp.gameobjects.ToSpawnObjectDefinition;
 import de.dhbw.satp.screens.PlayScreen;
 
 public class MyContactListener implements ContactListener {
@@ -50,16 +46,6 @@ public class MyContactListener implements ContactListener {
             playScreen.getPlayer().jumped();
         }
 
-        if (checksum == BitFilterDef.ENEMY_CO_ENEMY) {
-            if (new Random().nextInt(2) == 0) {
-                playScreen.getEntityManager().spawnDynamicEntity(new ToSpawnObjectDefinition<>(Enemy.class, 80f, 70f, 32f));
-                System.out.println("async spawned");
-            } else {
-                DynamicEntity entity  = (DynamicEntity) contact.getFixtureB().getUserData();
-                entity.onHeadHit();
-                System.out.println("async deleted");
-            }
-        }
         if (checksum == BitFilterDef.PLAYER_COLLECT_COIN) {
             if (contact.getFixtureA().getFilterData().categoryBits == BitFilterDef.COLLECITBLE_BIT) {
                 DynamicEntity entity  = (DynamicEntity) contact.getFixtureA().getUserData();

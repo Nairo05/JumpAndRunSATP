@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.Texture;
 
 import org.w3c.dom.Text;
 
+import de.dhbw.satp.main.Assets;
 import de.dhbw.satp.main.JumpAndRunMain;
 
 public class GameOverScreen implements Screen {
@@ -27,10 +28,14 @@ public class GameOverScreen implements Screen {
     @Override
     public void show() {
         System.out.println("Ich bin der Game-Over Scrrennnn");
+
+        jumpAndRunMain.assetManager.unload(Assets.level11.fileName);
     }
 
     @Override
     public void render(float delta) {
+        jumpAndRunMain.assetManager.update();
+
         counter--;
 
         if (counter < 1080) {

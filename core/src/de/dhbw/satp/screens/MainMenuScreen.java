@@ -8,7 +8,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -20,20 +19,19 @@ import de.dhbw.satp.scene2d.LevelButton;
 public class MainMenuScreen implements Screen {
 
     private final int LEVELS = 10;
-    private final float scaleFactor = 2.1f;
 
     public Stage stage;
     private final Texture textTexture;
     private final Texture cloudTexture;
-    private JumpAndRunMain main;
+    private final JumpAndRunMain jumpAndRunMain;
 
-    private ParticleEffect particleEffect;
+    private final ParticleEffect particleEffect;
 
-    public MainMenuScreen(JumpAndRunMain main) {
-        this.main = main;
+    public MainMenuScreen(JumpAndRunMain jumpAndRunMain) {
+        this.jumpAndRunMain = jumpAndRunMain;
 
-        cloudTexture = main.assetManager.get("menu/ui/background.png");
-        textTexture =  main.assetManager.get("menu/ui/selectlevel.png");
+        cloudTexture = jumpAndRunMain.assetManager.get("menu/ui/background.png");
+        textTexture =  jumpAndRunMain.assetManager.get("menu/ui/selectlevel.png");
 
         particleEffect = new ParticleEffect();
         particleEffect.load(Gdx.files.internal("particle/whitefly.p"), Gdx.files.internal("particle/"));
@@ -56,7 +54,7 @@ public class MainMenuScreen implements Screen {
 
         LevelButton[] levelButtons = new LevelButton[LEVELS];
         for (int i = 0; i < LEVELS; i++) {
-            levelButtons[i] = new LevelButton(i, main);
+            levelButtons[i] = new LevelButton(i, jumpAndRunMain);
         }
 
         Table levelTable = new Table();
@@ -91,11 +89,11 @@ public class MainMenuScreen implements Screen {
         Gdx.gl20.glClearColor(0.180f, 0.353f, 0.537f, 1f);
         Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        main.spriteBatch.begin();
-        main.spriteBatch.draw(cloudTexture, 0,0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        main.spriteBatch.draw(textTexture, 160, Gdx.graphics.getHeight() - 160);
-        particleEffect.draw(main.spriteBatch);
-        main.spriteBatch.end();
+        jumpAndRunMain.spriteBatch.begin();
+        jumpAndRunMain.spriteBatch.draw(cloudTexture, 0,0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        jumpAndRunMain.spriteBatch.draw(textTexture, 160, Gdx.graphics.getHeight() - 160);
+        particleEffect.draw(jumpAndRunMain.spriteBatch);
+        jumpAndRunMain.spriteBatch.end();
 
         stage.draw();
     }

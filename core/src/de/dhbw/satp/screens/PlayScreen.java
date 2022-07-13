@@ -16,17 +16,16 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
+import de.dhbw.satp.gameobjects.Player;
 import de.dhbw.satp.gameobjects.collectible.CollectibleManager;
 import de.dhbw.satp.gameobjects.collectible.DynamicCoin;
-import de.dhbw.satp.gameobjects.enemy.EnemyStandard;
 import de.dhbw.satp.gameobjects.enemy.EntityManager;
-import de.dhbw.satp.gameobjects.Player;
-import de.dhbw.satp.gameobjects.ToSpawnObjectDefinition;
 import de.dhbw.satp.helper.CameraManager;
+import de.dhbw.satp.main.Assets;
 import de.dhbw.satp.main.FinalStatics;
 import de.dhbw.satp.main.JumpAndRunMain;
+import de.dhbw.satp.main.NotFinalStatics;
 import de.dhbw.satp.main.assetfragments.ParallaxAsset;
-import de.dhbw.satp.main.assetfragments.ShaderAsset;
 import de.dhbw.satp.parallax.ParallaxRenderer;
 import de.dhbw.satp.particle.ParticleManager;
 import de.dhbw.satp.scene2d.DebugOnScreenDisplay;
@@ -67,7 +66,7 @@ public class PlayScreen implements Screen {
         world = new World(new Vector2(0f,-9.81f), true);
 
         entityManager = new EntityManager(this);
-        particleManager = new ParticleManager(getAssetManager());
+        particleManager = new ParticleManager();
         collectibleManager = new CollectibleManager(this);
 
         cameraManager = new CameraManager();
@@ -84,9 +83,9 @@ public class PlayScreen implements Screen {
 
         parallaxRenderer = new ParallaxRenderer(getAssetManager().get("tmx/1-1.parallax", ParallaxAsset.class));
 
-        shaderProgram = getAssetManager().get("shaders/colorshift", ShaderAsset.class).getShaderProgram();
+        shaderProgram = getAssetManager().get(Assets.colorShiftShader).getShaderProgram();
 
-        orthogonalTiledMapRenderer = new OrthogonalTiledMapRenderer(mapCreator.getMap(), 1f / PPM);
+        orthogonalTiledMapRenderer = new OrthogonalTiledMapRenderer(getAssetManager().get(Assets.level11), 1f / PPM);
 
         orthogonalTiledMapRenderer.getBatch().setShader(shaderProgram);
     }
@@ -97,38 +96,39 @@ public class PlayScreen implements Screen {
     }
 
     private void handleDebug(float dt) {
-        debugOnScreenDisplay.update(dt);
+        if (NotFinalStatics.debug) {
+            if (Gdx.input.isKeyJustPressed(Input.Keys.O)) {
+                collectibleManager.aSyncSpawn(DynamicCoin.class, 200, 400);
+            }
 
-        if (Gdx.input.isKeyJustPressed(Input.Keys.O)) {
-            collectibleManager.aSyncSpawn(DynamicCoin.class, 200,400);
+            debugOnScreenDisplay.update(dt);
+
+            debugOnScreenDisplay.setFrameInfo("FRAME INFO |" +
+                    "   FPS : " + Gdx.graphics.getFramesPerSecond() +
+                    "   DELTA : " + Gdx.graphics.getDeltaTime());
+
+            debugOnScreenDisplay.setEntityInfo("ENTITY MANAGER |" +
+                    "   QUEUE : " + entityManager.getQueuedSize() + "/" + entityManager.getMAX_QUEUED_ENTITIES() +
+                    "   SPAWNED : " + entityManager.getSpawnedSize() + "/" + entityManager.getMAX_ENTITIES_IN_WORLD() +
+                    "   ACTIVE: ??");
+
+            debugOnScreenDisplay.setPlayerInfo("PLAYER |" +
+                    "   POSITION : X " + player.getX() + "\n" +
+                    "                                       Y " + player.getY() + "\n" +
+                    "                   Velocity        VEL X " + player.getPlayerBody().getLinearVelocity().x + "\n" +
+                    "                                       VEL Y " + player.getPlayerBody().getLinearVelocity().y + "\n" +
+                    "                   Lives            STATE " + player.getLives() + " IsInvincible: " + player.isInvincible());
+
+            debugOnScreenDisplay.setParticleManagerInfo("PARTIC MANAGER |" +
+                    "   QUEUE: " + "0/0" +
+                    "   EMITTER : " + particleManager.getParticleSize() + "/" + particleManager.getMAX_PARTICLE_IN_WORLD() +
+                    "   ACTIVE: " + particleManager.getActive());
+
+            debugOnScreenDisplay.setSpawnAbleInfo("COLLE MANAGER |" +
+                    "   QUEUE: " + collectibleManager.getQueued() + "/" + collectibleManager.getQueuedMaxSize() + "" +
+                    "   SPAWNED: " + collectibleManager.getCount() + "/" + collectibleManager.getSize() +
+                    "   ACTIVE: " + collectibleManager.getActiveCount() + "/" + collectibleManager.getCount());
         }
-
-        debugOnScreenDisplay.setFrameInfo("FRAME INFO |" +
-                "   FPS : " + Gdx.graphics.getFramesPerSecond() +
-                "   DELTA : " + Gdx.graphics.getDeltaTime());
-
-        debugOnScreenDisplay.setEntityInfo("ENTITY MANAGER |" +
-                "   QUEUE : " + entityManager.getQueuedSize() + "/" + entityManager.getMAX_QUEUED_ENTITIES() +
-                "   SPAWNED : " + entityManager.getSpawnedSize() + "/" + entityManager.getMAX_ENTITIES_IN_WORLD() +
-                "   ACTIVE: ??");
-
-        debugOnScreenDisplay.setPlayerInfo("PLAYER |" +
-                "   POSITION : X " + player.getX() + "\n" +
-                "                                       Y " + player.getY() + "\n" +
-                "                   Velocity        VEL X " + player.getPlayerBody().getLinearVelocity().x + "\n" +
-                "                                       VEL Y " + player.getPlayerBody().getLinearVelocity().y + "\n" +
-                "                   Lives            STATE " + player.getLives() + " IsInvincible: " + player.isInvincible());
-
-        debugOnScreenDisplay.setParticleManagerInfo("PARTIC MANAGER |" +
-                "   QUEUE: " + "0/0" +
-                "   EMITTER : " + particleManager.getParticleSize() + "/" + particleManager.getMAX_PARTICLE_IN_WORLD() +
-                "   ACTIVE: " + particleManager.getActive());
-
-        debugOnScreenDisplay.setSpawnAbleInfo("COLLE MANAGER |" +
-                "   QUEUE: " + collectibleManager.getQueued() + "/" + collectibleManager.getQueuedMaxSize() + "" +
-                "   SPAWNED: " + collectibleManager.getCount() + "/" + collectibleManager.getSize() +
-                "   ACTIVE: " + collectibleManager.getActiveCount() + "/" + collectibleManager.getCount());
-
     }
 
 
@@ -141,7 +141,12 @@ public class PlayScreen implements Screen {
         entityManager.update(dt);
         particleManager.update(dt);
         collectibleManager.update(dt, cameraManager.getCamera());
+
         cameraManager.update(player, dt);
+
+        if (cameraManager.isOutOfMap()) {
+            endGame();
+        }
 
         updatePlayer(dt);
         handleDebug(dt);
@@ -170,7 +175,7 @@ public class PlayScreen implements Screen {
         Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         //Shader
-        shaderProgram.begin();
+        shaderProgram.bind();
 
         Vector3 u_distort = Vector3.Zero;
         float shaderValue = (collectibleManager.getCount() * 1f) / collectibleManager.getIntItCount();
@@ -187,7 +192,6 @@ public class PlayScreen implements Screen {
 
         shaderProgram.setUniformf("u_distort", u_distort);
         shaderProgram.setUniformf("u_shift", new Vector3(shaderValue,shaderValue,shaderValue));
-        shaderProgram.end();
 
         //begin (1/2)
         jumpAndRunMain.spriteBatch.setProjectionMatrix(cameraManager.getCamera().combined);
@@ -217,8 +221,10 @@ public class PlayScreen implements Screen {
         jumpAndRunMain.spriteBatch.end();
 
         //Hud
-        debugOnScreenDisplay.renderWithoutBatch(world, cameraManager.getCamera().combined);
-        debugOnScreenDisplay.renderStage();
+        if (NotFinalStatics.debug) {
+            debugOnScreenDisplay.renderWithoutBatch(world, cameraManager.getCamera().combined);
+            debugOnScreenDisplay.renderStage();
+        }
 
         hud.renderStage();
     }
@@ -247,7 +253,6 @@ public class PlayScreen implements Screen {
     public void dispose() {
         System.out.println("PlayScreen dispose call (heavy)");
         world.dispose();
-        player.dispose();
         hud.dispose();
         particleManager.dispose();
         parallaxRenderer.dispose();

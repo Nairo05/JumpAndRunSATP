@@ -10,26 +10,30 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 
 import de.dhbw.satp.gameobjects.DynamicEntity;
+import de.dhbw.satp.main.Assets;
 import de.dhbw.satp.main.FinalStatics;
 import de.dhbw.satp.screens.PlayScreen;
 import de.dhbw.satp.staticworld.BitFilterDef;
 
 public class DynamicCoin extends DynamicEntity {
 
-    private Texture texture;
+    private final Texture texture;
+    private final TextureRegion[][] textureRegion;
+
+    private final Vector2 speed = new Vector2(0f,0f);
+    private final float originX;
+    private final float originY;
+
     private boolean freeze = false;
-    private final TextureRegion textureRegion[][];
-    private float originX, originY;
-    private float rotation = 120f;
     private boolean inAnimation = false;
+    private float rotation = 120f;
     private int animationCount = 15;
     private Vector2 textureDistort = new Vector2(0f,0f);
-    private Vector2 speed = new Vector2(0f,0f);
 
     public DynamicCoin(PlayScreen playScreen, float posXInWorldUnits, float posYInWorldUnits) {
         super(playScreen, posXInWorldUnits, posYInWorldUnits);
 
-        texture = playScreen.getAssetManager().get("sprite/spr_coin_strip4.png");
+        texture = playScreen.getAssetManager().get(Assets.coinSprite);
         textureRegion = TextureRegion.split(texture, 16,16);
 
         originX = texture.getWidth() / (FinalStatics.PPM * 1f) / 2 / 4;
@@ -70,7 +74,6 @@ public class DynamicCoin extends DynamicEntity {
 
     @Override
     public void onBodyHit() {
-        System.out.println("hit");
         prepareDestroy();
         inAnimation = true;
     }

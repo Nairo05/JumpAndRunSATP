@@ -12,16 +12,12 @@ import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import de.dhbw.satp.gameobjects.Player;
+import de.dhbw.satp.main.Assets;
 import de.dhbw.satp.main.FinalStatics;
 import de.dhbw.satp.main.NotFinalStatics;
 import de.dhbw.satp.screens.PlayScreen;
 
 public class Hud implements Disposable {
-
-    //Filepath of Sprites
-    private static final String DIGIT_SPRITE_PATH = "sprite/digits.png";
-    private static final String HEART_SPRITE_PATH = "sprite/heart.png";
-    private static final String COIN_SPRITE_PATH = "sprite/spr_coin_strip4.png";
 
     public Stage stage;
     private final PlayScreen playScreen;
@@ -61,7 +57,7 @@ public class Hud implements Disposable {
         timerTable.right();
         timerTable.setFillParent(true);
 
-        digitsTexture = playScreen.getAssetManager().get(DIGIT_SPRITE_PATH);
+        digitsTexture = playScreen.getAssetManager().get(Assets.digitSprite);
         digits = TextureRegion.split(digitsTexture, 8, 12);
 
 
@@ -72,7 +68,7 @@ public class Hud implements Disposable {
         livesTable.left();
         livesTable.setFillParent(true);
 
-        livesTexture = playScreen.getAssetManager().get(HEART_SPRITE_PATH);
+        livesTexture = playScreen.getAssetManager().get(Assets.heartSprite);
 
         liveImages = new Image[3];
 
@@ -88,7 +84,7 @@ public class Hud implements Disposable {
         coinsTable.padTop(18f).padLeft(6f);
         coinsTable.setFillParent(true);
 
-        ermeraldTexture = playScreen.getAssetManager().get(COIN_SPRITE_PATH);
+        ermeraldTexture = playScreen.getAssetManager().get(Assets.coinSprite);
         ermeraldIcon = TextureRegion.split(ermeraldTexture, 16, 16);
         emeraldImage = new Image(ermeraldIcon[0][0]);
 
@@ -102,7 +98,9 @@ public class Hud implements Disposable {
             boolean finishedLevel = false;
             if (!finishedLevel) {
                 time--;
-                System.out.println(time);
+                if (NotFinalStatics.debug) {
+                    System.out.println(time);
+                }
             }
         }
 
