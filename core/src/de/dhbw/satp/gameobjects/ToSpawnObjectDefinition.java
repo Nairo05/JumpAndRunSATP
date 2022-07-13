@@ -6,7 +6,6 @@ public class ToSpawnObjectDefinition<T extends DynamicEntity> {
 
     private final float posXInWorldUnits;
     private final float posYInWorldUnits;
-    //TODO meta tags
     private final float width;
 
     public ToSpawnObjectDefinition(Class<T> blueprint, float posXInWorldUnits, float posYInWorldUnits, float width) {

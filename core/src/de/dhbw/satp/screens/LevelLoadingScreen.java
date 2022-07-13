@@ -20,7 +20,6 @@ public class LevelLoadingScreen implements Screen {
     public void show() {
         System.out.println("Ich bin der Level-Loading Scrrennnn");
 
-        //TODO nicht hier main und wo anders JumpandRunMain
         jumpAndRunMain.assetManager.load(Assets.level11);
         jumpAndRunMain.assetManager.finishLoading();
     }

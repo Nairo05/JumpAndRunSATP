@@ -2,7 +2,6 @@ package de.dhbw.satp.staticworld;
 
 public class BitFilterDef {
 
-    //TODO: enumeration ?
     //Default Bit
     public static final short NO_CLIP_BIT = 0;
 

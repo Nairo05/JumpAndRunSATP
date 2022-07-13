@@ -9,7 +9,6 @@ import com.badlogic.gdx.utils.Array;
 import de.dhbw.satp.parallax.ParallaxBackgroundLayer;
 
 public class ParallaxAsset {
-    //TODO: Use JSON file and try to preload it
 
     private final Array<ParallaxBackgroundLayer> layers;
 

@@ -13,6 +13,8 @@ import de.dhbw.satp.main.assetfragments.ParallaxAsset;
  *
  * can render n*m scrolling Background pieces and adds a Parallax-Effect to each Layer
  *
+ * @author Florian Sprenger
+ *
  * */
 public class ParallaxRenderer implements Disposable {
 
