@@ -24,7 +24,7 @@ public class MyContactListener implements ContactListener {
 
         if (checksum == BitFilterDef.PLAYER_ON_GROUND) {
             System.out.println(playerOnGround);
-            playerOnGround ++;
+            playerOnGround++;
         }
         if (checksum == BitFilterDef.PLAYER_CO_ENEMY) {
             playScreen.getPlayer().hitEnemy();
@@ -47,7 +47,7 @@ public class MyContactListener implements ContactListener {
         }
 
         if (checksum == BitFilterDef.PLAYER_COLLECT_COIN) {
-            if (contact.getFixtureA().getFilterData().categoryBits == BitFilterDef.COLLECITBLE_BIT) {
+            if (contact.getFixtureA().getFilterData().categoryBits == BitFilterDef.COLLECTIBLE_BIT) {
                 DynamicEntity entity  = (DynamicEntity) contact.getFixtureA().getUserData();
                 if (MathUtils.random(4) == 0) {
                     playScreen.setEarthQuakeCount(MathUtils.random(60));
@@ -55,7 +55,7 @@ public class MyContactListener implements ContactListener {
                 entity.onBodyHit();
                 playScreen.getPlayer().collectCoin();
             }
-            if (contact.getFixtureB().getFilterData().categoryBits == BitFilterDef.COLLECITBLE_BIT) {
+            if (contact.getFixtureB().getFilterData().categoryBits == BitFilterDef.COLLECTIBLE_BIT) {
                 DynamicEntity entity  = (DynamicEntity) contact.getFixtureB().getUserData();
                 entity.onBodyHit();
                 if (MathUtils.random(10) == 0) {
@@ -71,7 +71,7 @@ public class MyContactListener implements ContactListener {
         int checksum = contact.getFixtureA().getFilterData().categoryBits + contact.getFixtureB().getFilterData().categoryBits;
 
         if (checksum == BitFilterDef.PLAYER_ON_GROUND ) {
-            playerOnGround --;
+            playerOnGround--;
         }
 
     }

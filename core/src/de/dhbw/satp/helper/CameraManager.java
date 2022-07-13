@@ -9,14 +9,14 @@ import de.dhbw.satp.main.NotFinalStatics;
 
 public class CameraManager {
 
-    private int camState = 0;
-    private int waitCount = 75;
-
-    private final OrthographicCamera camera;
-
     private static final float LEVEL_START = 2.1f;
     private static final float LEVEL_END = 29.9f;
     private static final float FINAL_CAM_POSITION = LEVEL_END + 2f;
+
+    private final OrthographicCamera camera;
+
+    private int camState = 0;
+    private int waitCount = 75;
 
     public CameraManager() {
         this.camera = new OrthographicCamera();

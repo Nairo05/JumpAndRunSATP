@@ -6,10 +6,9 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 
-import org.w3c.dom.Text;
-
 import de.dhbw.satp.main.Assets;
 import de.dhbw.satp.main.JumpAndRunMain;
+import de.dhbw.satp.main.NotFinalStatics;
 
 public class GameOverScreen implements Screen {
 
@@ -21,19 +20,21 @@ public class GameOverScreen implements Screen {
     public GameOverScreen(JumpAndRunMain jumpAndRunMain) {
         this.jumpAndRunMain = jumpAndRunMain;
 
-        clearTexture = jumpAndRunMain.assetManager.get("menu/ui/levelclear.png");
-        clickToSkip = jumpAndRunMain.assetManager.get("menu/ui/clicktoskip.png");
+        clearTexture = jumpAndRunMain.assetManager.get(Assets.menuClearText);
+        clickToSkip = jumpAndRunMain.assetManager.get(Assets.menuSkipText);
     }
 
     @Override
     public void show() {
-        System.out.println("Ich bin der Game-Over Scrrennnn");
+        if (NotFinalStatics.debug) {
+            System.out.println("Started Game Over Screen");
+        }
 
         jumpAndRunMain.assetManager.unload(Assets.level11.fileName);
     }
 
     @Override
-    public void render(float delta) {
+    public void render(float dt) {
         jumpAndRunMain.assetManager.update();
 
         counter--;
@@ -77,6 +78,8 @@ public class GameOverScreen implements Screen {
 
     @Override
     public void dispose() {
-        System.out.println("GameOverScreen dispose call");
+        if (NotFinalStatics.debug) {
+            System.out.println("GameOverScreen dispose call");
+        }
     }
 }

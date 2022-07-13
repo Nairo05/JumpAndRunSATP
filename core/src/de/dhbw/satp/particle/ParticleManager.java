@@ -1,38 +1,43 @@
 package de.dhbw.satp.particle;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 
+import de.dhbw.satp.main.NotFinalStatics;
+
 public class ParticleManager implements Disposable {
 
-    private final int MAX_PARTICLE_IN_WORLD = 4;
+    private static final String PATH_PREFIX = "particle/";
+    private static final String WHITE_FLY_EFFECT = "WhiteFly.p";
+    private static final String RAIN_EFFECT = "Rain.p";
+
     private final Array<ParticleEffect> particles;
+    private final int MAX_PARTICLE_IN_WORLD = 4;
+
     private int currentActive = 0;
 
     public ParticleManager() {
-
         particles = new Array<>(MAX_PARTICLE_IN_WORLD);
     }
 
     public void addParticleEffect(String type, float xInWorldUnits, float yInWorldUnits) {
         if (particles.size < MAX_PARTICLE_IN_WORLD) {
-            if (type.equalsIgnoreCase("WhiteFly.p")) {
+            if (type.equalsIgnoreCase(WHITE_FLY_EFFECT)) {
                 ParticleEffect particleEffect = new ParticleEffect();
-                particleEffect.load(Gdx.files.internal("particle/whitefly.p"), Gdx.files.internal("particle/"));
+                particleEffect.load(Gdx.files.internal(PATH_PREFIX + WHITE_FLY_EFFECT), Gdx.files.internal(PATH_PREFIX));
                 particleEffect.getEmitters().first().setPosition(xInWorldUnits, yInWorldUnits);
                 particleEffect.scaleEffect(0.005f);
                 particleEffect.start();
 
                 particles.add(particleEffect);
 
-            } else if (type.equalsIgnoreCase("Rain.p")) {
+            } else if (type.equalsIgnoreCase(RAIN_EFFECT)) {
                 ParticleEffect particleEffect = new ParticleEffect();
-                particleEffect.load(Gdx.files.internal("particle/rain.p"), Gdx.files.internal("particle/"));
+                particleEffect.load(Gdx.files.internal(PATH_PREFIX + RAIN_EFFECT), Gdx.files.internal(PATH_PREFIX));
                 particleEffect.getEmitters().first().setPosition(xInWorldUnits - 1.7f, yInWorldUnits + 0.4f);
                 particleEffect.scaleEffect(0.004f);
                 particleEffect.start();
@@ -40,7 +45,9 @@ public class ParticleManager implements Disposable {
                 particles.add(particleEffect);
             }
         } else {
-            System.out.println("Particle Limit exceeded");
+            if (NotFinalStatics.debug) {
+                System.out.println("Particle Limit exceeded");
+            }
         }
     }
 
@@ -55,7 +62,6 @@ public class ParticleManager implements Disposable {
 
         for (ParticleEffect particleEffect : particles) {
 
-            //Only render, if camera is showing them
             float leftViewPortX = camera.position.x - camera.viewportWidth;
             float rightViewPortX = camera.position.x + camera.viewportWidth;
 
@@ -64,7 +70,6 @@ public class ParticleManager implements Disposable {
                 currentActive++;
                 particleEffect.draw(spriteBatch);
 
-                //endless Loop
                 if (particleEffect.isComplete()) {
                     particleEffect.reset();
                 }
@@ -72,7 +77,7 @@ public class ParticleManager implements Disposable {
         }
     }
 
-    public int getMAX_PARTICLE_IN_WORLD() {
+    public int getMaxParticleInWorld() {
         return MAX_PARTICLE_IN_WORLD;
     }
 

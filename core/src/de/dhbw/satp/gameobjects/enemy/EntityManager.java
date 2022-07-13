@@ -3,31 +3,27 @@ package de.dhbw.satp.gameobjects.enemy;
 
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.Queue;
 
 import de.dhbw.satp.gameobjects.DynamicEntity;
-import de.dhbw.satp.gameobjects.TestEntity;
 import de.dhbw.satp.gameobjects.ToSpawnObjectDefinition;
+import de.dhbw.satp.main.NotFinalStatics;
 import de.dhbw.satp.screens.PlayScreen;
 
 public class EntityManager implements Disposable {
 
-    private final int MAX_ENTITIES_IN_WORLD = 16;
-    private final int MAX_QUEUED_ENTITIES = 32;
+    private static final int MAX_ENTITIES_IN_WORLD = 16;
+    private static final int MAX_QUEUED_ENTITIES = 32;
 
-    private final World world;
     private final PlayScreen playScreen;
-
     private final Array<DynamicEntity> dynamicEntityArrayList;
     private final Queue<ToSpawnObjectDefinition<? extends DynamicEntity>> queuedEntities;
 
     public EntityManager(PlayScreen playScreen) {
         queuedEntities = new Queue<>(MAX_QUEUED_ENTITIES);
         dynamicEntityArrayList = new Array<>();
-        this.world = playScreen.getWorld();
         this.playScreen = playScreen;
     }
 
@@ -44,14 +40,16 @@ public class EntityManager implements Disposable {
                 ToSpawnObjectDefinition<? extends DynamicEntity> currentSpawnDef = queuedEntities.first();
                 queuedEntities.removeFirst();
 
-                if (currentSpawnDef.getBlueprint() == TestEntity.class) {
-                    dynamicEntityArrayList.add(new TestEntity(playScreen, currentSpawnDef.getPosXInWorldUnits(), currentSpawnDef.getPosYInWorldUnits()));
-                } else if (currentSpawnDef.getBlueprint() == EnemyDefault.class) {
+                if (currentSpawnDef.getBlueprint() == EnemyDefault.class) {
                     dynamicEntityArrayList.add(new EnemyDefault(playScreen, currentSpawnDef.getPosXInWorldUnits(), currentSpawnDef.getPosYInWorldUnits(), currentSpawnDef.getWidth()));
-                    System.out.println("Spawned new Enemy at " + currentSpawnDef.getPosXInWorldUnits() + " " + currentSpawnDef.getPosYInWorldUnits());
+                    if (NotFinalStatics.debug) {
+                        System.out.println("Spawned new Default-Enemy at " + currentSpawnDef.getPosXInWorldUnits() + " " + currentSpawnDef.getPosYInWorldUnits());
+                    }
                 } else if (currentSpawnDef.getBlueprint() == EnemySpike.class) {
                     dynamicEntityArrayList.add(new EnemySpike(playScreen, currentSpawnDef.getPosXInWorldUnits(), currentSpawnDef.getPosYInWorldUnits(), currentSpawnDef.getWidth()));
-                    System.out.println("Spawned new Enemy at " + currentSpawnDef.getPosXInWorldUnits() + " " + currentSpawnDef.getPosYInWorldUnits());
+                    if (NotFinalStatics.debug) {
+                        System.out.println("Spawned new Spike-Enemy at " + currentSpawnDef.getPosXInWorldUnits() + " " + currentSpawnDef.getPosYInWorldUnits());
+                    }
                 }
             }
         }
@@ -79,11 +77,11 @@ public class EntityManager implements Disposable {
         }
     }
 
-    public int getMAX_ENTITIES_IN_WORLD() {
+    public int getMaxEntitiesInWorld() {
         return MAX_ENTITIES_IN_WORLD;
     }
 
-    public int getMAX_QUEUED_ENTITIES() {
+    public int getMaxQueuedEntities() {
         return MAX_QUEUED_ENTITIES;
     }
 

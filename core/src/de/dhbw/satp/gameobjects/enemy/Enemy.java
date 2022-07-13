@@ -7,7 +7,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
-import com.badlogic.gdx.physics.box2d.World;
 
 import de.dhbw.satp.gameobjects.DynamicEntity;
 import de.dhbw.satp.main.FinalStatics;
@@ -16,15 +15,16 @@ import de.dhbw.satp.staticworld.BitFilterDef;
 
 public abstract class Enemy extends DynamicEntity {
 
+    protected PlayScreen playScreen;
+    protected Texture texture;
+    protected TextureRegion[][] textureRegions;
+
+    private int frameCount = 0;
+    private int frame = 0;
     private final float leftBound;
     private final float rightBound;
     private boolean movesLeft = false;
 
-    protected PlayScreen playScreen;
-    protected Texture texture;
-    protected TextureRegion[][] textureRegions;
-    private int framecount = 0;
-    private int frame = 0;
 
 
     public Enemy(PlayScreen playScreen, float posXInWorldUnits, float posYInWorldUnits, float width) {
@@ -45,10 +45,10 @@ public abstract class Enemy extends DynamicEntity {
 
         PolygonShape polygonShape = new PolygonShape();
         Vector2[] vertices = {
-                new Vector2(-7.5f, 10f).scl(1f/ FinalStatics.PPM),
-                new Vector2(7.5f, 10f).scl(1f/ FinalStatics.PPM),
-                new Vector2(-3.5f, 3f).scl(1f/ FinalStatics.PPM),
-                new Vector2(3.5f, 3f).scl(1f/ FinalStatics.PPM)
+                new Vector2(-7.5f, 10f).scl(1f / FinalStatics.PPM),
+                new Vector2(7.5f, 10f).scl(1f / FinalStatics.PPM),
+                new Vector2(-3.5f, 3f).scl(1f / FinalStatics.PPM),
+                new Vector2(3.5f, 3f).scl(1f / FinalStatics.PPM)
         };
         polygonShape.set(vertices);
         headFixtureDef.shape = polygonShape;
@@ -90,8 +90,8 @@ public abstract class Enemy extends DynamicEntity {
         } else {
 
             if (!isDestroyed) {
-                framecount++;
-                if ((framecount % 6) == 0) {
+                frameCount++;
+                if ((frameCount % 6) == 0) {
                     frame++;
                     if (frame > 3) {
                         frame = 0;

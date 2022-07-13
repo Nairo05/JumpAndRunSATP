@@ -15,7 +15,8 @@ import de.dhbw.satp.main.NotFinalStatics;
 
 public class DebugOnScreenDisplay {
 
-    private boolean debug;
+    public Stage stage;
+
     private final Box2DDebugRenderer debugRenderer;
 
     private final StageText2D debuggerInfo;
@@ -25,11 +26,7 @@ public class DebugOnScreenDisplay {
     private final StageText2D frameInfo;
     private final StageText2D playerInfo;
 
-    public Stage stage;
-
-
     public DebugOnScreenDisplay(SpriteBatch spriteBatch) {
-        this.debug = NotFinalStatics.debug;
 
         debuggerInfo = new StageText2D(10f, 620);
         debuggerInfo.setText("Debugger enabled, Press F3 to close, F4 to skip Screen, F5 to zoom in and out");
@@ -62,27 +59,21 @@ public class DebugOnScreenDisplay {
     public void update(float dt) {
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.F3)) {
-            debug = !debug;
+            NotFinalStatics.debug = !NotFinalStatics.debug;
         }
         if (Gdx.input.isTouched() && Gdx.input.getY() < 100) {
-            debug = !debug;
+            NotFinalStatics.debug = !NotFinalStatics.debug;
         }
 
-        if (debug) {
-            stage.act(dt);
-        }
+        stage.act(dt);
     }
 
     public void renderStage() {
-        if (debug) {
-            stage.draw();
-        }
+        stage.draw();
     }
 
     public void renderWithoutBatch(World world, Matrix4 matrix4) {
-        if (debug) {
-            debugRenderer.render(world, matrix4);
-        }
+        debugRenderer.render(world, matrix4);
     }
 
     public void setEntityInfo(String entityInfo) {

@@ -46,7 +46,9 @@ public class JumpAndRunMain extends Game {
 	public void dispose () {
 		super.dispose();
 
-		System.out.println("Initial dispose Call");
+		if (NotFinalStatics.debug) {
+			System.out.println("Initial dispose Call");
+		}
 
 		assetManager.clear();
 

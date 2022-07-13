@@ -15,11 +15,13 @@ import de.dhbw.satp.staticworld.BitFilterDef;
 
 public class DynamicHeart extends DynamicEntity {
 
-    private Texture texture;
-    private boolean freeze = false;
-    private final TextureRegion textureRegion[][];
-    private float originX, originY;
+    private final Texture texture;
+    private final TextureRegion[][] textureRegion;
+    private final float originX;
+    private final float originY;
+
     private float rotation = 120f;
+    private boolean freeze = false;
 
     public DynamicHeart(PlayScreen playScreen, float posXInWorldUnits, float posYInWorldUnits) {
         super(playScreen, posXInWorldUnits, posYInWorldUnits);
@@ -27,8 +29,8 @@ public class DynamicHeart extends DynamicEntity {
         texture = playScreen.getAssetManager().get(Assets.heartSprite);
         textureRegion = TextureRegion.split(texture, 16,16);
 
-        originX = texture.getWidth() / (FinalStatics.PPM * 1f) / 2;
-        originY = texture.getHeight() / (FinalStatics.PPM * 1f) / 2;
+        originX = texture.getWidth() / FinalStatics.PPM / 2;
+        originY = texture.getHeight() / FinalStatics.PPM / 2;
         rotation -= MathUtils.random(80);
     }
 
@@ -39,7 +41,7 @@ public class DynamicHeart extends DynamicEntity {
         CircleShape circleShape = new CircleShape();
         circleShape.setRadius(6f / FinalStatics.PPM);
         bodyFixtureDef.shape = circleShape;
-        bodyFixtureDef.filter.categoryBits = BitFilterDef.COLLECITBLE_BIT;
+        bodyFixtureDef.filter.categoryBits = BitFilterDef.COLLECTIBLE_BIT;
         bodyFixtureDef.filter.maskBits = BitFilterDef.GROUND_BIT | BitFilterDef.PLAYER_BIT;
 
         fixture = body.createFixture(bodyFixtureDef);
@@ -77,8 +79,8 @@ public class DynamicHeart extends DynamicEntity {
                 body.getPosition().y - texture.getHeight() / (FinalStatics.PPM * 1.4f),
                 originX,
                 originY,
-                texture.getWidth() / (FinalStatics.PPM * 1f),
-                texture.getHeight() / (FinalStatics.PPM * 1f),
+                texture.getWidth() / FinalStatics.PPM,
+                texture.getHeight() / FinalStatics.PPM,
                 1f, 1f,
                 rotation,
                 true);

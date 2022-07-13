@@ -7,7 +7,9 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import de.dhbw.satp.main.assetfragments.ParallaxAsset;
 import de.dhbw.satp.main.assetfragments.ShaderAsset;
 
-//The class contains the access string and type of each asset in the game
+/**
+ *  The class contains the access string and type of each asset in the game
+ */
 public class Assets {
 
     //Textures

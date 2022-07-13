@@ -12,16 +12,18 @@ import de.dhbw.satp.screens.PlayScreen;
 public class CollectibleManager {
 
     private final PlayScreen playScreen;
-    private int activeCount = 0;
+    private final Queue<ToSpawnObjectDefinition<? extends DynamicEntity>> queuedEntities;
+    private final Array<DynamicCoin> inWorldObjects;
     private final int MAX_IN_WORLD = 64;
     private final int MAX_QUEUED_ENTITIES = 128;
-    private int intItCount = 0;
 
-    private Array<DynamicCoin> inWorldObjects;
-    private final Queue<ToSpawnObjectDefinition<? extends DynamicEntity>> queuedEntities;
+    private int activeCount = 0;
+    private int initCount = 0;
+
 
     public CollectibleManager(PlayScreen playScreen) {
         this.playScreen = playScreen;
+
         inWorldObjects = new Array<>(MAX_IN_WORLD);
         queuedEntities = new Queue<>(MAX_QUEUED_ENTITIES);
     }
@@ -40,8 +42,8 @@ public class CollectibleManager {
             }
         }
 
-        float camCordsLeft = camera.position.x - 2.5f;
-        float camCordsRight = camera.position.x + 2.5f;
+        float camCordsLeft = camera.position.x - camera.viewportWidth / 2f;
+        float camCordsRight = camera.position.x + camera.viewportWidth / 2f;
 
         for (int i = 0; i < inWorldObjects.size ; i++) {
 
@@ -83,7 +85,7 @@ public class CollectibleManager {
         DynamicCoin dynamicCoin = new DynamicCoin(playScreen, x,y);
 
         inWorldObjects.add(dynamicCoin);
-        intItCount++;
+        initCount++;
 
         return dynamicCoin;
     }
@@ -112,7 +114,7 @@ public class CollectibleManager {
         return MAX_QUEUED_ENTITIES;
     }
 
-    public int getIntItCount() {
-        return intItCount;
+    public int getInitCount() {
+        return initCount;
     }
 }

@@ -31,7 +31,6 @@ public class ParallaxAsset {
             text = text.replaceAll("\r\n",",");
             text = text.replaceAll(" ","");
 
-            //Split
             String[] wordsArray = text.split(",");
 
             for (int i = 0; i < wordsArray.length; i+=4) {
@@ -51,7 +50,6 @@ public class ParallaxAsset {
                 } catch (NumberFormatException e) {
                     e.printStackTrace();
 
-                    //Use Defaults
                     parallaxBackgroundLayer.setyOffset(0);
                     parallaxBackgroundLayer.setRowCount(3);
                     parallaxBackgroundLayer.setParallaxFactor(26f);

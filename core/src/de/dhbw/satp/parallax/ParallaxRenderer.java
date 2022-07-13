@@ -10,15 +10,10 @@ import de.dhbw.satp.main.assetfragments.ParallaxAsset;
 
 /**
  * Custom Renderer
- *
  * can render n*m scrolling Background pieces and adds a Parallax-Effect to each Layer
- *
- * @author Florian Sprenger
- *
- * */
+ */
 public class ParallaxRenderer implements Disposable {
 
-    //Deactivate this Option to increase the Performance
     private final boolean enableParallax = true;
 
     //Offset to avoid "Black-Render-Lines"
@@ -38,7 +33,6 @@ public class ParallaxRenderer implements Disposable {
             layerArray.get(i).clearBackGround();
         }
 
-        //Start-Position of ech Background
         for (int i = 0; i < layerArray.size; i++) {
             for (int j = 0; j < layerArray.get(i).getRowCount(); j++) {
                 layerArray.get(i).addBackGround(j * layerArray.get(i).getBackgroundWith() - j * RENDER_OFFSET);
@@ -82,7 +76,6 @@ public class ParallaxRenderer implements Disposable {
     }
 
     public void render(SpriteBatch spriteBatch) {
-        //draw Backgrounds
         for (int i = 0; i < layerArray.size; i++) {
             for (int j = 0; j < layerArray.get(i).getBackgroundCount(); j++) {
                 spriteBatch.draw(layerArray.get(i).getBg(), layerArray.get(i).getPosition(j).x, layerArray.get(i).getPosition(j).y + layerArray.get(i).getyOffset(), layerArray.get(i).getBackgroundWith(), layerArray.get(i).getBackgroundHeigth());
@@ -93,6 +86,5 @@ public class ParallaxRenderer implements Disposable {
 
     @Override
     public void dispose() {
-        //release Video-RAM
     }
 }

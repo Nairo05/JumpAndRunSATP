@@ -7,25 +7,26 @@ import com.badlogic.gdx.utils.Disposable;
 
 import de.dhbw.satp.main.FinalStatics;
 
-//Data-Object, holds needed information
+/**
+ * Data-Object, holds needed information
+ */
 public class ParallaxBackgroundLayer implements Disposable {
 
-    private final float VIEWPORT_STRETCH_FACTOR = 1f;
-    private float parallaxFactor = 26f;
+    private static final float VIEWPORT_STRETCH_FACTOR = 1f;
 
     private final Texture bg;
-    private float yOffset;
-    private float rowCount = 3;
-
     private final Array<Vector2> positions;
 
     private final float backgroundWith;
     private final float backgroundHeight;
 
+    private float parallaxFactor = 26f;
+    private float rowCount = 3f;
+    private float yOffset = 0f;
+
     public ParallaxBackgroundLayer(Texture texture) {
         bg = texture;
         positions = new Array<>();
-        yOffset = 0f;
 
         backgroundWith = bg.getWidth() / (FinalStatics.PPM * VIEWPORT_STRETCH_FACTOR);
         backgroundHeight = bg.getHeight() / (FinalStatics.PPM * VIEWPORT_STRETCH_FACTOR);
@@ -87,6 +88,5 @@ public class ParallaxBackgroundLayer implements Disposable {
     public void dispose() {
         bg.dispose();
     }
-
 
 }

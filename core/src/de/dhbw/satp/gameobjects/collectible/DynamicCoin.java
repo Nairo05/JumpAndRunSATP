@@ -24,11 +24,11 @@ public class DynamicCoin extends DynamicEntity {
     private final float originX;
     private final float originY;
 
+    private Vector2 textureDistort = new Vector2(0f,0f);
+    private int animationCount = 15;
+    private float rotation = 120f;
     private boolean freeze = false;
     private boolean inAnimation = false;
-    private float rotation = 120f;
-    private int animationCount = 15;
-    private Vector2 textureDistort = new Vector2(0f,0f);
 
     public DynamicCoin(PlayScreen playScreen, float posXInWorldUnits, float posYInWorldUnits) {
         super(playScreen, posXInWorldUnits, posYInWorldUnits);
@@ -48,7 +48,7 @@ public class DynamicCoin extends DynamicEntity {
         CircleShape circleShape = new CircleShape();
         circleShape.setRadius(6f / FinalStatics.PPM);
         bodyFixtureDef.shape = circleShape;
-        bodyFixtureDef.filter.categoryBits = BitFilterDef.COLLECITBLE_BIT;
+        bodyFixtureDef.filter.categoryBits = BitFilterDef.COLLECTIBLE_BIT;
         bodyFixtureDef.filter.maskBits = BitFilterDef.GROUND_BIT;
 
         fixture = body.createFixture(bodyFixtureDef);
@@ -58,7 +58,7 @@ public class DynamicCoin extends DynamicEntity {
         PolygonShape shapeHit = new PolygonShape();
         shapeHit.setAsBox(12f / FinalStatics.PPM,12f / FinalStatics.PPM);
         fDefHit.shape = shapeHit;
-        fDefHit.filter.categoryBits = BitFilterDef.COLLECITBLE_BIT;
+        fDefHit.filter.categoryBits = BitFilterDef.COLLECTIBLE_BIT;
         fDefHit.filter.maskBits = BitFilterDef.PLAYER_BIT;
         fDefHit.isSensor = true;
 

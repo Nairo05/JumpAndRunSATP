@@ -12,29 +12,33 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
+import de.dhbw.satp.main.Assets;
 import de.dhbw.satp.main.JumpAndRunMain;
 import de.dhbw.satp.main.FinalStatics;
+import de.dhbw.satp.main.NotFinalStatics;
 import de.dhbw.satp.scene2d.LevelButton;
 
 public class MainMenuScreen implements Screen {
 
-    private final int LEVELS = 10;
+    private static final int LEVELS = 10;
+    private static final String PATH_PREFIX = "particle/";
+    private static final String WHITE_FLY_EFFECT = "WhiteFly.p";
 
     public Stage stage;
+
     private final Texture textTexture;
     private final Texture cloudTexture;
     private final JumpAndRunMain jumpAndRunMain;
-
     private final ParticleEffect particleEffect;
 
     public MainMenuScreen(JumpAndRunMain jumpAndRunMain) {
         this.jumpAndRunMain = jumpAndRunMain;
 
-        cloudTexture = jumpAndRunMain.assetManager.get("menu/ui/background.png");
-        textTexture =  jumpAndRunMain.assetManager.get("menu/ui/selectlevel.png");
+        cloudTexture = jumpAndRunMain.assetManager.get(Assets.menuBackground);
+        textTexture =  jumpAndRunMain.assetManager.get(Assets.menuSelectLevel);
 
         particleEffect = new ParticleEffect();
-        particleEffect.load(Gdx.files.internal("particle/whitefly.p"), Gdx.files.internal("particle/"));
+        particleEffect.load(Gdx.files.internal(PATH_PREFIX + WHITE_FLY_EFFECT), Gdx.files.internal(PATH_PREFIX));
         particleEffect.getEmitters().first().setPosition(100,100);
         particleEffect.start();
 
@@ -74,12 +78,13 @@ public class MainMenuScreen implements Screen {
         stage.addActor(levelTable);
         stage.act(Gdx.graphics.getDeltaTime());
 
-        //stage.addAction(Actions.sequence(Actions.fadeIn(0.3f)));
     }
 
     @Override
     public void show() {
-        System.out.println("started Main-Menu Screen. PRESS F4 TO SKIP TO A LEVEL...");
+        if (NotFinalStatics.debug) {
+            System.out.println("started Main-Menu Screen. PRESS F4 TO SKIP TO A LEVEL...");
+        }
     }
 
     @Override
@@ -120,7 +125,9 @@ public class MainMenuScreen implements Screen {
 
     @Override
     public void dispose() {
-        System.out.println("MainMenuScreen dispose call");
+        if (NotFinalStatics.debug) {
+            System.out.println("MainMenuScreen dispose call");
+        }
         stage.dispose();
     }
 }

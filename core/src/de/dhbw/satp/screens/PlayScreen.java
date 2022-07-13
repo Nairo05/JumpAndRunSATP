@@ -108,8 +108,8 @@ public class PlayScreen implements Screen {
                     "   DELTA : " + Gdx.graphics.getDeltaTime());
 
             debugOnScreenDisplay.setEntityInfo("ENTITY MANAGER |" +
-                    "   QUEUE : " + entityManager.getQueuedSize() + "/" + entityManager.getMAX_QUEUED_ENTITIES() +
-                    "   SPAWNED : " + entityManager.getSpawnedSize() + "/" + entityManager.getMAX_ENTITIES_IN_WORLD() +
+                    "   QUEUE : " + entityManager.getQueuedSize() + "/" + entityManager.getMaxQueuedEntities() +
+                    "   SPAWNED : " + entityManager.getSpawnedSize() + "/" + entityManager.getMaxEntitiesInWorld() +
                     "   ACTIVE: ??");
 
             debugOnScreenDisplay.setPlayerInfo("PLAYER |" +
@@ -121,7 +121,7 @@ public class PlayScreen implements Screen {
 
             debugOnScreenDisplay.setParticleManagerInfo("PARTIC MANAGER |" +
                     "   QUEUE: " + "0/0" +
-                    "   EMITTER : " + particleManager.getParticleSize() + "/" + particleManager.getMAX_PARTICLE_IN_WORLD() +
+                    "   EMITTER : " + particleManager.getParticleSize() + "/" + particleManager.getMaxParticleInWorld() +
                     "   ACTIVE: " + particleManager.getActive());
 
             debugOnScreenDisplay.setSpawnAbleInfo("COLLE MANAGER |" +
@@ -178,7 +178,7 @@ public class PlayScreen implements Screen {
         shaderProgram.bind();
 
         Vector3 u_distort = Vector3.Zero;
-        float shaderValue = (collectibleManager.getCount() * 1f) / collectibleManager.getIntItCount();
+        float shaderValue = (collectibleManager.getCount() * 1f + 10f) / (collectibleManager.getInitCount() + 10f);
 
         if (earthQuakeCount > 0) {
             earthQuakeCount--;

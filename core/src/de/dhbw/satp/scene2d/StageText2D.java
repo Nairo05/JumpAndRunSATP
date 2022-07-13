@@ -7,11 +7,11 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 
 public class StageText2D extends Actor {
 
-    private String text;
+    private final BitmapFont font;
     private final float posX;
     private final float posY;
 
-    private BitmapFont font;
+    private String text;
 
     public StageText2D(float posX, float posY) {
         this.text = "";

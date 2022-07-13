@@ -21,13 +21,12 @@ import de.dhbw.satp.staticworld.BitFilterDef;
 
 public class Player implements GameObject {
 
-    private Texture texture;
-
+    private final Texture texture;
+    private final TextureRegion[][] textureRegions;
     private final Body playerBody;
     private final PlayScreen playScreen;
 
-    private TextureRegion[][] textureRegions;
-    private int framecount = 0;
+    private int frameCount = 0;
     private int frame = 0;
 
     private float jumpTime = 17f / PPM;
@@ -61,7 +60,7 @@ public class Player implements GameObject {
         fixtureDef.filter.categoryBits = BitFilterDef.PLAYER_BIT;
         fixtureDef.filter.maskBits = BitFilterDef.GROUND_BIT | BitFilterDef.ENEMY_BODY_BIT
                 | BitFilterDef.ENEMY_HEAD_BIT | BitFilterDef.ONE_WAY_GROUND
-                | BitFilterDef.COLLECITBLE_BIT;
+                | BitFilterDef.COLLECTIBLE_BIT;
         playerBody.createFixture(fixtureDef);
 
         EdgeShape foot = new EdgeShape();
@@ -97,8 +96,8 @@ public class Player implements GameObject {
             playScreen.endGame();
         }
 
-        framecount++;
-        if ((framecount % 6) == 0) {
+        frameCount++;
+        if ((frameCount % 6) == 0) {
             frame++;
             if (frame > 3) {
                 frame = 0;

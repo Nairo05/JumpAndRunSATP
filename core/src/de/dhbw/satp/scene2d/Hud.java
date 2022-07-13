@@ -20,6 +20,7 @@ import de.dhbw.satp.screens.PlayScreen;
 public class Hud implements Disposable {
 
     public Stage stage;
+
     private final PlayScreen playScreen;
     private final Player player;
 
@@ -31,17 +32,17 @@ public class Hud implements Disposable {
     //Textures
     private final Texture digitsTexture;
     private final Texture livesTexture;
-    private final Texture ermeraldTexture;
+    private final Texture emeraldTexture;
     private final TextureRegion[][] digits;
-    private final TextureRegion[][] ermeraldIcon;
+    private final TextureRegion[][] emeraldIcon;
 
-    private int time;
-    private int framecount = 0;
-    private int lives;
-
-    //Images
+    //Image
     private final Image[] liveImages;
     private final Image emeraldImage;
+
+    private int time;
+    private int frameCount = 0;
+
 
     public Hud (PlayScreen playScreen, SpriteBatch batch) {
 
@@ -62,7 +63,7 @@ public class Hud implements Disposable {
 
 
         //Lives
-        lives = 3;
+        int lives = 3;
         livesTable = new Table();
         livesTable.top();
         livesTable.left();
@@ -84,23 +85,20 @@ public class Hud implements Disposable {
         coinsTable.padTop(18f).padLeft(6f);
         coinsTable.setFillParent(true);
 
-        ermeraldTexture = playScreen.getAssetManager().get(Assets.coinSprite);
-        ermeraldIcon = TextureRegion.split(ermeraldTexture, 16, 16);
-        emeraldImage = new Image(ermeraldIcon[0][0]);
+        emeraldTexture = playScreen.getAssetManager().get(Assets.coinSprite);
+        emeraldIcon = TextureRegion.split(emeraldTexture, 16, 16);
+        emeraldImage = new Image(emeraldIcon[0][0]);
 
     }
 
     public void update(float dt) {
 
         //Level timer Management -----------------------------------------------------
-        framecount++;
-        if ((framecount % NotFinalStatics.FOREGROUND_FPS) == 0) {
-            boolean finishedLevel = false;
-            if (!finishedLevel) {
-                time--;
-                if (NotFinalStatics.debug) {
-                    System.out.println(time);
-                }
+        frameCount++;
+        if ((frameCount % NotFinalStatics.FOREGROUND_FPS) == 0) {
+            time--;
+            if (NotFinalStatics.debug) {
+                System.out.println(time);
             }
         }
 
