@@ -24,7 +24,7 @@ public class MainMenuScreen implements Screen {
 
     private static final int LEVELS = 10;
     private static final String PATH_PREFIX = "particle/";
-    private static final String WHITE_FLY_EFFECT = "WhiteFly.p";
+    private static final String WHITE_FLY_EFFECT = "whitefly.p";
 
     public Stage stage;
 

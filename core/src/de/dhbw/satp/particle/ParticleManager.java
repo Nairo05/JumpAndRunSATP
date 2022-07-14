@@ -12,8 +12,8 @@ import de.dhbw.satp.main.NotFinalStatics;
 public class ParticleManager implements Disposable {
 
     private static final String PATH_PREFIX = "particle/";
-    private static final String WHITE_FLY_EFFECT = "WhiteFly.p";
-    private static final String RAIN_EFFECT = "Rain.p";
+    private static final String WHITE_FLY_EFFECT = "whitefly.p";
+    private static final String RAIN_EFFECT = "rain.p";
 
     private final Array<ParticleEffect> particles;
     private final int MAX_PARTICLE_IN_WORLD = 4;
