@@ -20,7 +20,7 @@ import javax.swing.JFrame;
 // Please note that on macOS your application needs to be started with the -XstartOnFirstThread JVM argument
 public class DesktopLauncher {
 
-	public static final String LOGO_PATH = "assets/playersprite/logo.png";
+	public static final String LOGO_PATH = "playersprite/logo.png";
 
 	public static JFrame frame;
 	public static JRadioButton r1;
@@ -75,7 +75,7 @@ public class DesktopLauncher {
 
 		combobox = new JComboBox <>(s1);
 		combobox.addItemListener(obj);
-		l1 = new JLabel("Auflösung:");
+		l1 = new JLabel("Fenster");
 		l2 = new JLabel("1200*624");
 		JPanel p2 = new JPanel();
 		l2.setForeground(Color.gray);
@@ -126,6 +126,7 @@ public class DesktopLauncher {
 				config.setTitle("Craniums Adventure");
 				config.setForegroundFPS(NotFinalStatics.FOREGROUND_FPS);
 				config.setWindowedMode(NotFinalStatics.WINDOW_WIDTH, NotFinalStatics.WINDOW_HEIGHT);
+				config.setWindowIcon(LOGO_PATH);
 				frame.dispose();
 				new Lwjgl3Application(new JumpAndRunMain(), config);
 			}
@@ -149,7 +150,7 @@ public class DesktopLauncher {
 		@Override
 		public void actionPerformed(ActionEvent actionEvent) {
 			String item= (String) debugSelection.getSelectedItem();
-			String o = "on";
+			String o = "an";
 			if (o.equals(item)) {
 				NotFinalStatics.debug = true;
 			}
