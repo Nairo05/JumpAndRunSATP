@@ -13,6 +13,8 @@ public class CameraManager {
     private static final float LEVEL_END = 29.9f;
     private static final float FINAL_CAM_POSITION = LEVEL_END + 2f;
 
+    private boolean toReset = false;
+
     private final OrthographicCamera camera;
 
     private int camState = 0;
@@ -34,6 +36,18 @@ public class CameraManager {
                 } else {
                     camera.zoom = 1f;
                 }
+            }
+        }
+
+        if (player.isInvincible() && !toReset) {
+            toReset = true;
+        }
+
+        if (toReset) {
+            if (camera.position.x > player.getX() && camera.position.x > LEVEL_START) {
+                camera.position.x -= dt * 3;
+            } else {
+                toReset = false;
             }
         }
 
