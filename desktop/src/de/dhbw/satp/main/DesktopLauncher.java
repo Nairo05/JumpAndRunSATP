@@ -33,7 +33,7 @@ public class DesktopLauncher {
 		frame = new JFrame();
 		frame.setBounds(600,400, 600,400);
 		frame.setTitle("Craniums Adventure: Launcher");
-		Image icon = new ImageIcon("assets/menu/ui/pngwing.png").getImage();
+		Image icon = new ImageIcon("assets/playersprite/logo.png").getImage();
 		frame.setIconImage(icon);
 
 		JPanel p1 = new JPanel();
@@ -62,17 +62,16 @@ public class DesktopLauncher {
 		SelectionsCheck obj = new SelectionsCheck();
 		frame.setLayout(new FlowLayout());
 		frame.setLayout(null);
-		JLabel entwickler = new JLabel("EntwicklerModus:");
+		JLabel entwickler = new JLabel("EntwicklerMood:");
 		String[] s3 = new String[]{"off", "on"};
-		debugSelection = new JComboBox(s3);
+		debugSelection = new JComboBox<>(s3);
 
-		JLabel graphik = new JLabel("Graphic:");
-		String[] s2;
-		s2 = new String[]{"high","low","medium"};
-		resolutionSelection = new JComboBox(s2);
-		String[] s1 = new String[]{"Standard","HD","Full HD","4K"};
+		JLabel graphik = new JLabel("graphic :");
+		String[] s2 = new String[]{"normal","high","low"};
+		resolutionSelection = new JComboBox <>(s2);
+		String[] s1 = new String[]{"1200*624","1280*720","1920*1080","4096*2160"};
 
-		combobox = new JComboBox(s1);
+		combobox = new JComboBox <>(s1);
 		combobox.addItemListener(obj);
 		l1 = new JLabel("Resolution:");
 		l2 = new JLabel("[is selected]");
@@ -100,6 +99,7 @@ public class DesktopLauncher {
 
 		p3.add(entwickler);
 		p3.add(debugSelection);
+
 
 		frame.add(p1);
 		frame.add(p2);
@@ -159,9 +159,9 @@ public class DesktopLauncher {
 		@Override
 		public void actionPerformed(ActionEvent actionEvent) {
 			String item = (String) resolutionSelection.getSelectedItem();
-			String a = "4K";
-			String b = "HD";
-			String c = "Full HD";
+			String a = "4096*2160";
+			String b = "1280*720";
+			String c = "1920*1080";
 			if (a.equals(item)) {
 				NotFinalStatics.WINDOW_WIDTH = 4096;
 				NotFinalStatics.WINDOW_HEIGHT = 2160;
