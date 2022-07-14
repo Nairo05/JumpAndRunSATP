@@ -25,8 +25,6 @@ public abstract class Enemy extends DynamicEntity {
     private final float rightBound;
     private boolean movesLeft = false;
 
-
-
     public Enemy(PlayScreen playScreen, float posXInWorldUnits, float posYInWorldUnits, float width) {
         super(playScreen, posXInWorldUnits, posYInWorldUnits);
 

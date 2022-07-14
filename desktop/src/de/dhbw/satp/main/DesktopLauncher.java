@@ -64,19 +64,19 @@ public class DesktopLauncher {
 		SelectionsCheck obj = new SelectionsCheck();
 		frame.setLayout(new FlowLayout());
 		frame.setLayout(null);
-		JLabel entwickler = new JLabel("EntwicklerMood:");
-		String[] s3 = new String[]{"off", "on"};
+		JLabel entwickler = new JLabel("Entwicklermodus: ");
+		String[] s3 = new String[]{"aus", "an"};
 		debugSelection = new JComboBox<>(s3);
 
-		JLabel graphik = new JLabel("graphic :");
-		String[] s2 = new String[]{"normal","high","low"};
+		JLabel graphik = new JLabel("Grafik :");
+		String[] s2 = new String[]{"hoch","niedrig"};
 		resolutionSelection = new JComboBox <>(s2);
-		String[] s1 = new String[]{"1200*624","1280*720","1920*1080","4096*2160"};
+		String[] s1 = new String[]{"1200*624","1280*720","1920*1080"};
 
 		combobox = new JComboBox <>(s1);
 		combobox.addItemListener(obj);
-		l1 = new JLabel("Resolution:");
-		l2 = new JLabel("[is selected]");
+		l1 = new JLabel("Auflösung:");
+		l2 = new JLabel("1200*624");
 		JPanel p2 = new JPanel();
 		l2.setForeground(Color.gray);
 
@@ -126,7 +126,6 @@ public class DesktopLauncher {
 				config.setTitle("Craniums Adventure");
 				config.setForegroundFPS(NotFinalStatics.FOREGROUND_FPS);
 				config.setWindowedMode(NotFinalStatics.WINDOW_WIDTH, NotFinalStatics.WINDOW_HEIGHT);
-				config.setWindowIcon(LOGO_PATH);
 				frame.dispose();
 				new Lwjgl3Application(new JumpAndRunMain(), config);
 			}
