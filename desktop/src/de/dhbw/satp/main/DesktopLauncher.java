@@ -4,31 +4,28 @@ import static de.dhbw.satp.main.SelectionsCheck.combobox;
 import static de.dhbw.satp.main.SelectionsCheck.l1;
 import static de.dhbw.satp.main.SelectionsCheck.l2;
 
+
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
-
-
 import javax.swing.*;
-
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import javax.swing.JButton;
 import javax.swing.JFrame;
 
 // Please note that on macOS your application needs to be started with the -XstartOnFirstThread JVM argument
 public class DesktopLauncher {
 
-	private static JFrame frame;
-	private static JRadioButton r1;
-	private static JRadioButton r2;
-	private static JRadioButton r3;
-	private static JComboBox debugSelection;
-	private static JComboBox resolutionSelection;
+	public static JFrame frame;
+	public static JRadioButton r1;
+	public static JRadioButton r2;
+	public static JRadioButton r3;
+	public static JComboBox debugSelection;
+	public static JComboBox resolutionSelection;
 
 
 	public static void main (String[] arg) {
@@ -66,13 +63,14 @@ public class DesktopLauncher {
 		frame.setLayout(new FlowLayout());
 		frame.setLayout(null);
 		JLabel entwickler = new JLabel("EntwicklerModus:");
-		String s3[] = {"off","on"};
-
+		String[] s3 = new String[]{"off", "on"};
 		debugSelection = new JComboBox(s3);
+
 		JLabel graphik = new JLabel("Graphic:");
-		String s2[] = {"high","low","medium"};
+		String[] s2;
+		s2 = new String[]{"high","low","medium"};
 		resolutionSelection = new JComboBox(s2);
-		String s1[] = {"Standard","HD","Full HD","4K" };
+		String[] s1 = new String[]{"Standard","HD","Full HD","4K"};
 
 		combobox = new JComboBox(s1);
 		combobox.addItemListener(obj);
@@ -150,7 +148,7 @@ public class DesktopLauncher {
 		public void actionPerformed(ActionEvent actionEvent) {
 			String item= (String) debugSelection.getSelectedItem();
 			String o = "on";
-			if (o == item) {
+			if (o.equals(item)) {
 				NotFinalStatics.debug = true;
 			}
 		}
@@ -162,13 +160,15 @@ public class DesktopLauncher {
 		public void actionPerformed(ActionEvent actionEvent) {
 			String item = (String) resolutionSelection.getSelectedItem();
 			String a = "4K";
-			if (a == item) {
+			String b = "HD";
+			String c = "Full HD";
+			if (a.equals(item)) {
 				NotFinalStatics.WINDOW_WIDTH = 4096;
 				NotFinalStatics.WINDOW_HEIGHT = 2160;
-			} else if (a == "HD") {
+			} else if (b.equals(item)) {
 				NotFinalStatics.WINDOW_WIDTH = 1280;
 				NotFinalStatics.WINDOW_HEIGHT = 720;
-			} else if (a == "Full HD") {
+			} else if (c.equals(item)) {
 				NotFinalStatics.WINDOW_WIDTH = 1920;
 				NotFinalStatics.WINDOW_HEIGHT = 1080;
 			}
@@ -177,13 +177,7 @@ public class DesktopLauncher {
 
 
 
-	public static class Jradiobutton extends JFrame {
-		public Jradiobutton(String windows) {
 
-		}
-
-
-	}
 
 }
 
