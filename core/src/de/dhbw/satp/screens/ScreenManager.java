@@ -11,6 +11,7 @@ public class ScreenManager {
 
     private final JumpAndRunMain jumpAndRunMain;
     private SCREEN currentScreen;
+    private boolean wonGame = true;
 
     public enum SCREEN {
         INIT_LOADING,
@@ -49,7 +50,7 @@ public class ScreenManager {
                 switchScreens(SCREEN.PLAY, new PlayScreen(jumpAndRunMain));
                 break;
             case PLAY:
-                switchScreens(SCREEN.GAME_OVER, new GameOverScreen(jumpAndRunMain));
+                switchScreens(SCREEN.GAME_OVER, new GameOverScreen(jumpAndRunMain, wonGame));
                 break;
         }
 
@@ -71,5 +72,8 @@ public class ScreenManager {
     }
     public void setCurrentScreen(SCREEN currentScreen) {
         this.currentScreen = currentScreen;
+    }
+    public void setWonGame(boolean wonGame) {
+        this.wonGame = wonGame;
     }
 }

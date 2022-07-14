@@ -93,7 +93,7 @@ public class Player implements GameObject {
         }
 
         if (lives <= 0) {
-            playScreen.endGame();
+            playScreen.loseGame();
         }
 
         frameCount++;

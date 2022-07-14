@@ -88,6 +88,8 @@ public class PlayScreen implements Screen {
         orthogonalTiledMapRenderer = new OrthogonalTiledMapRenderer(getAssetManager().get(Assets.level11), 1f / PPM);
 
         orthogonalTiledMapRenderer.getBatch().setShader(shaderProgram);
+
+        jumpAndRunMain.screenManager.setWonGame(true);
     }
 
     @Override
@@ -145,7 +147,7 @@ public class PlayScreen implements Screen {
         cameraManager.update(player, dt);
 
         if (cameraManager.isOutOfMap()) {
-            endGame();
+            winGame();
         }
 
         updatePlayer(dt);
@@ -178,7 +180,7 @@ public class PlayScreen implements Screen {
         shaderProgram.bind();
 
         Vector3 u_distort = Vector3.Zero;
-        float shaderValue = (collectibleManager.getCount() * 1f + 10f) / (collectibleManager.getInitCount() + 10f);
+        float shaderValue = (collectibleManager.getCount() * 1f + 16f) / (collectibleManager.getInitCount() + 16f);
 
         if (earthQuakeCount > 0) {
             earthQuakeCount--;
@@ -274,7 +276,13 @@ public class PlayScreen implements Screen {
         return entityManager;
     }
 
-    public void endGame() {
+    public void winGame() {
+        jumpAndRunMain.screenManager.setWonGame(true);
+        toEnd = true;
+    }
+
+    public void loseGame() {
+        jumpAndRunMain.screenManager.setWonGame(false);
         toEnd = true;
     }
 

@@ -8,7 +8,9 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
@@ -37,6 +39,12 @@ public class MainMenuScreen implements Screen {
         cloudTexture = jumpAndRunMain.assetManager.get(Assets.menuBackground);
         textTexture =  jumpAndRunMain.assetManager.get(Assets.menuSelectLevel);
 
+        Image textImage = new Image(textTexture);
+        textImage.setScaling(Scaling.stretch);
+        textImage.setWidth(230f);
+        textImage.setHeight(36f);
+        textImage.setPosition(55f, 160f);
+
         particleEffect = new ParticleEffect();
         particleEffect.load(Gdx.files.internal(PATH_PREFIX + WHITE_FLY_EFFECT), Gdx.files.internal(PATH_PREFIX));
         particleEffect.getEmitters().first().setPosition(100,100);
@@ -53,6 +61,7 @@ public class MainMenuScreen implements Screen {
         menuTable.padTop(10f);
         menuTable.setFillParent(true);
 
+        stage.addActor(textImage);
         stage.addActor(menuTable);
 
 
@@ -96,7 +105,6 @@ public class MainMenuScreen implements Screen {
 
         jumpAndRunMain.spriteBatch.begin();
         jumpAndRunMain.spriteBatch.draw(cloudTexture, 0,0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        jumpAndRunMain.spriteBatch.draw(textTexture, 160, Gdx.graphics.getHeight() - 160);
         particleEffect.draw(jumpAndRunMain.spriteBatch);
         jumpAndRunMain.spriteBatch.end();
 

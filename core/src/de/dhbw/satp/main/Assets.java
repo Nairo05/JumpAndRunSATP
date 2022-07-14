@@ -26,6 +26,7 @@ public class Assets {
     public static final AssetDescriptor<Texture> menuNumbers = new AssetDescriptor<>("menu/menunumbers.png", Texture.class);
     public static final AssetDescriptor<Texture> menuButton = new AssetDescriptor<>("menu/ui/BTN_GREEN_SQ.png", Texture.class);
     public static final AssetDescriptor<Texture> menuClearText = new AssetDescriptor<>("menu/ui/levelclear.png", Texture.class);
+    public static final AssetDescriptor<Texture> menuFailedText = new AssetDescriptor<>("menu/ui/levelfailed.png", Texture.class);
     public static final AssetDescriptor<Texture> menuSkipText = new AssetDescriptor<>("menu/ui/clicktoskip.png", Texture.class);
     public static final AssetDescriptor<Texture> menuBackground = new AssetDescriptor<>("menu/ui/background.png", Texture.class);
     public static final AssetDescriptor<Texture> menuSelectLevel = new AssetDescriptor<>("menu/ui/selectlevel.png", Texture.class);

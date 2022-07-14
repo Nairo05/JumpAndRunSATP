@@ -3,17 +3,20 @@ package de.dhbw.satp.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 import de.dhbw.satp.main.Assets;
 import de.dhbw.satp.main.JumpAndRunMain;
 
 public class LevelLoadingScreen implements Screen {
 
+    private final ShapeRenderer shapeRenderer;
     private final JumpAndRunMain jumpAndRunMain;
-    private int counter = 20;
+    private float counter = 0;
 
     public LevelLoadingScreen(JumpAndRunMain jumpAndRunMain) {
         this.jumpAndRunMain = jumpAndRunMain;
+        shapeRenderer = new ShapeRenderer();
     }
 
     @Override
@@ -25,17 +28,22 @@ public class LevelLoadingScreen implements Screen {
     }
 
     @Override
-    public void render(float delta) {
+    public void render(float dt) {
         jumpAndRunMain.assetManager.update();
 
-        Gdx.gl20.glClearColor(0f, 0f, 1f, 1f);
+        Gdx.gl20.glClearColor(0f, 0f, 0f, 1f);
         Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        if (counter > 0) {
-            counter--;
-        }
-        if (counter == 0 && jumpAndRunMain.assetManager.isFinished()) {
+
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        shapeRenderer.setColor(1f, 1f, 1f, 1f);
+        shapeRenderer.rect(30,30,counter,32);
+        shapeRenderer.end();
+
+        if (counter >= (Gdx.graphics.getWidth() - 80) && jumpAndRunMain.assetManager.isFinished()) {
             jumpAndRunMain.screenManager.nextScreen();
         }
+
+        counter += 2000f * dt;
     }
 
     @Override

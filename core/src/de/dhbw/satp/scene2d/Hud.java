@@ -117,7 +117,7 @@ public class Hud implements Disposable {
             timerTable.add(timerImage2).padTop(4f).padRight(4f);
             timerTable.add(timerImage3).padTop(4f).padRight(8f);
         } else {
-            playScreen.endGame();
+            playScreen.loseGame();
         }
 
         stage.addActor(timerTable);

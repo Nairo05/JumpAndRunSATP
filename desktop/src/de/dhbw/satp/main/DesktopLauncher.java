@@ -20,6 +20,8 @@ import javax.swing.JFrame;
 // Please note that on macOS your application needs to be started with the -XstartOnFirstThread JVM argument
 public class DesktopLauncher {
 
+	public static final String LOGO_PATH = "assets/playersprite/logo.png";
+
 	public static JFrame frame;
 	public static JRadioButton r1;
 	public static JRadioButton r2;
@@ -33,7 +35,7 @@ public class DesktopLauncher {
 		frame = new JFrame();
 		frame.setBounds(600,400, 600,400);
 		frame.setTitle("Craniums Adventure: Launcher");
-		Image icon = new ImageIcon("assets/playersprite/logo.png").getImage();
+		Image icon = new ImageIcon(LOGO_PATH).getImage();
 		frame.setIconImage(icon);
 
 		JPanel p1 = new JPanel();
@@ -124,6 +126,7 @@ public class DesktopLauncher {
 				config.setTitle("Craniums Adventure");
 				config.setForegroundFPS(NotFinalStatics.FOREGROUND_FPS);
 				config.setWindowedMode(NotFinalStatics.WINDOW_WIDTH, NotFinalStatics.WINDOW_HEIGHT);
+				config.setWindowIcon(LOGO_PATH);
 				frame.dispose();
 				new Lwjgl3Application(new JumpAndRunMain(), config);
 			}

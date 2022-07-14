@@ -13,7 +13,7 @@ import de.dhbw.satp.main.NotFinalStatics;
 
 public class InitLoadingScreen implements Screen {
 
-    private final JumpAndRunMain main;
+    private final JumpAndRunMain jumpAndRunMain;
 
     private final ShapeRenderer shapeRenderer;
     private final Texture texture;
@@ -28,7 +28,7 @@ public class InitLoadingScreen implements Screen {
     private int currentAnimationFrame = 0;
 
     public InitLoadingScreen(JumpAndRunMain jumpAndRunMain) {
-        this.main = jumpAndRunMain;
+        this.jumpAndRunMain = jumpAndRunMain;
         shapeRenderer = new ShapeRenderer();
 
         texture = new Texture("playersprite/skull1.png");
@@ -52,7 +52,7 @@ public class InitLoadingScreen implements Screen {
 
     private void loadSynchronizedAssets() {
         //initial clean
-        main.assetManager.clear();
+        jumpAndRunMain.assetManager.clear();
 
         if (NotFinalStatics.debug) {
             System.out.println("------------------------------ started loading of Assets ------------------------------");
@@ -64,53 +64,54 @@ public class InitLoadingScreen implements Screen {
         loadParallaxSync();
 
         //organize Atlas
-        main.assetManager.finishLoading();
-        main.assetManager.update();
+        jumpAndRunMain.assetManager.finishLoading();
+        jumpAndRunMain.assetManager.update();
 
         if (NotFinalStatics.debug) {
             System.out.println("------------------------------ finished loading of Assets ------------------------------");
-            System.out.println("AssetManager dump: \n" + main.assetManager.getDiagnostics());
+            System.out.println("AssetManager dump: \n" + jumpAndRunMain.assetManager.getDiagnostics());
             System.out.println("------------------------------ finished loading of Assets ------------------------------");
         }
     }
 
     private void loadShadersSync() {
-        main.assetManager.load(Assets.earthQuakeShader);
-        main.assetManager.load(Assets.colorShiftShader);
-        main.assetManager.load(Assets.passThroughShader);
+        jumpAndRunMain.assetManager.load(Assets.earthQuakeShader);
+        jumpAndRunMain.assetManager.load(Assets.colorShiftShader);
+        jumpAndRunMain.assetManager.load(Assets.passThroughShader);
     }
 
     private void loadParallaxSync() {
-        main.assetManager.load(Assets.defaultBackgroundConfiguration);
-        main.assetManager.load(Assets.defaultBackgroundPart0);
-        main.assetManager.load(Assets.defaultBackgroundPart1);
-        main.assetManager.load(Assets.defaultBackgroundPart2);
+        jumpAndRunMain.assetManager.load(Assets.defaultBackgroundConfiguration);
+        jumpAndRunMain.assetManager.load(Assets.defaultBackgroundPart0);
+        jumpAndRunMain.assetManager.load(Assets.defaultBackgroundPart1);
+        jumpAndRunMain.assetManager.load(Assets.defaultBackgroundPart2);
     }
 
     private void loadTexturesSync() {
         //Sprite
-        main.assetManager.load(Assets.playerTexture);
-        main.assetManager.load(Assets.enemyDefaultSprite);
-        main.assetManager.load(Assets.enemySpikeSprite);
-        main.assetManager.load(Assets.digitSprite);
-        main.assetManager.load(Assets.heartSprite);
-        main.assetManager.load(Assets.coinSprite);
+        jumpAndRunMain.assetManager.load(Assets.playerTexture);
+        jumpAndRunMain.assetManager.load(Assets.enemyDefaultSprite);
+        jumpAndRunMain.assetManager.load(Assets.enemySpikeSprite);
+        jumpAndRunMain.assetManager.load(Assets.digitSprite);
+        jumpAndRunMain.assetManager.load(Assets.heartSprite);
+        jumpAndRunMain.assetManager.load(Assets.coinSprite);
 
         //Menu
-        main.assetManager.load(Assets.menuSymbols);
-        main.assetManager.load(Assets.menuNumbers);
-        main.assetManager.load(Assets.menuButton);
-        main.assetManager.load(Assets.menuClearText);
-        main.assetManager.load(Assets.menuSkipText);
-        main.assetManager.load(Assets.menuBackground);
-        main.assetManager.load(Assets.menuSelectLevel);
+        jumpAndRunMain.assetManager.load(Assets.menuSymbols);
+        jumpAndRunMain.assetManager.load(Assets.menuNumbers);
+        jumpAndRunMain.assetManager.load(Assets.menuButton);
+        jumpAndRunMain.assetManager.load(Assets.menuClearText);
+        jumpAndRunMain.assetManager.load(Assets.menuFailedText);
+        jumpAndRunMain.assetManager.load(Assets.menuSkipText);
+        jumpAndRunMain.assetManager.load(Assets.menuBackground);
+        jumpAndRunMain.assetManager.load(Assets.menuSelectLevel);
     }
 
     @Override
-    public void render(float delta) {
-        main.assetManager.update();
+    public void render(float dt) {
+        jumpAndRunMain.assetManager.update();
 
-        loadFactor += 0.0025f;
+        loadFactor += (dt / 4f);
         frameCount++;
 
         float loadingBar = loadFactor * (Gdx.graphics.getWidth() - 64);
@@ -125,8 +126,8 @@ public class InitLoadingScreen implements Screen {
         shapeRenderer.rect(30,30,loadingBar,32);
         shapeRenderer.end();
 
-        if (loadingBar >= (Gdx.graphics.getWidth() - 80) && main.assetManager.isFinished()) {
-            main.screenManager.nextScreen();
+        if (loadingBar >= (Gdx.graphics.getWidth() - 80) && jumpAndRunMain.assetManager.isFinished()) {
+            jumpAndRunMain.screenManager.nextScreen();
         }
 
 
@@ -138,13 +139,13 @@ public class InitLoadingScreen implements Screen {
         }
 
 
-        main.spriteBatch.begin();
-        main.spriteBatch.draw(tipTexture, 10,Gdx.graphics.getHeight() - 250, 1200, 200);
-        main.spriteBatch.draw(textureRegion[0][currentAnimationFrame], 50, 80, 65, 100);
-        main.spriteBatch.draw(digits[0][digit1], loadingBar - 52, 65, 24, 36);
-        main.spriteBatch.draw(digits[0][digit2], loadingBar - 26, 65, 24, 36);
-        main.spriteBatch.draw(percentTexture, loadingBar, 65, 24, 36);
-        main.spriteBatch.end();
+        jumpAndRunMain.spriteBatch.begin();
+        jumpAndRunMain.spriteBatch.draw(tipTexture, 10,Gdx.graphics.getHeight() - 250, 1200, 200);
+        jumpAndRunMain.spriteBatch.draw(textureRegion[0][currentAnimationFrame], 50, 80, 65, 100);
+        jumpAndRunMain.spriteBatch.draw(digits[0][digit1], loadingBar - 52, 65, 24, 36);
+        jumpAndRunMain.spriteBatch.draw(digits[0][digit2], loadingBar - 26, 65, 24, 36);
+        jumpAndRunMain.spriteBatch.draw(percentTexture, loadingBar, 65, 24, 36);
+        jumpAndRunMain.spriteBatch.end();
     }
 
     @Override
